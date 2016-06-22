@@ -19,6 +19,6 @@ public class WorkoutViewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.workouts_list_all, container, false);
+        return inflater.inflate(R.layout.workouts_list_main, container, false);
     }
 }
