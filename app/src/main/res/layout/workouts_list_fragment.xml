@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="WorkoutViewsFragment">
+    tools:context=".ViewWorkoutsFragment">
     <ListView
         android:id="@+id/workout_list_main"
         android:layout_width="match_parent"
