@@ -20,6 +20,7 @@ public class ViewWorkoutsFragment extends Fragment {
     public ViewWorkoutsFragment() {
     }
     static ArrayAdapter<String> adapter;
+    static ArrayList<String> sessions = new ArrayList<String>();
     static ListView workouts;
 
 
@@ -27,16 +28,24 @@ public class ViewWorkoutsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.workouts_list_fragment, container, false);
-
-        workouts = (ListView)rootView.findViewById(R.id.workout_list_main);
         adapter = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.workouts_list_item,
                 R.id.list_item_workout,
                 new ArrayList<String>());
 
+        workouts = (ListView)rootView.findViewById(R.id.workout_list_main);
+        adapter.addAll(sessions);
+
+        workouts.setAdapter(adapter);
+
 
         return  rootView;
 }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("adapter",sessions);
+    }
 }

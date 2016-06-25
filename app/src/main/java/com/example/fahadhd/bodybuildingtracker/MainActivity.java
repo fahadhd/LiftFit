@@ -1,7 +1,9 @@
 package com.example.fahadhd.bodybuildingtracker;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.media.VolumeProviderCompat;
@@ -14,8 +16,20 @@ import android.support.v4.app.Fragment;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+
+    static  int sessionCounter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,19 +39,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         FloatingActionButton addWorkout = (FloatingActionButton) findViewById(R.id.workout_button);
+        assert addWorkout != null;
         addWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent exercise = new Intent(MainActivity.this,ExerciseActivity.class);
+                Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class);
                 startActivity(exercise);
-                ArrayAdapter<String> adapter = ViewWorkoutsFragment.adapter;
-                ListView workouts = ViewWorkoutsFragment.workouts;
-                adapter.add("WORKOUT X");
-                workouts.setAdapter(adapter);
             }
         });
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
