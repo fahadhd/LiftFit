@@ -18,6 +18,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/workout_button"
+                android:onClick="addWorkout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity = "right"

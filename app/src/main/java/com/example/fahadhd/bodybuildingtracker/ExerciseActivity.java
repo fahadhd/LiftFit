@@ -38,4 +38,5 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState, outPersistentState);
         outState.putInt("counter",MainActivity.sessionCounter);
     }
+
 }

@@ -1,5 +1,6 @@
 package com.example.fahadhd.bodybuildingtracker;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ public class ViewWorkoutsFragment extends Fragment {
 
     public ViewWorkoutsFragment() {
     }
+
     static ArrayAdapter<String> adapter;
     static ArrayList<String> sessions = new ArrayList<String>();
     static ListView workouts;
@@ -34,18 +36,18 @@ public class ViewWorkoutsFragment extends Fragment {
                 R.id.list_item_workout,
                 new ArrayList<String>());
 
-        workouts = (ListView)rootView.findViewById(R.id.workout_list_main);
+        workouts = (ListView) rootView.findViewById(R.id.workout_list_main);
         adapter.addAll(sessions);
 
         workouts.setAdapter(adapter);
 
 
-        return  rootView;
-}
+        return rootView;
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putStringArrayList("adapter",sessions);
+        outState.putStringArrayList("adapter", sessions);
     }
 }
