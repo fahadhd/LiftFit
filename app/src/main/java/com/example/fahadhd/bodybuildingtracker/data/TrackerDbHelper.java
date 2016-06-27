@@ -4,11 +4,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 
 public class TrackerDbHelper extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
-    static final String DATABASE_NAME = "tracker.db";
+    public static final String DATABASE_NAME = "tracker.db";
+
+    public static final String TAG = TrackerDbHelper.class.getSimpleName();
+
 
     public TrackerDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -16,11 +20,12 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.v(TAG,"onCreate was called");
         // Create a table to hold each session of exercise.
         final String SQL_CREATE_SESSIONS_TABLE = "CREATE TABLE " + SessionEntry.TABLE_NAME + " (" +
                 SessionEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 SessionEntry.COLUMN_DATE + " TEXT NOT NULL, " +
-                SessionEntry.COLUMN_USER_WEIGHT + " INTEGER NOT NULL, " +
+                SessionEntry.COLUMN_USER_WEIGHT + " INTEGER NOT NULL" +
                 " );";
 
         //Each sessions can have 1-5 workouts which are stored in the workouts_table
@@ -31,6 +36,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 WorkoutEntry.COLUMN_WORKOUT_NUM + " INTEGER NOT NULL, " +
                 WorkoutEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                 WorkoutEntry.COLUMN_WEIGHT + " INTEGER NOT NULL," +
+                WorkoutEntry.COLUMN_MAX_SETS + " INTEGER NOT NULL, " +
                 // Set up the session_id column as a foreign key to session table.
                 " FOREIGN KEY (" + WorkoutEntry.COLUMN_SES_KEY + ") REFERENCES " +
                 SessionEntry.TABLE_NAME + " (" + SessionEntry._ID + "));";
@@ -41,15 +47,14 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 SetEntry._ID + " INTEGER PRIMARY KEY," +
 
                 SetEntry.COLUMN_WORK_KEY + " INTEGER NOT NULL, " +
-                SetEntry.COLUMN_MAX_SETS + " INTEGER NOT NULL, " +
                 SetEntry.COLUMN_MAX_REPS + " INTEGER NOT NULL, " +
-                SetEntry.COLUMN_FIRST_SET + " INTEGER NOT NULL DEFAULT -1, " +
-                SetEntry.COLUMN_SECOND_SET + " INTEGER NOT NULL DEFAULT -1, " +
-                SetEntry.COLUMN_THIRD_SET + " INTEGER NOT NULL DEFAULT -1, " +
+                SetEntry.COLUMN_CURR_REP + " INTEGER NOT NULL DEFAULT -1, " +
+                SetEntry.COLUMN_SET_NUM + " INTEGER NOT NULL, " +
                 // Set up the workout column as a foreign key to workout table.
                 " FOREIGN KEY (" + SetEntry.COLUMN_WORK_KEY + ") REFERENCES " +
                 WorkoutEntry.TABLE_NAME + " (" + WorkoutEntry._ID + "));";
 
+        db.execSQL("PRAGMA foreign_keys = ON;");
         db.execSQL(SQL_CREATE_SESSIONS_TABLE);
         db.execSQL(SQL_CREATE_WORKOUTS_TABLE);
         db.execSQL(SQL_CREATE_SETS_TABLE);
@@ -58,6 +63,8 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
     //TODO: Change method to retain data when a new version comes out.
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        Log.w(TAG,
+                "Upgrading the database from version " + oldVersion + " to "+ newVersion);
         // Delete's and recreate's all tables when a new version comes out.
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SessionEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WorkoutEntry.TABLE_NAME);
@@ -94,28 +101,29 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
         //Current weight of a routine - stored as an int
         public static final String COLUMN_WEIGHT = "weight";
 
+        //Maximum number of sets a workout can do - stored as a int.
+        public static final String COLUMN_MAX_SETS = "max_sets";
+
     }
 
-    /* Inner class that defines the table contents of each set and rep a workout includes */
+    /* Inner class that defines the table contents of a single set in a workout includes */
     public static final class SetEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "Sets";
         //Foreign key reference to a specific workout to keep track of its sets/reps.
         public static final String COLUMN_WORK_KEY = "workout_id";
 
-        //Maximum number of sets a workout can do - stored as a int.
-        public static final String COLUMN_MAX_SETS = "max_sets";
-
         //Maximum number of reps a workout can do - stored as a int.
         public static final String COLUMN_MAX_REPS = "max_reps";
 
-        /*Following keeps track of each set per workout, a workout can have up to 3 sets currently.*/
+        //Current number of reps a set currently has
+        public static final String COLUMN_CURR_REP = "curr_rep";
 
-        public static final String COLUMN_FIRST_SET = "first_set";
+        /*The order number of the single set in a workout*/
 
-        public static final String COLUMN_SECOND_SET = "second_set";
+        public static final String COLUMN_SET_NUM = "set_num";
 
-        public static final String COLUMN_THIRD_SET = "third_set";
+
 
     }
 
