@@ -44,6 +44,24 @@ public class ViewWorkoutsFragment extends Fragment {
 
         workouts.setAdapter(adapter);
 
+        getContext().deleteDatabase(TrackerDbHelper.DATABASE_NAME);
+
+        TrackerDAO dao = new TrackerDAO(getContext());
+
+        long workoutKey = 0;
+        for (int i = 1; i <= 10; i++) {
+            long sesKey = dao.addSession("June " + i, 185);
+            for (int j = 1; j <= 5; j++) {
+                workoutKey = dao.addWorkout(sesKey, (j%6), "squats", 255, 5);
+                for (int k = 1; k <= 4; k++) {
+
+                    dao.addSet(workoutKey, k, 5, 0);
+
+                }
+            }
+        }
+        dao.updateRep(40,2,0,5);
+
         return rootView;
     }
 
@@ -52,4 +70,7 @@ public class ViewWorkoutsFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putStringArrayList("adapter", sessions);
     }
+
+
+
 }

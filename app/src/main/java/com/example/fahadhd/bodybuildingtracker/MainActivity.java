@@ -16,6 +16,8 @@ import android.support.v4.app.Fragment;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;

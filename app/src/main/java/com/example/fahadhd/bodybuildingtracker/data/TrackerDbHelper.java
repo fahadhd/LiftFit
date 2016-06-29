@@ -83,6 +83,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
         //Current users weight in lbs stored as an integer
         public static final String COLUMN_USER_WEIGHT = "user_weight";
     }
+
     /* Inner class that defines the table contents of each workout a session includes */
     public static final class WorkoutEntry implements BaseColumns {
 
@@ -108,7 +109,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
     /* Inner class that defines the table contents of a single set in a workout includes */
     public static final class SetEntry implements BaseColumns {
 
-        public static final String TABLE_NAME = "Sets";
+        public static final String TABLE_NAME = "sets";
         //Foreign key reference to a specific workout to keep track of its sets/reps.
         public static final String COLUMN_WORK_KEY = "workout_id";
 
@@ -121,8 +122,6 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
         /*The order number of the single set in a workout*/
 
         public static final String COLUMN_SET_NUM = "set_num";
-
-
 
     }
 

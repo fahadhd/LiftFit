@@ -7,7 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import com.example.fahadhd.bodybuildingtracker.Utility.Session;
 
+import java.util.ArrayList;
+import java.util.List;
+
+//Tracker data access object to edit and add data to the tracker database.
 public class TrackerDAO {
     public static final String TAG = TrackerDAO.class.getSimpleName();
     private TrackerDbHelper mDbHelper;
@@ -73,15 +78,33 @@ public class TrackerDAO {
         return set_id;
     }
 
-    //Update the current rep in a set.
-    public void updateRep(int workoutKey, int setNum, int currRep, int maxRep){
-        String[] whereArgs = {TrackerDbHelper.SetEntry.COLUMN_WORK_KEY,
-                TrackerDbHelper.SetEntry.COLUMN_SET_NUM };
-        String where = "? = "+workoutKey + " AND " + "? = " +setNum;
-        int newRep = (currRep+1 <= maxRep) ? currRep : 0;
+    //Update a current rep in a set.
+    public void updateRep(long workoutKey, int setNum, int currRep, int maxRep){
+        String workoutKeyName = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY;
+        String setNumName = TrackerDbHelper.SetEntry.COLUMN_SET_NUM;
+        String where = workoutKeyName+" = "+workoutKey + " AND " + setNumName+" = " +setNum;
+
+        //If the current rep is less than the max rep increment it by one else set it to 0.
+        int newRep = (currRep < maxRep) ?  currRep+1: 0  ;
         ContentValues values = new ContentValues();
         values.put(TrackerDbHelper.SetEntry.COLUMN_CURR_REP,newRep);
-        db.update(TrackerDbHelper.SetEntry.TABLE_NAME,values,where,whereArgs);
+
+        db.update(TrackerDbHelper.SetEntry.TABLE_NAME,values,where,null);
+    }
+
+    public List<String> getSessions(){
+        List<String> sessions = new ArrayList<>();
+        String[] columns = {TrackerDbHelper.SessionEntry.COLUMN_DATE,
+                TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT};
+        Cursor cursor = db.
+                query(TrackerDbHelper.SessionEntry.TABLE_NAME,columns,null,null,null,null,null);
+        while(cursor.moveToNext()){
+            int dateIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_DATE);
+            int weightIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT);
+
+            sessions.add(cursor.getString(dateIndex)+cursor.getInt(weightIndex));
+        }
+        return sessions;
     }
 
 
