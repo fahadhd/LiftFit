@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -40,7 +43,6 @@ public class ViewWorkoutsFragment extends Fragment {
         adapter.addAll(sessions);
 
         workouts.setAdapter(adapter);
-
 
         return rootView;
     }

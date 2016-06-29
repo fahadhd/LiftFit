@@ -2,6 +2,7 @@ package com.example.fahadhd.bodybuildingtracker.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
@@ -11,7 +12,7 @@ public class TrackerDAO {
     public static final String TAG = TrackerDAO.class.getSimpleName();
     private TrackerDbHelper mDbHelper;
     private Context mContext;
-    private SQLiteDatabase db;
+    public SQLiteDatabase db;
 
 
     public TrackerDAO(Context context){
@@ -33,7 +34,9 @@ public class TrackerDAO {
     public void close(){
         mDbHelper.close();
     }
-    public long addSession(String date, String weight){
+
+
+    public long addSession(String date, int weight){
         ContentValues values  = new ContentValues();
         values.put(TrackerDbHelper.SessionEntry.COLUMN_DATE,date);
         values.put(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT, weight);
@@ -43,9 +46,10 @@ public class TrackerDAO {
 
 
     }
-    public long addWorkout(String sessionId, int workoutNum, String name, int weight, int maxSets ){
+    //Add a workout to a current session
+    public long addWorkout(long sesKey, int workoutNum, String name, int weight, int maxSets ){
         ContentValues values  = new ContentValues();
-        values.put(TrackerDbHelper.WorkoutEntry.COLUMN_SES_KEY, sessionId);
+        values.put(TrackerDbHelper.WorkoutEntry.COLUMN_SES_KEY, sesKey);
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_WORKOUT_NUM, workoutNum);
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_NAME, name);
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_WEIGHT, weight);
@@ -56,10 +60,11 @@ public class TrackerDAO {
         return workout_id;
     }
 
-    public long addSet(String workoutId,int setNum, int maxReps, int currRep){
+    //Add a set to a current workout
+    public long addSet(long workoutKey,int setNum, int maxReps, int currRep){
         ContentValues values  = new ContentValues();
 
-        values.put(TrackerDbHelper.SetEntry.COLUMN_WORK_KEY, workoutId);
+        values.put(TrackerDbHelper.SetEntry.COLUMN_WORK_KEY, workoutKey);
         values.put(TrackerDbHelper.SetEntry.COLUMN_SET_NUM, setNum);
         values.put(TrackerDbHelper.SetEntry.COLUMN_MAX_REPS, maxReps);
         values.put(TrackerDbHelper.SetEntry.COLUMN_CURR_REP, currRep);
@@ -68,8 +73,16 @@ public class TrackerDAO {
         return set_id;
     }
 
-    public int updateSet(int rowId, int setNum){
-        return -1;
-
+    //Update the current rep in a set.
+    public void updateRep(int workoutKey, int setNum, int currRep, int maxRep){
+        String[] whereArgs = {TrackerDbHelper.SetEntry.COLUMN_WORK_KEY,
+                TrackerDbHelper.SetEntry.COLUMN_SET_NUM };
+        String where = "? = "+workoutKey + " AND " + "? = " +setNum;
+        int newRep = (currRep+1 <= maxRep) ? currRep : 0;
+        ContentValues values = new ContentValues();
+        values.put(TrackerDbHelper.SetEntry.COLUMN_CURR_REP,newRep);
+        db.update(TrackerDbHelper.SetEntry.TABLE_NAME,values,where,whereArgs);
     }
+
+
 }

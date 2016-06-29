@@ -42,7 +42,6 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 SessionEntry.TABLE_NAME + " (" + SessionEntry._ID + "));";
 
         //Each workout has a set number of sets and the current number of reps
-        //TODO: Add 5 MORE POTENTIAL SETS WHEN FINISHED TESTING
         final String SQL_CREATE_SETS_TABLE = "CREATE TABLE " + SetEntry.TABLE_NAME + " (" +
                 SetEntry._ID + " INTEGER PRIMARY KEY," +
 

@@ -14,16 +14,16 @@ public class TestDb extends AndroidTestCase{
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        mContext.deleteDatabase(TrackerDbHelper.DATABASE_NAME);
+        //mContext.deleteDatabase(TrackerDbHelper.DATABASE_NAME);
 
     }
 
     public void testCreateDb() throws Throwable{
-        TrackerDbHelper mDbHelper = new TrackerDbHelper(mContext);
-        SQLiteDatabase db;
+        TrackerDAO dao = new TrackerDAO(mContext);
+        assertTrue(dao.db.isOpen());
+        long sesKey = dao.addSession("June 5", 185);
+        long weightKey =  dao.addWorkout(sesKey,1, "squats",255,5);
 
-        db = mDbHelper.getReadableDatabase();
-        assertTrue(db.isOpen());
     }
 
     @Override
