@@ -1,13 +1,12 @@
 package com.example.fahadhd.bodybuildingtracker;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
-
+import android.support.v4.content.AsyncTaskLoader;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 import java.util.List;
 
-public class SessionLoader extends AsyncTaskLoader<List<String>> {
+public class SessionLoader extends android.support.v4.content.AsyncTaskLoader<List<String>> {
     List<String> cachedData
             ;
     public SessionLoader(Context context) {

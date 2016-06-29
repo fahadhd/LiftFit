@@ -26,17 +26,14 @@ public class ExerciseActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if(savedInstanceState != null && savedInstanceState.containsKey("counter")){
-            MainActivity.sessionCounter = savedInstanceState.getInt("counter");
-        }
-        MainActivity.sessionCounter++;
-        ViewWorkoutsFragment.sessions.add("Session: " + MainActivity.sessionCounter);
+
+
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        outState.putInt("counter",MainActivity.sessionCounter);
+        //outState.putInt("counter",MainActivity.sessionCounter);
     }
 
 }

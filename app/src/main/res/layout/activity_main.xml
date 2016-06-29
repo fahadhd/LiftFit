@@ -17,8 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay">
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/workout_button"
-                android:onClick="addWorkout"
+                android:id="@+id/session_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity = "right"

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.media.VolumeProviderCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,12 +27,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+   ViewSessionsFragment sessionsFragment;
 
-    static int sessionCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +37,23 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        FloatingActionButton addWorkout = (FloatingActionButton) findViewById(R.id.workout_button);
-        assert addWorkout != null;
-        addWorkout.setOnClickListener(new View.OnClickListener() {
+        sessionsFragment =  ((ViewSessionsFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.sessions_fragment));
+        FloatingActionButton addTask = (FloatingActionButton) findViewById(R.id.session_button);
+        assert addTask != null;
+        addTask.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                sessionsFragment.startSessionTask();
+
                 Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class);
                 startActivity(exercise);
             }
         });
+
+
+
+
 
     }
 
@@ -75,5 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }

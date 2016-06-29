@@ -19,7 +19,6 @@ public class TrackerDAO {
     private Context mContext;
     public SQLiteDatabase db;
 
-
     public TrackerDAO(Context context){
         this.mContext = context;
         mDbHelper = new TrackerDbHelper(context);
@@ -92,17 +91,18 @@ public class TrackerDAO {
         db.update(TrackerDbHelper.SetEntry.TABLE_NAME,values,where,null);
     }
 
-    public List<String> getSessions(){
-        List<String> sessions = new ArrayList<>();
-        String[] columns = {TrackerDbHelper.SessionEntry.COLUMN_DATE,
+    public ArrayList<String> getSessions(){
+        ArrayList<String> sessions = new ArrayList<>();
+        String[] columns = {TrackerDbHelper.SessionEntry._ID,TrackerDbHelper.SessionEntry.COLUMN_DATE,
                 TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT};
         Cursor cursor = db.
                 query(TrackerDbHelper.SessionEntry.TABLE_NAME,columns,null,null,null,null,null);
         while(cursor.moveToNext()){
+            int sessionNum = cursor.getColumnIndex(TrackerDbHelper.SessionEntry._ID);
             int dateIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_DATE);
             int weightIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT);
 
-            sessions.add(cursor.getString(dateIndex)+cursor.getInt(weightIndex));
+            sessions.add(cursor.getLong(sessionNum)+": "+cursor.getString(dateIndex)+" "+cursor.getInt(weightIndex));
         }
         return sessions;
     }
