@@ -2,10 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sessions_fragment"
-    android:name="com.example.fahadhd.bodybuildingtracker.ViewSessionsFragment"
+    android:name="com.example.fahadhd.bodybuildingtracker.Sessions.ViewSessionsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:layout="@layout/workouts_list_fragment"
+    tools:layout="@layout/sessions_list_fragment"
     android:tag="WorkoutFragment"
     />

@@ -2,11 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewSessionsFragment">
+    tools:context=".Sessions.ViewSessionsFragment"
+    tools:showIn="@layout/activity_main"
+    android:clickable="false">
     <ListView
-        android:id="@+id/workout_list_main"
+        android:id="@+id/session_list_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
         />
 </FrameLayout>

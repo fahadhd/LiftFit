@@ -1,4 +1,4 @@
-package com.example.fahadhd.bodybuildingtracker;
+package com.example.fahadhd.bodybuildingtracker.Exercises;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -7,6 +7,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import com.example.fahadhd.bodybuildingtracker.R;
 
 public class ExerciseActivity extends AppCompatActivity {
     @Override

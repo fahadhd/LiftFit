@@ -1,4 +1,4 @@
-package com.example.fahadhd.bodybuildingtracker;
+package com.example.fahadhd.bodybuildingtracker.Sessions;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,13 +10,14 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.fahadhd.bodybuildingtracker.Exercises.ExerciseActivity;
+import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
-import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -33,8 +34,8 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     }
 
     static ArrayAdapter<String> adapter;
-    static ArrayList<String> sessions = new ArrayList<String>();
-    static ListView workouts;
+    static ArrayList<String> sessions_list = new ArrayList<String>();
+    static ListView sessions;
 
     public static final String ON_CREATE_TASK = "ON_CREATE";
     public static final String SESSION_TASK = "Session";
@@ -42,6 +43,7 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //Load all of the prior sessions when app starts
         getActivity().getSupportLoaderManager().initLoader(R.id.string_loader_id,null,this);
     }
 
@@ -49,18 +51,25 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        //getContext().deleteDatabase(TrackerDbHelper.DATABASE_NAME);
-        View rootView = inflater.inflate(R.layout.workouts_list_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.sessions_list_fragment, container, false);
         adapter = new ArrayAdapter<String>(
                 getActivity(),
-                R.layout.workouts_list_item,
-                R.id.list_item_workout,
-                new ArrayList<String>());
+                R.layout.sessions_list_item,
+                R.id.list_item_session,
+                sessions_list);
 
-        workouts = (ListView) rootView.findViewById(R.id.workout_list_main);
+        sessions = (ListView) rootView.findViewById(R.id.session_list_main);
 
 
-        workouts.setAdapter(adapter);
+        sessions.setAdapter(adapter);
+        sessions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Intent intent = new Intent(getActivity(),ExerciseActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         return rootView;
@@ -69,7 +78,7 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putStringArrayList("adapter", sessions);
+        outState.putStringArrayList("adapter", sessions_list);
     }
 
     public void startSessionTask(){
@@ -116,7 +125,7 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
         protected void onPostExecute(ArrayList<String> result) {
             adapter.clear();
             adapter.addAll(result);
-            workouts.setAdapter(adapter);
+            sessions.setAdapter(adapter);
         }
 
         public long addSession() {
@@ -124,7 +133,7 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
             GregorianCalendar calendar = new GregorianCalendar();
             fmt.setCalendar(calendar);
             String dateFormatted = fmt.format(calendar.getTime());
-            //TODO: Add user_weight to settings and aquire it from preferences.
+            //TODO: Add user_weight to settings and acquire it from preferences.
             int user_weight = 185;
 
             TrackerDAO dao = new TrackerDAO(getContext());

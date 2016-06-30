@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/exercises_fragment"
-    android:name="com.example.fahadhd.bodybuildingtracker.ExercisesFragment"
+    android:name="com.example.fahadhd.bodybuildingtracker.Exercises.ExercisesFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:layout="@layout/fragment_exercises" />
+    tools:layout="@layout/exercises_list_fragment" />

@@ -1,4 +1,4 @@
-package com.example.fahadhd.bodybuildingtracker;
+package com.example.fahadhd.bodybuildingtracker.Sessions;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
@@ -27,9 +27,8 @@ public class SessionLoader extends android.support.v4.content.AsyncTaskLoader<Li
     @Override
     //Returns a list of all sessions in tracker.db
     public List<String> loadInBackground() {
-        TrackerDAO dao  = new TrackerDAO(getContext());
 
-        return dao.getSessions();
+        return  new TrackerDAO(getContext()).getSessions();
     }
 
     @Override

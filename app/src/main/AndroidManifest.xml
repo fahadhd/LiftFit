@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ExerciseActivity"
+            android:name=".Exercises.ExerciseActivity"
             android:label="@string/title_activity_exercises"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
