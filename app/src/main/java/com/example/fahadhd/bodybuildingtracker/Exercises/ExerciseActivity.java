@@ -1,41 +1,43 @@
 package com.example.fahadhd.bodybuildingtracker.Exercises;
 
+
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
+
 
 import com.example.fahadhd.bodybuildingtracker.R;
 
+
 public class ExerciseActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.exercise_toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton addExercise = (FloatingActionButton) findViewById(R.id.fab);
-        assert addExercise != null;
-        addExercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Implement Add Exercise Function", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        FloatingActionButton addExercise = (FloatingActionButton)findViewById(R.id.add_exercise);
+        if (addExercise != null) {
+            addExercise.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WorkoutDialog dialog = new WorkoutDialog();
+                    dialog.show(getFragmentManager(),"WorkoutDialog");
+                }
+            });
+        }
+
 
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        //outState.putInt("counter",MainActivity.sessionCounter);
-    }
+
+
 
 }
