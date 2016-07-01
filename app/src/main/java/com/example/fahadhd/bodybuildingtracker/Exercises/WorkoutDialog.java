@@ -80,6 +80,7 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.workout_name){
+           
             workout_name.setCursorVisible(true);
         }
         if(v.getId() == R.id.lift_weight){

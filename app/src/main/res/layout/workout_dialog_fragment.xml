@@ -12,7 +12,7 @@
         android:id="@+id/workout_name"
         android:hint="Input Exercise Name Here"
         android:gravity="center"
-        android:inputType="text"
+        android:inputType="textCapWords"
         android:imeOptions="actionDone"
         android:cursorVisible="false"
         style="@style/EditTextCustomHolo"/>
@@ -58,8 +58,8 @@
             android:layout_weight="5"
             android:id="@+id/lift_weight"
             android:textSize="20sp"
-            android:text="185"
-            android:inputType="text"
+            android:hint="185"
+            android:inputType="number"
             android:imeOptions="actionDone"
             style="@style/EditTextCustomHolo"
             />
@@ -67,6 +67,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
+            android:inputType="number"
             android:id="@+id/sets_choice"
             />
         <TextView
@@ -77,6 +78,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
+            android:inputType="number"
             android:id="@+id/reps_choice"
             />
     </LinearLayout>
