@@ -1,5 +1,6 @@
 package com.example.fahadhd.bodybuildingtracker.Exercises;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.fahadhd.bodybuildingtracker.R;
+import com.example.fahadhd.bodybuildingtracker.Sessions.ViewSessionsFragment;
+import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 
-/**
- * A placeholder fragment containing a simple view.
- */
+
 public class ExercisesFragment extends Fragment {
+    Session currentSession;
+
 
     public ExercisesFragment() {
     }
@@ -20,8 +23,30 @@ public class ExercisesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.exercises_list_fragment, container, false);
+        View rootview =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
+        Intent sessionIntent = getActivity().getIntent();
+        if(sessionIntent != null && sessionIntent.hasExtra(ViewSessionsFragment.INTENT_KEY)){
+
+            //currentSession= (Session)sessionIntent.getSerializableExtra
+                   // (ViewSessionsFragment.INTENT_KEY);
+            setExistingWorkout(currentSession);
+        }else{
+            //getActivity().setTitle("Today's Workout");
+
+            //getNewSessionInfo();
+        }
+        return rootview;
     }
 
+   public void setExistingWorkout(Session session){
+       String title = "Workout for "+session.getDate()+"\n"+
+                      "Session "+session.getSessionId();
+       //getActivity().setTitle(session.toString());
+
+    }
+
+    public void setNewWorkout(){
+
+    }
 
 }

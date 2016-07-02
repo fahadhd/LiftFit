@@ -17,7 +17,6 @@ import android.widget.ListView;
 import com.example.fahadhd.bodybuildingtracker.Exercises.ExerciseActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
-import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ import java.util.List;
  * past workout and allows the ability to add a new workout which will then start another
  * activity.
  */
-public class ViewSessionsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<String>>{
+public class ViewSessionsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Session>>{
 
     public ViewSessionsFragment() {
     }
@@ -40,6 +39,7 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
 
     public static final String ON_CREATE_TASK = "ON_CREATE";
     public static final String SESSION_TASK = "Session";
+    public static final String INTENT_KEY = "Session_ID";
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -68,6 +68,8 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getActivity(),ExerciseActivity.class);
+                        //TODO: CHANGE ADAPTER TO ALLOW SESSION OBJECTS TO BE PASSED
+                        //putExtra(INTENT_KEY,adapter.getItem(position));
                 startActivity(intent);
             }
         });
@@ -83,50 +85,46 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     }
 
     public void startSessionTask(){
-
         new addTasks().execute(SESSION_TASK);
-
-
     }
 ////////////////////////// ASYNC LOADER FOR LIST ADAPTERS/////////////////////////
+    /*Let the loader handle adding data to the list view of session*/
     @Override
-    public Loader<List<String>> onCreateLoader(int id, Bundle args) {
+    public Loader<List<Session>> onCreateLoader(int id, Bundle args) {
         return new SessionLoader(getActivity().getApplicationContext());
     }
 
     @Override
-    public void onLoadFinished(Loader<List<String>> loader, List<String> data) {
-        adapter.addAll(data);
+    public void onLoadFinished(Loader<List<Session>> loader, List<Session> data) {
+        adapter.clear();
+       for(Session session:data){
+           adapter.add(session.toString());
+       }
     }
 
     @Override
-    public void onLoaderReset(Loader<List<String>> loader) {
+    public void onLoaderReset(Loader<List<Session>> loader) {
         adapter.clear();
     }
 
+
+
+
 ////////////////////////////// ASYNC TASK FOR BUTTONS /////////////////////////////////////
-    public class addTasks extends AsyncTask<String,Void,ArrayList<String>> {
+    /*Let async task handle actions dealing with the database and button actions.*/
+    public class addTasks extends AsyncTask<String,Void,Void> {
         String buttonType;
 
         @Override
-        protected ArrayList<String> doInBackground(String... params) {
+        protected Void doInBackground(String... params) {
             buttonType = params[0];
             if (buttonType.equals(SESSION_TASK)) {
                 addSession();
-                return new TrackerDAO(getContext()).getSessions();
-            } else if (buttonType.equals(ON_CREATE_TASK)) {
-                return new TrackerDAO(getContext()).getSessions();
+                return null;
             }
             else{
                 return null;
             }
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<String> result) {
-            adapter.clear();
-            adapter.addAll(result);
-            sessions.setAdapter(adapter);
         }
 
         public long addSession() {

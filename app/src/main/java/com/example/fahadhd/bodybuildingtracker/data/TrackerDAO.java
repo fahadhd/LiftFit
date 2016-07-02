@@ -7,10 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import com.example.fahadhd.bodybuildingtracker.Utility.Session;
+import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 
 import java.util.ArrayList;
-import java.util.List;
 
 //Tracker data access object to edit and add data to the tracker database.
 public class TrackerDAO {
@@ -91,18 +90,24 @@ public class TrackerDAO {
         db.update(TrackerDbHelper.SetEntry.TABLE_NAME,values,where,null);
     }
 
-    public ArrayList<String> getSessions(){
-        ArrayList<String> sessions = new ArrayList<>();
+
+
+    public ArrayList<Session> getSessions(){
+        ArrayList<Session> sessions = new ArrayList<>();
         String[] columns = {TrackerDbHelper.SessionEntry._ID,TrackerDbHelper.SessionEntry.COLUMN_DATE,
                 TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT};
         Cursor cursor = db.
                 query(TrackerDbHelper.SessionEntry.TABLE_NAME,columns,null,null,null,null,null);
+
         while(cursor.moveToNext()){
-            int sessionNum = cursor.getColumnIndex(TrackerDbHelper.SessionEntry._ID);
             int dateIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_DATE);
             int weightIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT);
+            int sessionNum = cursor.getColumnIndex(TrackerDbHelper.SessionEntry._ID);
 
-            sessions.add(cursor.getLong(sessionNum)+": "+cursor.getString(dateIndex)+" "+cursor.getInt(weightIndex));
+            String date = cursor.getString(dateIndex);
+            int weight = cursor.getInt(weightIndex);
+            long sessionId = cursor.getLong(sessionNum);
+            sessions.add(new Session(date,weight,sessionId));
         }
         return sessions;
     }
