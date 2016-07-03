@@ -16,10 +16,10 @@ public class Session implements Serializable {
     public String getDate(){
         return this.date;
     }
-    public int getWeight(){
+    public Integer getWeight(){
         return this.user_weight;
     }
-    public long getSessionId(){
+    public Long getSessionId(){
         return this.sessionId;
     }
 

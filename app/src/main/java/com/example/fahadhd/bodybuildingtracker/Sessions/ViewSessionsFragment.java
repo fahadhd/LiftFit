@@ -17,6 +17,7 @@ import android.widget.ListView;
 import com.example.fahadhd.bodybuildingtracker.Exercises.ExerciseActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,43 +34,41 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     public ViewSessionsFragment() {
     }
 
-    static ArrayAdapter<String> adapter;
-    static ArrayList<String> sessions_list = new ArrayList<String>();
-    static ListView sessions;
+    private SessionAdapter adapter;
+    private ArrayList<Session> sessions = new ArrayList<>();
+    ListView sessionsListView;
 
-    public static final String ON_CREATE_TASK = "ON_CREATE";
-    public static final String SESSION_TASK = "Session";
+
+    public static final String ADD_SESSION = "Add_Session";
     public static final String INTENT_KEY = "Session_ID";
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //Load all of the prior sessions when app starts
+
         getActivity().getSupportLoaderManager().initLoader(R.id.string_loader_id,null,this);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       //getContext().deleteDatabase(TrackerDbHelper.DATABASE_NAME);
+        //getContext().deleteDatabase(TrackerDbHelper.DATABASE_NAME);
+        adapter = new SessionAdapter(getActivity(),sessions);
         View rootView = inflater.inflate(R.layout.sessions_list_fragment, container, false);
-        adapter = new ArrayAdapter<String>(
-                getActivity(),
-                R.layout.sessions_list_item,
-                R.id.list_item_session,
-                sessions_list);
-
-        sessions = (ListView) rootView.findViewById(R.id.session_list_main);
 
 
-        sessions.setAdapter(adapter);
-        sessions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        sessionsListView = (ListView) rootView.findViewById(R.id.session_list_main);
+
+
+        sessionsListView.setAdapter(adapter);
+        sessionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(getActivity(),ExerciseActivity.class);
-                        //TODO: CHANGE ADAPTER TO ALLOW SESSION OBJECTS TO BE PASSED
-                        //putExtra(INTENT_KEY,adapter.getItem(position));
+                Intent intent = new Intent(getActivity(),ExerciseActivity.class).
+                        putExtra(INTENT_KEY,sessions.get(position));
                 startActivity(intent);
             }
         });
@@ -78,15 +77,12 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
         return rootView;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putStringArrayList("adapter", sessions_list);
-    }
 
     public void startSessionTask(){
-        new addTasks().execute(SESSION_TASK);
+        new AddSessionTask().execute();
     }
+
+
 ////////////////////////// ASYNC LOADER FOR LIST ADAPTERS/////////////////////////
     /*Let the loader handle adding data to the list view of session*/
     @Override
@@ -96,39 +92,34 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<List<Session>> loader, List<Session> data) {
-        adapter.clear();
-       for(Session session:data){
-           adapter.add(session.toString());
+
+       if(sessions.size() == 0){
+           for(Session session:data){
+               sessions.add(0,session);
+           }
+       }
+        else{
+           //TODO: Find way to cache sessions data, below doesn't get called ever.
+           sessions.add(0,data.get(data.size()-1));
        }
     }
 
     @Override
     public void onLoaderReset(Loader<List<Session>> loader) {
-        adapter.clear();
+
     }
 
-
-
-
-////////////////////////////// ASYNC TASK FOR BUTTONS /////////////////////////////////////
-    /*Let async task handle actions dealing with the database and button actions.*/
-    public class addTasks extends AsyncTask<String,Void,Void> {
-        String buttonType;
+    /*Adds a new session to the database*/
+    public class AddSessionTask extends AsyncTask<Void,Void,Void> {
 
         @Override
-        protected Void doInBackground(String... params) {
-            buttonType = params[0];
-            if (buttonType.equals(SESSION_TASK)) {
-                addSession();
-                return null;
-            }
-            else{
-                return null;
-            }
+        protected Void doInBackground(Void... params) {
+            addSession();
+            return null;
         }
 
-        public long addSession() {
-            SimpleDateFormat fmt = new SimpleDateFormat("MMM dd");
+        public void addSession() {
+            SimpleDateFormat fmt = new SimpleDateFormat("MMMM dd");
             GregorianCalendar calendar = new GregorianCalendar();
             fmt.setCalendar(calendar);
             String dateFormatted = fmt.format(calendar.getTime());
@@ -136,8 +127,7 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
             int user_weight = 185;
 
             TrackerDAO dao = new TrackerDAO(getContext());
-            return dao.addSession(dateFormatted, user_weight);
-
+            dao.addSession(dateFormatted, user_weight);
         }
     }
 

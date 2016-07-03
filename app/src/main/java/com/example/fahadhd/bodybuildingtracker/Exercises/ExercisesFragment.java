@@ -25,13 +25,17 @@ public class ExercisesFragment extends Fragment {
 
         View rootview =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
         Intent sessionIntent = getActivity().getIntent();
+
+        //Get session information that was clicked on
         if(sessionIntent != null && sessionIntent.hasExtra(ViewSessionsFragment.INTENT_KEY)){
 
-            //currentSession= (Session)sessionIntent.getSerializableExtra
-                   // (ViewSessionsFragment.INTENT_KEY);
+            currentSession= (Session)sessionIntent.getSerializableExtra
+                    (ViewSessionsFragment.INTENT_KEY);
             setExistingWorkout(currentSession);
-        }else{
-            //getActivity().setTitle("Today's Workout");
+        }
+        //New session was added
+        else{
+            getActivity().setTitle("Today's Workout");
 
             //getNewSessionInfo();
         }
@@ -39,9 +43,8 @@ public class ExercisesFragment extends Fragment {
     }
 
    public void setExistingWorkout(Session session){
-       String title = "Workout for "+session.getDate()+"\n"+
-                      "Session "+session.getSessionId();
-       //getActivity().setTitle(session.toString());
+       String title = session.getDate() + "   Session  #"+session.getSessionId();
+       getActivity().setTitle(title);
 
     }
 

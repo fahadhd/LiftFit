@@ -34,6 +34,6 @@ public class SessionLoader extends android.support.v4.content.AsyncTaskLoader<Li
     @Override
     public void deliverResult(List<Session> data) {
         cachedData = data;
-        super.deliverResult(data);
+        super.deliverResult(cachedData);
     }
 }
