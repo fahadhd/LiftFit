@@ -13,7 +13,7 @@ import android.view.View;
 import com.example.fahadhd.bodybuildingtracker.R;
 
 
-public class ExerciseActivity extends AppCompatActivity {
+public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog.Communicator {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,8 @@ public class ExerciseActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
 
-
-
+    }
 }
