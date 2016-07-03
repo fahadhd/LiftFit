@@ -78,8 +78,8 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.workout_name){
-           
             workout_name.setCursorVisible(true);
+            workout_name.setError(null);
         }
         if(v.getId() == R.id.lift_weight){
             lift_weight.setCursorVisible(true);
@@ -88,9 +88,9 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
             String name = workout_name.getText().toString();
             String weightString = lift_weight.getText().toString();
             int weight;
-            if(!name.equals("")) {
-                weight = Integer.parseInt(weightString);
-                communicator.getWorkoutInfo(name,weight,-1,-1);
+            if(name.equals("")) {
+                workout_name.setError("Please Type An Exercise");
+
             }
             else{
                 Toast.makeText(getActivity(),"One or more fields are not filled",
