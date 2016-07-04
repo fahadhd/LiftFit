@@ -53,8 +53,8 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 
     @Override
     public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
-        exercisesFragment.addWorkoutTask();
-        Toast.makeText(this,name+" "+weight+" "+max_sets+" "+ max_reps,Toast.LENGTH_LONG).show();
+        exercisesFragment.addWorkoutTask(name, weight, max_sets,max_reps);
+        //Toast.makeText(this,name+" "+weight+" "+max_sets+" "+ max_reps,Toast.LENGTH_LONG).show();
 
     }
 

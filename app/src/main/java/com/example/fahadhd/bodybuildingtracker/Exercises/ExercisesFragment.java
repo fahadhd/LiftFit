@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +19,15 @@ import com.example.fahadhd.bodybuildingtracker.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 
-public class ExercisesFragment extends Fragment {
+public class ExercisesFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Workout>>{
     Session currentSession;
     TrackerDAO dao;
+    ArrayList<Workout> workouts = new ArrayList<>();
 
 
     public ExercisesFragment() {
@@ -63,23 +68,30 @@ public class ExercisesFragment extends Fragment {
     }
 
 
-    public void addWorkoutTask(){
-
-    }
-    public class AddWorkoutTask extends AsyncTask<String,Void,Void> {
-
-        @Override
-        protected Void doInBackground(String... params) {
-
-            return null;
-        }
-
-        public void addNewWorkout(String name, int weight, int max_sets, int max_reps){
-            TrackerDAO db = new TrackerDAO(getContext());
-
-
+    public void addWorkoutTask(String name, int weight, int max_sets, int max_reps){
+        long id = currentSession.getSessionId();
+        long workoutID = dao.addWorkout(id,workouts.size()+1,name,weight,max_sets);
+        for(int i = 1; i <= max_sets; i++){
+            dao.addSet(workoutID,i,max_reps,0);
         }
     }
 
+    /////////////////// ASYNC LOADER FOR ADAPTER////////////////////
+    //Loads all workout for current session in workouts list.
+    @Override
+    public Loader<List<Workout>> onCreateLoader(int id, Bundle args) {
+        return new WorkoutLoader(getActivity().getApplicationContext());
+    }
 
+    @Override
+    public void onLoadFinished(Loader<List<Workout>> loader, List<Workout> data) {
+        workouts.addAll(data);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Workout>> loader) {
+        workouts.clear();
+
+    }
 }

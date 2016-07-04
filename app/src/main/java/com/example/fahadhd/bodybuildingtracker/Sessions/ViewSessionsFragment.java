@@ -98,12 +98,9 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<List<Session>> loader, List<Session> data) {
 
-       if(sessions.size() == 0){
            for(Session session:data){
                sessions.add(0,session);
            }
-       }
-
     }
 
     @Override
