@@ -12,6 +12,7 @@ import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 import java.util.ArrayList;
 
 //Tracker data access object to edit and add data to the tracker database.
+//TODO: Create an asynctask when opening the database if needed.
 public class TrackerDAO {
     public static final String TAG = TrackerDAO.class.getSimpleName();
     private TrackerDbHelper mDbHelper;

@@ -35,6 +35,7 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     }
 
     private SessionAdapter adapter;
+    public static Session lastSession;
     private ArrayList<Session> sessions = new ArrayList<>();
     ListView sessionsListView;
 
@@ -77,6 +78,10 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
         return rootView;
     }
 
+    public Session getLastSession(){
+        return lastSession;
+    }
+
 
     public void startSessionTask(){
         new AddSessionTask().execute();
@@ -93,32 +98,22 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<List<Session>> loader, List<Session> data) {
 
-       if(sessions.size() == 0){
            for(Session session:data){
                sessions.add(0,session);
            }
-       }
-        else{
-           //TODO: Find way to cache sessions data, below doesn't get called ever.
-           sessions.add(0,data.get(data.size()-1));
-       }
     }
 
     @Override
     public void onLoaderReset(Loader<List<Session>> loader) {
+            sessions.clear();
 
     }
 
     /*Adds a new session to the database*/
-    public class AddSessionTask extends AsyncTask<Void,Void,Void> {
+    public class AddSessionTask extends AsyncTask<Void,Void,Session> {
 
         @Override
-        protected Void doInBackground(Void... params) {
-            addSession();
-            return null;
-        }
-
-        public void addSession() {
+        protected Session doInBackground(Void... params) {
             SimpleDateFormat fmt = new SimpleDateFormat("MMMM dd");
             GregorianCalendar calendar = new GregorianCalendar();
             fmt.setCalendar(calendar);
@@ -127,8 +122,15 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
             int user_weight = 185;
 
             TrackerDAO dao = new TrackerDAO(getContext());
-            dao.addSession(dateFormatted, user_weight);
+            long id = dao.addSession(dateFormatted,user_weight);
+            return new Session(dateFormatted,user_weight,id);
         }
+
+        @Override
+        protected void onPostExecute(Session session) {
+            lastSession = session;
+        }
+
     }
 
 }
