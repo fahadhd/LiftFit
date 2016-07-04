@@ -1,7 +1,6 @@
 package com.example.fahadhd.bodybuildingtracker.Exercises;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -18,9 +17,7 @@ import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -80,7 +77,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     //Loads all workout for current session in workouts list.
     @Override
     public Loader<List<Workout>> onCreateLoader(int id, Bundle args) {
-        return new WorkoutLoader(getActivity().getApplicationContext());
+        return new ExerciseLoader(getActivity().getApplicationContext());
     }
 
     @Override
