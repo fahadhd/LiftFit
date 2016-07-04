@@ -3,19 +3,33 @@ package com.example.fahadhd.bodybuildingtracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.Exercises.ExerciseActivity;
+import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.Sessions.ViewSessionsFragment;
+import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
 
    ViewSessionsFragment sessionsFragment;
+    TrackerDAO dao;
+    public static final String ADD_TASK = "Add_Session";
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        dao = new TrackerDAO(MainActivity.this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +40,33 @@ public class MainActivity extends AppCompatActivity {
 
         sessionsFragment =  ((ViewSessionsFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.sessions_fragment));
+
         FloatingActionButton addTask = (FloatingActionButton) findViewById(R.id.session_button);
         assert addTask != null;
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sessionsFragment.startSessionTask();
 
-                Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class);
+                Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class).
+                        putExtra(ADD_TASK,true);
+
                 startActivity(exercise);
             }
         });
 
+    }
 
 
+    public Session addSession(){
+        SimpleDateFormat fmt = new SimpleDateFormat("MMMM dd");
+        GregorianCalendar calendar = new GregorianCalendar();
+        fmt.setCalendar(calendar);
+        String dateFormatted = fmt.format(calendar.getTime());
+        //TODO: Add user_weight to settings and acquire it from preferences.
+        int user_weight = 185;
 
-
+        long id = dao.addSession(dateFormatted,user_weight);
+        return new Session(dateFormatted,user_weight,id);
     }
 
 

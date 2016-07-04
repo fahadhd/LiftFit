@@ -13,8 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +28,11 @@ import com.example.fahadhd.bodybuildingtracker.Utility;
 
 public class WorkoutDialog extends DialogFragment implements View.OnClickListener{
     EditText workout_name, lift_weight;
-    Button sets,reps, cancel, confirm;
+    Button cancel, confirm;
+    Spinner sets,reps;
     Communicator communicator;
+    public static int setChoice, repChoice;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -52,19 +58,22 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
 
         workout_name = (EditText)rootView.findViewById(R.id.workout_name);
         lift_weight = (EditText)rootView.findViewById(R.id.lift_weight);
-        sets = (Button)rootView.findViewById(R.id.sets_choice);
-        reps = (Button)rootView.findViewById(R.id.reps_choice);
+        sets = (Spinner)rootView.findViewById(R.id.sets_choice);
+        reps = (Spinner)rootView.findViewById(R.id.reps_choice);
         cancel = (Button)rootView.findViewById(R.id.dialog_cancel);
         confirm = (Button)rootView.findViewById(R.id.dialog_ok);
 
         workout_name.setOnClickListener(this);
         lift_weight.setOnClickListener(this);
-        sets.setOnClickListener(this);
-        reps.setOnClickListener(this);
         cancel.setOnClickListener(this);
         confirm.setOnClickListener(this);
 
-        Utility.manageEditTextCursor(workout_name,getActivity());
+        setUpSpinners();
+
+
+
+
+        Utility.manageEditTextCursor(workout_name, getActivity());
         Utility.manageEditTextCursor(lift_weight,getActivity());
 
 
@@ -93,15 +102,56 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
 
             }
             else{
-                Toast.makeText(getActivity(),"One or more fields are not filled",
-                        Toast.LENGTH_LONG).show();
-               // dismiss();
+                weight = (weightString.equals("")) ? 185: Integer.parseInt(weightString);
+                communicator.getWorkoutInfo(name,weight,setChoice,repChoice);
+                dismiss();
             }
 
         }
         if(v.getId() == R.id.dialog_cancel){
             dismiss();
         }
+
+    }
+
+    public void setUpSpinners(){
+        String[] items = new String[]{"1", "2", "3","4","5","6","7","8"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, items);
+        sets.setAdapter(adapter);
+        reps.setAdapter(adapter);
+
+        //The following configures the default choice to be 5 sets by 5 reps.
+        sets.setSelection(4);
+        setChoice = 5;
+        reps.setSelection(4);
+        repChoice = 5;
+
+        sets.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                setChoice = position+1;
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        reps.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                repChoice = position+1;
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
     }
     //Used to send information of a new workout to exercise activity

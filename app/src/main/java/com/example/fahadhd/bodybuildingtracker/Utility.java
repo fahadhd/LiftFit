@@ -2,10 +2,17 @@ package com.example.fahadhd.bodybuildingtracker;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
+import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 
 //Handles all helper methods for various classes
 
@@ -27,4 +34,16 @@ public class Utility {
             }
         });
     }
+    public static Session addSession(TrackerDAO dao){
+        SimpleDateFormat fmt = new SimpleDateFormat("MMMM dd");
+        GregorianCalendar calendar = new GregorianCalendar();
+        fmt.setCalendar(calendar);
+        String dateFormatted = fmt.format(calendar.getTime());
+        //TODO: Add user_weight to settings and acquire it from preferences.
+        int user_weight = 185;
+        long id =  dao.addSession(dateFormatted,user_weight);
+        return  new Session(dateFormatted,user_weight,id);
+    }
+
+
 }
