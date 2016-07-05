@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
+import com.example.fahadhd.bodybuildingtracker.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 import java.text.SimpleDateFormat;
@@ -53,8 +54,11 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 
     @Override
     public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
-        exercisesFragment.addWorkoutTask(name, weight, max_sets,max_reps);
-        //Toast.makeText(this,name+" "+weight+" "+max_sets+" "+ max_reps,Toast.LENGTH_LONG).show();
+        long sessionID = exercisesFragment.getSessionID();
+        int workoutCount =  exercisesFragment.workouts.size();
+        TrackerDAO dao = exercisesFragment.dao;
+        Utility.addWorkoutTask(name, weight, max_sets,max_reps,dao,sessionID,workoutCount);
+        this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id,null,exercisesFragment);
 
     }
 

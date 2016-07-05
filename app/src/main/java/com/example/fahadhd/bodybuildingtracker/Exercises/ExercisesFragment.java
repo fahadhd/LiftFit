@@ -76,16 +76,11 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
        String title = session.getDate() + "   Session  #"+session.getSessionId();
        getActivity().setTitle(title);
     }
-
-
-    public void addWorkoutTask(String name, int weight, int max_sets, int max_reps){
-        long id = currentSession.getSessionId();
-
-        long workoutID = dao.addWorkout(id,workouts.size()+1,name,weight,max_sets,max_reps);
-        for(int i = 1; i <= max_sets; i++){
-            dao.addSet(workoutID,i,max_reps,0);
-        }
+    public long getSessionID(){
+        return currentSession.getSessionId();
     }
+
+
 
     /////////////////// ASYNC LOADER FOR ADAPTER////////////////////
     //Loads all workout for current session in workouts list.
@@ -97,7 +92,11 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<List<Workout>> loader, List<Workout> data) {
-        workouts.addAll(data);
+        if(workouts.isEmpty()){ workouts.addAll(data);}
+        else {
+            workouts.add(data.get(data.size()-1));
+        }
+        adapter.notifyDataSetChanged();
 
     }
 
