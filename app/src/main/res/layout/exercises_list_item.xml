@@ -6,16 +6,25 @@
     android:id="@+id/list_item_workout"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical">
-    <!-- Workout Name -->
+    <!-- Workout Name and Number -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/exercises_item_name"
-        android:text="Workout Name"
         android:paddingTop="10dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/exercises_item_order"
+        android:paddingTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_toRightOf="@+id/exercises_item_name"
+        android:layout_toEndOf="@+id/exercises_item_name"
         />
 
     <!-- _______________Sets X Reps_______________ -->
@@ -29,8 +38,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/exercises_item_sets"
-        android:text="5"
-
         />
     <TextView
         android:layout_width="wrap_content"
@@ -40,7 +47,6 @@
         android:layout_toEndOf="@+id/exercises_item_sets"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
-        android:text="X"
 
         />
     <TextView
@@ -51,7 +57,6 @@
         android:layout_toEndOf="@+id/exercises_item_separator"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
-        android:text="5"
 
         />
     </RelativeLayout>
@@ -63,8 +68,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:id="@+id/exercises_item_weight"
-        android:layout_below="@+id/exercises_item_routine"
-        android:text="User Weight"/>
+        android:layout_below="@+id/exercises_item_routine" />
 
     <!-- _______________First Set of Buttons_______________ -->
 

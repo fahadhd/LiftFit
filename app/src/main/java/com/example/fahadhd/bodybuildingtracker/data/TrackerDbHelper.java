@@ -37,6 +37,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 WorkoutEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                 WorkoutEntry.COLUMN_WEIGHT + " INTEGER NOT NULL," +
                 WorkoutEntry.COLUMN_MAX_SETS + " INTEGER NOT NULL, " +
+                WorkoutEntry.COLUMN_MAX_REPS + " INTEGER NOT NULL, " +
                 // Set up the session_id column as a foreign key to session table.
                 " FOREIGN KEY (" + WorkoutEntry.COLUMN_SES_KEY + ") REFERENCES " +
                 SessionEntry.TABLE_NAME + " (" + SessionEntry._ID + "));";
@@ -53,6 +54,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 " FOREIGN KEY (" + SetEntry.COLUMN_WORK_KEY + ") REFERENCES " +
                 WorkoutEntry.TABLE_NAME + " (" + WorkoutEntry._ID + "));";
 
+        //TODO: Turn on Cascading delete when implementing delete actions
         db.execSQL("PRAGMA foreign_keys = ON;");
         db.execSQL(SQL_CREATE_SESSIONS_TABLE);
         db.execSQL(SQL_CREATE_WORKOUTS_TABLE);
@@ -103,6 +105,9 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
 
         //Maximum number of sets a workout can do - stored as a int.
         public static final String COLUMN_MAX_SETS = "max_sets";
+
+        //Maximum number of reps a workout can do - stored as a int.
+        public static final String COLUMN_MAX_REPS = "max_reps";
 
     }
 

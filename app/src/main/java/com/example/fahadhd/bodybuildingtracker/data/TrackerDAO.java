@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import com.example.fahadhd.bodybuildingtracker.Exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 
 import java.util.ArrayList;
@@ -51,13 +52,15 @@ public class TrackerDAO {
 
     }
     //Add a workout to a current session
-    public long addWorkout(long sesKey, int workoutNum, String name, int weight, int maxSets ){
+    public long addWorkout(long sesKey, int workoutNum, String name,
+                           int weight, int maxSets, int maxReps ){
         ContentValues values  = new ContentValues();
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_SES_KEY, sesKey);
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_WORKOUT_NUM, workoutNum);
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_NAME, name);
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_WEIGHT, weight);
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_SETS,maxSets);
+        values.put(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_REPS, maxReps);
 
 
         long workout_id =  db.insert(TrackerDbHelper.WorkoutEntry.TABLE_NAME,null,values);
@@ -114,6 +117,45 @@ public class TrackerDAO {
 
 
         return sessions;
+    }
+
+    public ArrayList<Workout> getWorkouts(long sessionID){
+        ArrayList<Workout> workouts = new ArrayList<>();
+        String[] columns = {
+                TrackerDbHelper.WorkoutEntry._ID,
+                TrackerDbHelper.WorkoutEntry.COLUMN_WORKOUT_NUM,
+                TrackerDbHelper.WorkoutEntry.COLUMN_NAME,
+                TrackerDbHelper.WorkoutEntry.COLUMN_WEIGHT,
+                TrackerDbHelper.WorkoutEntry.COLUMN_MAX_SETS,
+                TrackerDbHelper.WorkoutEntry.COLUMN_MAX_REPS};
+
+        String sessionKey = TrackerDbHelper.WorkoutEntry.COLUMN_SES_KEY;
+
+        String where = sessionKey+" = "+sessionID;
+
+        Cursor cursor = db.
+                query(TrackerDbHelper.WorkoutEntry.TABLE_NAME,columns,where,null,null,null,null);
+
+        while(cursor.moveToNext()){
+            int workoutKey = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry._ID);
+            int workout_order_column = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry.COLUMN_WORKOUT_NUM);
+            int name_column = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry.COLUMN_NAME);
+            int weight_column = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry.COLUMN_WEIGHT);
+            int max_sets_column = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_SETS);
+            int max_reps_column = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_REPS);
+
+            long workoutId = cursor.getLong(workoutKey);
+            int orderNum = cursor.getInt(workout_order_column);
+            String name = cursor.getString(name_column);
+            int weight = cursor.getInt(weight_column);
+            int maxSets = cursor.getInt(max_sets_column);
+            int maxReps = cursor.getInt(max_reps_column);
+
+            Workout workout = new Workout(sessionID,workoutId,orderNum,name,weight,maxSets,maxReps);
+            workouts.add(workout);
+        }
+        cursor.close();
+        return workouts;
     }
 
 

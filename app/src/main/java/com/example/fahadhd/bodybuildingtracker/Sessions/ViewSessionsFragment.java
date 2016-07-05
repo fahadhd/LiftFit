@@ -57,7 +57,7 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getActivity().getSupportLoaderManager().initLoader(R.id.string_loader_id,null,this);
+        getActivity().getSupportLoaderManager().initLoader(R.id.session_loader_id,null,this);
     }
 
 
@@ -65,7 +65,6 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //getContext().deleteDatabase(TrackerDbHelper.DATABASE_NAME);
         adapter = new SessionAdapter(getActivity(),sessions);
         View rootView = inflater.inflate(R.layout.sessions_list_fragment, container, false);
 

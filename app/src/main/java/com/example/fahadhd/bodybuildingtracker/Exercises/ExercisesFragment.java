@@ -10,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
@@ -24,14 +25,17 @@ import java.util.List;
 
 
 public class ExercisesFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Workout>>{
+    ExerciseAdapter adapter;
     Session currentSession;
     TrackerDAO dao;
     ArrayList<Workout> workouts = new ArrayList<>();
+    ListView exerciseListView;
 
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().getSupportLoaderManager().initLoader(R.id.exercise_loader_id,null,this);
     }
 
     @Override
@@ -46,33 +50,38 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                              Bundle savedInstanceState) {
 
         View rootView =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
+        adapter = new ExerciseAdapter(getActivity(),workouts);
+
         Intent sessionIntent = getActivity().getIntent();
 
-        //Get session information that was clicked on
-        if(sessionIntent != null && sessionIntent.hasExtra(ViewSessionsFragment.INTENT_KEY)){
+        //Get session information from main activity
+        if(sessionIntent != null && sessionIntent.hasExtra(ViewSessionsFragment.INTENT_KEY)) {
 
-            currentSession= (Session)sessionIntent.getSerializableExtra
+            currentSession = (Session) sessionIntent.getSerializableExtra
                     (ViewSessionsFragment.INTENT_KEY);
             setExistingWorkout(currentSession);
         }
-        //New session was added
-        else if (sessionIntent.hasExtra(MainActivity.ADD_TASK)){
+        else if (sessionIntent != null && sessionIntent.hasExtra(MainActivity.ADD_TASK)){
             currentSession = Utility.addSession(dao);
             getActivity().setTitle("Today's Workout");
         }
+
+        exerciseListView = (ListView)rootView.findViewById(R.id.exercises_list_main);
+        exerciseListView.setAdapter(adapter);
+
         return rootView;
     }
 
    public void setExistingWorkout(Session session){
        String title = session.getDate() + "   Session  #"+session.getSessionId();
        getActivity().setTitle(title);
-
     }
 
 
     public void addWorkoutTask(String name, int weight, int max_sets, int max_reps){
         long id = currentSession.getSessionId();
-        long workoutID = dao.addWorkout(id,workouts.size()+1,name,weight,max_sets);
+
+        long workoutID = dao.addWorkout(id,workouts.size()+1,name,weight,max_sets,max_reps);
         for(int i = 1; i <= max_sets; i++){
             dao.addSet(workoutID,i,max_reps,0);
         }
@@ -82,7 +91,8 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     //Loads all workout for current session in workouts list.
     @Override
     public Loader<List<Workout>> onCreateLoader(int id, Bundle args) {
-        return new ExerciseLoader(getActivity().getApplicationContext());
+        long sessionID = currentSession.getSessionId();
+        return new ExerciseLoader(getActivity().getApplicationContext(),dao,sessionID);
     }
 
     @Override

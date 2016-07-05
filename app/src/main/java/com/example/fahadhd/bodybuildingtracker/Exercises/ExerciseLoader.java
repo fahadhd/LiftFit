@@ -4,13 +4,19 @@ package com.example.fahadhd.bodybuildingtracker.Exercises;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+
 import java.util.List;
 
 public class ExerciseLoader extends AsyncTaskLoader<List<Workout>> {
     List<Workout> cachedData;
+    TrackerDAO dao;
+    long sessionID;
 
-    public ExerciseLoader(Context context){
+    public ExerciseLoader(Context context, TrackerDAO dao, long sessionID){
         super(context);
+        this.dao = dao;
+        this.sessionID = sessionID;
     }
 
     @Override
@@ -25,7 +31,7 @@ public class ExerciseLoader extends AsyncTaskLoader<List<Workout>> {
 
     @Override
     public List<Workout> loadInBackground() {
-        return null;
+        return dao.getWorkouts(sessionID);
     }
 
     @Override
