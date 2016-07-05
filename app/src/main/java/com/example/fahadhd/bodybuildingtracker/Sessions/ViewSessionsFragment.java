@@ -83,12 +83,9 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     }
 
 
-    public void startSessionTask(){
-        new AddSessionTask().execute();
-    }
 
 
-////////////////////////// ASYNC LOADER FOR LIST ADAPTERS/////////////////////////
+    ////////////////////////// ASYNC LOADER FOR LIST ADAPTERS/////////////////////////
     /*Let the loader handle adding data to the list view of session*/
     @Override
     public Loader<List<Session>> onCreateLoader(int id, Bundle args) {
@@ -109,28 +106,5 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
 
     }
 
-    /*Adds a new session to the database*/
-    public class AddSessionTask extends AsyncTask<Void,Void,Session> {
-
-        @Override
-        protected Session doInBackground(Void... params) {
-            SimpleDateFormat fmt = new SimpleDateFormat("MMMM dd");
-            GregorianCalendar calendar = new GregorianCalendar();
-            fmt.setCalendar(calendar);
-            String dateFormatted = fmt.format(calendar.getTime());
-            //TODO: Add user_weight to settings and acquire it from preferences.
-            int user_weight = 185;
-
-            TrackerDAO dao = new TrackerDAO(getContext());
-            long id = dao.addSession(dateFormatted,user_weight);
-            return new Session(dateFormatted,user_weight,id);
-        }
-
-        @Override
-        protected void onPostExecute(Session session) {
-            lastSession = session;
-        }
-
-    }
 
 }

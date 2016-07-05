@@ -1,6 +1,7 @@
 package com.example.fahadhd.bodybuildingtracker.Exercises;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -27,13 +28,15 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     ArrayList<Workout> workouts = new ArrayList<>();
 
 
-    public ExercisesFragment() {
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = new TrackerDAO(getContext());
+        new OpenDB().execute();
     }
 
     @Override
@@ -73,6 +76,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         }
     }
 
+
     /////////////////// ASYNC LOADER FOR ADAPTER////////////////////
     //Loads all workout for current session in workouts list.
     @Override
@@ -90,5 +94,13 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     public void onLoaderReset(Loader<List<Workout>> loader) {
         workouts.clear();
 
+    }
+    public class OpenDB extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            dao = new TrackerDAO(getContext());
+            return null;
+        }
     }
 }

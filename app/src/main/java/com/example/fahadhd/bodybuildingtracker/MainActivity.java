@@ -1,6 +1,7 @@
 package com.example.fahadhd.bodybuildingtracker;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import com.example.fahadhd.bodybuildingtracker.Exercises.ExerciseActivity;
 import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.Sessions.ViewSessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -22,13 +24,13 @@ import java.util.GregorianCalendar;
 public class MainActivity extends AppCompatActivity {
 
    ViewSessionsFragment sessionsFragment;
-    TrackerDAO dao;
+
     public static final String ADD_TASK = "Add_Session";
 
     @Override
     protected void onStart() {
+
         super.onStart();
-        dao = new TrackerDAO(MainActivity.this);
     }
 
     @Override
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         sessionsFragment =  ((ViewSessionsFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.sessions_fragment));
@@ -56,18 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    public Session addSession(){
-        SimpleDateFormat fmt = new SimpleDateFormat("MMMM dd");
-        GregorianCalendar calendar = new GregorianCalendar();
-        fmt.setCalendar(calendar);
-        String dateFormatted = fmt.format(calendar.getTime());
-        //TODO: Add user_weight to settings and acquire it from preferences.
-        int user_weight = 185;
-
-        long id = dao.addSession(dateFormatted,user_weight);
-        return new Session(dateFormatted,user_weight,id);
-    }
 
 
     @Override

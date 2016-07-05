@@ -35,10 +35,6 @@ public class TrackerDAO {
             db = mDbHelper.getReadableDatabase();
     }
 
-    public void close(){
-        mDbHelper.close();
-    }
-
 
     public long addSession(String date, int weight){
         ContentValues values  = new ContentValues();
@@ -110,6 +106,7 @@ public class TrackerDAO {
             long sessionId = cursor.getLong(sessionNum);
             sessions.add(new Session(date,weight,sessionId));
         }
+        cursor.close();
         return sessions;
     }
 
