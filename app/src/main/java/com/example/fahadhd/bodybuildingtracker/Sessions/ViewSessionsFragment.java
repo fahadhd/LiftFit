@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.example.fahadhd.bodybuildingtracker.Exercises.ExerciseActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
+import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 
@@ -38,10 +39,19 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     public static Session lastSession;
     private ArrayList<Session> sessions = new ArrayList<>();
     ListView sessionsListView;
+    TrackerDAO dao;
 
 
-    public static final String ADD_SESSION = "Add_Session";
+
     public static final String INTENT_KEY = "Session_ID";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TrackerApplication application  = (TrackerApplication)getActivity().getApplication();
+        dao = application.getDatabase();
+
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -78,18 +88,13 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
         return rootView;
     }
 
-    public Session getLastSession(){
-        return lastSession;
-    }
-
-
 
 
     ////////////////////////// ASYNC LOADER FOR LIST ADAPTERS/////////////////////////
     /*Let the loader handle adding data to the list view of session*/
     @Override
     public Loader<List<Session>> onCreateLoader(int id, Bundle args) {
-        return new SessionLoader(getActivity().getApplicationContext());
+        return new SessionLoader(getActivity().getApplicationContext(),dao);
     }
 
     @Override

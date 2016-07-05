@@ -15,6 +15,7 @@ import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Sessions.ViewSessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
+import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
@@ -36,7 +37,8 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = new TrackerDAO(getContext());
+        TrackerApplication application  = (TrackerApplication)getActivity().getApplication();
+        dao = application.getDatabase();
     }
 
     @Override

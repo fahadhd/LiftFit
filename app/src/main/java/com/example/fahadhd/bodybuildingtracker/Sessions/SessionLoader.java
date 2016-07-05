@@ -7,10 +7,12 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 import java.util.List;
 
 public class SessionLoader extends android.support.v4.content.AsyncTaskLoader<List<Session>> {
-    List<Session> cachedData
-            ;
-    public SessionLoader(Context context) {
+    List<Session> cachedData;
+    TrackerDAO dao;
+
+    public SessionLoader(Context context,TrackerDAO dao) {
         super(context);
+        this.dao = dao;
     }
 
 
@@ -28,7 +30,7 @@ public class SessionLoader extends android.support.v4.content.AsyncTaskLoader<Li
     //Returns a list of all sessions in tracker.db
     public List<Session> loadInBackground() {
 
-        return  new TrackerDAO(getContext()).getSessions();
+        return  this.dao.getSessions();
     }
 
     @Override
