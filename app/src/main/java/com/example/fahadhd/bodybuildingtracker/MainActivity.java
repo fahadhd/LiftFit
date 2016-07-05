@@ -24,6 +24,7 @@ import java.util.GregorianCalendar;
 public class MainActivity extends AppCompatActivity {
 
    ViewSessionsFragment sessionsFragment;
+    TrackerDAO dao;
 
     public static final String ADD_TASK = "Add_Session";
 
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        TrackerApplication application  = (TrackerApplication)this.getApplication();
+        dao = application.getDatabase();
+
 
         sessionsFragment =  ((ViewSessionsFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.sessions_fragment));
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class).
-                        putExtra(ADD_TASK,true);
+                        putExtra(ADD_TASK,Utility.addSession(dao));
 
                 startActivity(exercise);
             }

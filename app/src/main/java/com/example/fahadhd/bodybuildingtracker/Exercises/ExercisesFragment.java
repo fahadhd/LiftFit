@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
@@ -27,6 +28,7 @@ import java.util.List;
 public class ExercisesFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Workout>>{
     ExerciseAdapter adapter;
     Session currentSession;
+    long sessionID;
     TrackerDAO dao;
     ArrayList<Workout> workouts = new ArrayList<>();
     ListView exerciseListView;
@@ -51,6 +53,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
         View rootView =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
         adapter = new ExerciseAdapter(getActivity(),workouts);
+        sessionID = 1;
 
         Intent sessionIntent = getActivity().getIntent();
 
@@ -62,9 +65,12 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
             setExistingWorkout(currentSession);
         }
         else if (sessionIntent != null && sessionIntent.hasExtra(MainActivity.ADD_TASK)){
-            currentSession = Utility.addSession(dao);
+            currentSession = (Session) sessionIntent.getSerializableExtra
+                    (MainActivity.ADD_TASK);
             getActivity().setTitle("Today's Workout");
         }
+        sessionID = currentSession.getSessionId();
+        Toast.makeText(getActivity(),sessionID+"",Toast.LENGTH_SHORT).show();
 
         exerciseListView = (ListView)rootView.findViewById(R.id.exercises_list_main);
         exerciseListView.setAdapter(adapter);
@@ -76,8 +82,12 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
        String title = session.getDate() + "   Session  #"+session.getSessionId();
        getActivity().setTitle(title);
     }
-    public long getSessionID(){
-        return currentSession.getSessionId();
+
+    public void addWorkoutTask(String name, int weight, int max_sets, int max_reps){
+        long workoutID = dao.addWorkout(sessionID,workouts.size()+1,name,weight,max_sets,max_reps);
+        for(int i = 1; i <= max_sets; i++){
+            dao.addSet(workoutID,i,max_reps,0);
+        }
     }
 
 
@@ -92,10 +102,8 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<List<Workout>> loader, List<Workout> data) {
-        if(workouts.isEmpty()){ workouts.addAll(data);}
-        else {
-            workouts.add(data.get(data.size()-1));
-        }
+       workouts.clear();
+        workouts.addAll(data);
         adapter.notifyDataSetChanged();
 
     }

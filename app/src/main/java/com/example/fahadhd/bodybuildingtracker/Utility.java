@@ -45,14 +45,7 @@ public class Utility {
         return  new Session(dateFormatted,user_weight,id);
     }
 
-    public static void addWorkoutTask(String name, int weight, int max_sets, int max_reps,
-                               TrackerDAO dao, long sessionID, int workoutCount){
 
-        long workoutID = dao.addWorkout(sessionID,workoutCount+1,name,weight,max_sets,max_reps);
-        for(int i = 1; i <= max_sets; i++){
-            dao.addSet(workoutID,i,max_reps,0);
-        }
-    }
 
 
 

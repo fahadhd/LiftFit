@@ -54,10 +54,8 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 
     @Override
     public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
-        long sessionID = exercisesFragment.getSessionID();
-        int workoutCount =  exercisesFragment.workouts.size();
-        TrackerDAO dao = exercisesFragment.dao;
-        Utility.addWorkoutTask(name, weight, max_sets,max_reps,dao,sessionID,workoutCount);
+
+        exercisesFragment.addWorkoutTask(name, weight, max_sets,max_reps);
         this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id,null,exercisesFragment);
 
     }
