@@ -7,12 +7,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Exercises.ExercisesFragment"
-    tools:showIn="@layout/activity_exercises">
+    tools:showIn="@layout/activity_exercises"
+    android:clickable="false">
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/exercises_list_main"></ListView>
+        android:id="@+id/exercises_list_main"/>
 
 
 </FrameLayout>
