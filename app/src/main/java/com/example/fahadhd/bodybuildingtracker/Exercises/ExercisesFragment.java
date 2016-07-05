@@ -36,7 +36,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new OpenDB().execute();
+        dao = new TrackerDAO(getContext());
     }
 
     @Override
@@ -76,7 +76,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         }
     }
 
-
     /////////////////// ASYNC LOADER FOR ADAPTER////////////////////
     //Loads all workout for current session in workouts list.
     @Override
@@ -95,12 +94,5 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         workouts.clear();
 
     }
-    public class OpenDB extends AsyncTask<Void,Void,Void> {
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            dao = new TrackerDAO(getContext());
-            return null;
-        }
-    }
 }
