@@ -6,9 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.R;
+import com.example.fahadhd.bodybuildingtracker.Sessions.SessionAdapter;
 
 import java.util.ArrayList;
 
@@ -38,6 +41,7 @@ public class ExerciseAdapter extends BaseAdapter{
 
     public class ViewHolder{
         TextView name,orderNum, sets, separator, reps, weight;
+        LinearLayout setOne,setTwo,setThree;
         public ViewHolder(View view){
             name = (TextView)view.findViewById(R.id.exercises_item_name);
             sets = (TextView)view.findViewById(R.id.exercises_item_sets);
@@ -45,12 +49,15 @@ public class ExerciseAdapter extends BaseAdapter{
             reps = (TextView)view.findViewById(R.id.exercises_item_reps);
             weight = (TextView)view.findViewById(R.id.exercises_item_weight);
             orderNum = (TextView)view.findViewById(R.id.exercises_item_order);
+            setOne = (LinearLayout) view.findViewById(R.id.button_container_set_1);
+            setTwo = (LinearLayout) view.findViewById(R.id.button_container_set_2);
+
         }
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-       View row = convertView;
+        View row = convertView;
         ViewHolder viewHolder;
 
         if(row == null){
@@ -72,6 +79,28 @@ public class ExerciseAdapter extends BaseAdapter{
         viewHolder.reps.setText(Integer.toString(workout.getMaxReps()));
         viewHolder.weight.setText(Integer.toString(workout.getWeight()));
 
+        if(viewHolder.setOne.getChildCount() == 0) {
+            addButtons(viewHolder, workout.max_sets);
+        }
+
         return row;
     }
+
+    public void addButtons(ViewHolder views, int max_sets){
+        int i = 0;
+
+        while (i < 3 && i < max_sets) {
+            Button set = new Button(context);
+            views.setOne.addView(set);
+            i++;
+        }
+
+        while (i < 6 && i < max_sets) {
+            Button set = new Button(context);
+            views.setTwo.addView(set);
+            i++;
+        }
+
+    }
+
 }

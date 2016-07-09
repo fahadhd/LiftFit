@@ -4,34 +4,29 @@ package com.example.fahadhd.bodybuildingtracker.Exercises;
 import java.io.Serializable;
 
 public class Set implements Serializable {
-    int workout_id, max_reps, curr_rep, set_num;
+    long workout_id, set_id;
+    int curr_rep, orderNum;
 
-    public Set(int workout_id, int max_reps, int set_num){
-        workout_id = workout_id;
-        max_reps = max_reps;
-        curr_rep = 0;
-        set_num = set_num;
+    public Set(long set_id, long workout_id, int orderNum, int curr_rep){
+        this.set_id = set_id;
+        this.workout_id = workout_id;
+        this.curr_rep = curr_rep;
+        this.orderNum = orderNum;
     }
 
-    public void updateRep(){
-        if(this.curr_rep < this.max_reps ){
-            this.curr_rep++;
-        }
-        else{
-            this.curr_rep = 0;
-        }
+    public long getSetID() {
+        return set_id;
     }
-    public int getCurrRep(){
-        return this.curr_rep;
-    }
-    public int getMaxReps(){
-        return this.max_reps;
-    }
-    public int getWorkoutID(){
+    public long getWorkoutID(){
         return this.workout_id;
     }
 
+    public int getCurrRep(){
+        return this.curr_rep;
+    }
+
+    //Returns the set order number in a workout
     public int getSetNum(){
-        return this.set_num;
+        return this.orderNum;
     }
 }

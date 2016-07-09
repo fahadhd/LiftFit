@@ -44,10 +44,9 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
 
         //Each workout has a set number of sets and the current number of reps
         final String SQL_CREATE_SETS_TABLE = "CREATE TABLE " + SetEntry.TABLE_NAME + " (" +
-                SetEntry._ID + " INTEGER PRIMARY KEY," +
+                SetEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
                 SetEntry.COLUMN_WORK_KEY + " INTEGER NOT NULL, " +
-                SetEntry.COLUMN_MAX_REPS + " INTEGER NOT NULL, " +
                 SetEntry.COLUMN_CURR_REP + " INTEGER NOT NULL DEFAULT -1, " +
                 SetEntry.COLUMN_SET_NUM + " INTEGER NOT NULL, " +
                 // Set up the workout column as a foreign key to workout table.
@@ -117,9 +116,6 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
         public static final String TABLE_NAME = "sets";
         //Foreign key reference to a specific workout to keep track of its sets/reps.
         public static final String COLUMN_WORK_KEY = "workout_id";
-
-        //Maximum number of reps a workout can do - stored as a int.
-        public static final String COLUMN_MAX_REPS = "max_reps";
 
         //Current number of reps a set currently has
         public static final String COLUMN_CURR_REP = "curr_rep";

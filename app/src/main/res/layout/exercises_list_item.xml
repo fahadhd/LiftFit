@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_item_workout"
-    android:minHeight="?android:attr/listPreferredItemHeight"
+
     android:gravity="center_vertical">
     <!-- Workout Name and Number -->
     <TextView
@@ -75,19 +75,31 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/exercises_buttons_first_set"
+        android:id="@+id/button_container_set_1"
         android:layout_toRightOf="@+id/exercises_item_routine"
         android:layout_toEndOf="@+id/exercises_item_routine"
-        android:orientation="horizontal"
-        ></LinearLayout>
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:orientation="horizontal">
 
-    <!-- _______________First Set of Buttons_______________
-    <Button
+    </LinearLayout>
+
+    <!-- _______________Second Set of Buttons_______________ -->
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/exercises_item_routine"
-        android:layout_toRightOf="@+id/exercises_item_name"
-        android:layout_toEndOf="@+id/exercises_item_name" />
-            -->
+        android:id="@+id/button_container_set_2"
+        android:layout_toRightOf="@+id/exercises_item_routine"
+        android:layout_toEndOf="@+id/exercises_item_routine"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_below="@+id/button_container_set_1"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+
+
 
 </RelativeLayout>

@@ -53,7 +53,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
         View rootView =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
         adapter = new ExerciseAdapter(getActivity(),workouts);
-        sessionID = 1;
+
 
         Intent sessionIntent = getActivity().getIntent();
 
@@ -70,7 +70,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
             getActivity().setTitle("Today's Workout");
         }
         sessionID = currentSession.getSessionId();
-        Toast.makeText(getActivity(),sessionID+"",Toast.LENGTH_SHORT).show();
 
         exerciseListView = (ListView)rootView.findViewById(R.id.exercises_list_main);
         exerciseListView.setAdapter(adapter);
@@ -86,7 +85,8 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     public void addWorkoutTask(String name, int weight, int max_sets, int max_reps){
         long workoutID = dao.addWorkout(sessionID,workouts.size()+1,name,weight,max_sets,max_reps);
         for(int i = 1; i <= max_sets; i++){
-            dao.addSet(workoutID,i,max_reps,0);
+            //Initializes each set in a current workout
+            dao.addSet(workoutID,i,0);
         }
     }
 
@@ -96,13 +96,13 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     //Loads all workout for current session in workouts list.
     @Override
     public Loader<List<Workout>> onCreateLoader(int id, Bundle args) {
-        long sessionID = currentSession.getSessionId();
         return new ExerciseLoader(getActivity().getApplicationContext(),dao,sessionID);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Workout>> loader, List<Workout> data) {
-       workouts.clear();
+        //TODO: Cache data when loader restarts
+        workouts.clear();
         workouts.addAll(data);
         adapter.notifyDataSetChanged();
 
@@ -111,7 +111,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onLoaderReset(Loader<List<Workout>> loader) {
         workouts.clear();
-
     }
 
 }
