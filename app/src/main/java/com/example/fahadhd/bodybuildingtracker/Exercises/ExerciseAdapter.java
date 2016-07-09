@@ -83,6 +83,7 @@ public class ExerciseAdapter extends BaseAdapter{
         viewHolder.reps.setText(Integer.toString(workout.getMaxReps()));
         viewHolder.weight.setText(Integer.toString(workout.getWeight()));
 
+        //Load buttons only once.
         if(viewHolder.setOne.getChildCount() == 0) {
             addButtons(viewHolder, workout.getMaxSets(), workout.getMaxReps(), workout.getSets());
         }
@@ -92,56 +93,41 @@ public class ExerciseAdapter extends BaseAdapter{
 
     public void addButtons(ViewHolder views, int max_sets, int maxRep, ArrayList<Set> sets){
         int i = 0;
+        Button setButton;
+        Set currSet;
         long workoutKey;
         int orderNum, currRep;
 
         while (i < 3 && i < max_sets) {
-            Button set = new Button(context);
-            Set currSet = sets.get(i);
+            setButton = new Button(context);
+            currSet = sets.get(i);
             workoutKey = currSet.getWorkoutID();
+            //TODO: get variables from the DATABASE not from reference variables
             orderNum = currSet.getSetNum();
             currRep = currSet.getCurrRep();
-            if(currRep != -1) {
-                set.setText(Integer.toString(currRep));
-            }
-            initButton(set, workoutKey, orderNum, currRep, maxRep);
 
-            views.setOne.addView(set);
+            setButton.setOnClickListener(new
+                    SetListener(setButton, workoutKey, orderNum, currRep, maxRep, dao));
+
+            views.setOne.addView(setButton);
 
             i++;
         }
 
         while (i < 6 && i < max_sets) {
-            Button set = new Button(context);
-            set.setText(Integer.toString(sets.get(i).getCurrRep()));
-            views.setTwo.addView(set);
+            setButton = new Button(context);
+            currSet = sets.get(i);
+            workoutKey = currSet.getWorkoutID();
+            orderNum = currSet.getSetNum();
+            currRep = currSet.getCurrRep();
+
+            setButton.setOnClickListener(new
+                    SetListener(setButton, workoutKey, orderNum, currRep, maxRep, dao));
+
+            views.setTwo.addView(setButton);
             i++;
         }
 
-    }
-
-    //Sets an onClickListener to each button in the view using an anonymous inner class.
-    public void initButton(Button set, long workoutKey, int orderNum, int currRep, int maxRep){
-        set.setOnClickListener(new View.OnClickListener() {
-            Button set;
-            long workoutKey;
-            int orderNum,currRep,maxRep;
-            public View.OnClickListener init(Button set, long workoutKey, int orderNum,
-                                             int currRep, int maxRep){
-                this.set = set;
-                this.workoutKey = workoutKey;
-                this.orderNum = orderNum;
-                this.currRep = currRep;
-                this.maxRep = maxRep;
-                return this;
-            }
-            @Override
-            public void onClick(View v) {
-                currRep = dao.updateRep(workoutKey,orderNum,currRep,maxRep);
-                set.setText(Integer.toString(currRep));
-            }
-
-        }.init(set,workoutKey,orderNum,currRep,maxRep));
     }
 
 
