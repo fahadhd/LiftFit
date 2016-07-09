@@ -38,5 +38,7 @@ public class Workout implements Serializable {
         return this.max_reps;
     }
 
-
+    public ArrayList<Set> getSets() {
+        return sets;
+    }
 }

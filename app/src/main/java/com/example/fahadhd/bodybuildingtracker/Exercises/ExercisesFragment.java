@@ -52,7 +52,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                              Bundle savedInstanceState) {
 
         View rootView =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
-        adapter = new ExerciseAdapter(getActivity(),workouts);
+        adapter = new ExerciseAdapter(getActivity(),workouts,dao);
 
 
         Intent sessionIntent = getActivity().getIntent();
@@ -86,7 +86,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         long workoutID = dao.addWorkout(sessionID,workouts.size()+1,name,weight,max_sets,max_reps);
         for(int i = 1; i <= max_sets; i++){
             //Initializes each set in a current workout
-            dao.addSet(workoutID,i,0);
+            dao.addSet(workoutID,i);
         }
     }
 

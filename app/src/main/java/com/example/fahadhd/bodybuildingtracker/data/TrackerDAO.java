@@ -66,29 +66,29 @@ public class TrackerDAO {
     }
 
     //Add a set to a current workout
-    public long addSet(long workoutKey,int setNum, int currRep){
+    public long addSet(long workoutKey,int setNum){
         ContentValues values  = new ContentValues();
 
         values.put(TrackerDbHelper.SetEntry.COLUMN_WORK_KEY, workoutKey);
         values.put(TrackerDbHelper.SetEntry.COLUMN_SET_NUM, setNum);
-        values.put(TrackerDbHelper.SetEntry.COLUMN_CURR_REP, currRep);
 
         long set_id = db.insert(TrackerDbHelper.SetEntry.TABLE_NAME,null,values);
         return set_id;
     }
 
-    //Update a current rep in a set.
-    public void updateRep(long workoutKey, int setNum, int currRep, int maxRep){
+    //Update a current rep in a set. Returns the new current rep of a set.
+    public int updateRep(long workoutKey, int setNum, int currRep, int maxRep){
         String workoutKeyName = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY;
         String setNumName = TrackerDbHelper.SetEntry.COLUMN_SET_NUM;
         String where = workoutKeyName+" = "+workoutKey + " AND " + setNumName+" = " +setNum;
 
         //If the current rep is less than the max rep increment it by one else set it to 0.
-        int newRep = (currRep < maxRep) ?  currRep+1: 0  ;
+        int newRep = (currRep <= 0) ?  maxRep: currRep-1  ;
         ContentValues values = new ContentValues();
         values.put(TrackerDbHelper.SetEntry.COLUMN_CURR_REP,newRep);
 
         db.update(TrackerDbHelper.SetEntry.TABLE_NAME,values,where,null);
+        return newRep;
     }
 
 
