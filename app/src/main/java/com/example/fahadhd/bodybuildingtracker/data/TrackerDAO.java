@@ -92,7 +92,6 @@ public class TrackerDAO {
     }
 
 
-
     public ArrayList<Session> getSessions(){
         ArrayList<Session> sessions = new ArrayList<>();
         String[] columns = {TrackerDbHelper.SessionEntry._ID,TrackerDbHelper.SessionEntry.COLUMN_DATE,
@@ -185,7 +184,5 @@ public class TrackerDAO {
         cursor.close();
         return workouts;
     }
-
-
 
 }

@@ -34,8 +34,17 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         exercisesFragment = (ExercisesFragment) getSupportFragmentManager().
                 findFragmentById(R.id.exercises_fragment);
+
+        //Creates a new loader if one doesn't exist or refreshes the data if one does exist.
+        if(this.getSupportLoaderManager().getLoader(R.id.exercise_loader_id) == null) {
+            this.getSupportLoaderManager().initLoader(R.id.exercise_loader_id, null, exercisesFragment);
+        }
+        else{
+            this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id,null,exercisesFragment);
+        }
 
         FloatingActionButton addExercise = (FloatingActionButton)findViewById(R.id.add_exercise);
         if (addExercise != null) {
@@ -51,6 +60,11 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {

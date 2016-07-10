@@ -17,6 +17,7 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 import java.util.ArrayList;
 
+//Populates the list_view of the exercises fragment.
 public class ExerciseAdapter extends BaseAdapter{
     Context context;
     ArrayList<Workout> workouts;
@@ -102,12 +103,12 @@ public class ExerciseAdapter extends BaseAdapter{
             setButton = new Button(context);
             currSet = sets.get(i);
             workoutKey = currSet.getWorkoutID();
-            //TODO: get variables from the DATABASE not from reference variables
             orderNum = currSet.getSetNum();
             currRep = currSet.getCurrRep();
 
             setButton.setOnClickListener(new
                     SetListener(setButton, workoutKey, orderNum, currRep, maxRep, dao));
+
 
             views.setOne.addView(setButton);
 

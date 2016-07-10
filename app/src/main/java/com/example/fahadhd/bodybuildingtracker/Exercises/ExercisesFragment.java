@@ -37,7 +37,12 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().getSupportLoaderManager().initLoader(R.id.exercise_loader_id,null,this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
     }
 
     @Override
@@ -93,7 +98,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
 
     /////////////////// ASYNC LOADER FOR ADAPTER////////////////////
-    //Loads all workout for current session in workouts list.
+    //Loads all workouts for current session in workouts list.
     @Override
     public Loader<List<Workout>> onCreateLoader(int id, Bundle args) {
         return new ExerciseLoader(getActivity().getApplicationContext(),dao,sessionID);
