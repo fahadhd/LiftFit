@@ -25,6 +25,10 @@ public class Set implements Serializable {
         return this.curr_rep;
     }
 
+    public int getOrderNum() {
+        return orderNum;
+    }
+
     //Returns the set order number in a workout
     public int getSetNum(){
         return this.orderNum;

@@ -9,16 +9,15 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 public class SetListener implements View.OnClickListener {
     Button setButton;
-    long workoutKey;
-    int orderNum,currRep,maxRep;
+    long setWorkoutKey;
+    int setNum,currRep,maxRep;
     TrackerDAO dao;
-    public SetListener(Button setButton, long workoutKey, int orderNum, int currRep,
-                       int maxRep, TrackerDAO dao){
+    public SetListener(Button setButton, TrackerDAO dao, Workout curr_workout, Set currSet){
         this.setButton = setButton;
-        this.workoutKey = workoutKey;
-        this.orderNum = orderNum;
-        this.currRep = currRep;
-        this.maxRep = maxRep;
+        this.setWorkoutKey = currSet.getWorkoutID();
+        this.setNum = currSet.getOrderNum();
+        this.currRep =  currSet.getCurrRep();
+        this.maxRep = curr_workout.getMaxReps();
         this.dao = dao;
 
         if(currRep != -1) {
@@ -27,7 +26,11 @@ public class SetListener implements View.OnClickListener {
     }
     @Override
     public void onClick(View v) {
-        currRep = dao.updateRep(workoutKey,orderNum,currRep,maxRep);
+        currRep = dao.updateRep(setWorkoutKey,setNum,currRep,maxRep);
         setButton.setText(Integer.toString(currRep));
     }
+    //Checks to see if a current workout has all sets finished(ie all sets curr rep is at max)
+     public boolean allFinished(){
+        return false;
+     }
 }

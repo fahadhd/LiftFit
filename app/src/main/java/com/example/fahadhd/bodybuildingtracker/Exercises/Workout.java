@@ -25,6 +25,10 @@ public class Workout implements Serializable {
         return this.name;
     }
 
+    public long getWorkoutID(){
+        return workout_id;
+    }
+
     public int getOrderNum(){
         return this.workout_num;
     }

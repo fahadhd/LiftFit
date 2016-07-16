@@ -4,6 +4,7 @@ package com.example.fahadhd.bodybuildingtracker;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -44,6 +45,11 @@ public class Utility {
         long id =  dao.addSession(dateFormatted,user_weight);
         return  new Session(dateFormatted,user_weight,id);
     }
+
+    public static void startTimer(View v, boolean lastSet, boolean allFinished){
+
+    }
+
 
 
 

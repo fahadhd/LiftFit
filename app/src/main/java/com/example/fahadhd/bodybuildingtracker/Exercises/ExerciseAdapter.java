@@ -46,6 +46,7 @@ public class ExerciseAdapter extends BaseAdapter{
 
     public class ViewHolder{
         TextView name,orderNum, sets, separator, reps, weight;
+        //TODO: ADD third set underneath second.
         LinearLayout setOne,setTwo,setThree;
         public ViewHolder(View view){
             name = (TextView)view.findViewById(R.id.exercises_item_name);
@@ -86,29 +87,25 @@ public class ExerciseAdapter extends BaseAdapter{
 
         //Load buttons only once.
         if(viewHolder.setOne.getChildCount() == 0) {
-            addButtons(viewHolder, workout.getMaxSets(), workout.getMaxReps(), workout.getSets());
+            addButtons(viewHolder, workout);
         }
 
         return row;
     }
 
-    public void addButtons(ViewHolder views, int max_sets, int maxRep, ArrayList<Set> sets){
+    public void addButtons(ViewHolder views, Workout workout){
+        int max_sets = workout.getMaxSets();
         int i = 0;
-        Button setButton;
+        ArrayList<Set> setList = workout.getSets();
         Set currSet;
-        long workoutKey;
-        int orderNum, currRep;
+        Button setButton;
 
         while (i < 3 && i < max_sets) {
             setButton = new Button(context);
-            currSet = sets.get(i);
-            workoutKey = currSet.getWorkoutID();
-            orderNum = currSet.getSetNum();
-            currRep = currSet.getCurrRep();
+            currSet = setList.get(i);
 
             setButton.setOnClickListener(new
-                    SetListener(setButton, workoutKey, orderNum, currRep, maxRep, dao));
-
+                    SetListener(setButton,dao,workout,currSet));
 
             views.setOne.addView(setButton);
 
@@ -117,13 +114,10 @@ public class ExerciseAdapter extends BaseAdapter{
 
         while (i < 6 && i < max_sets) {
             setButton = new Button(context);
-            currSet = sets.get(i);
-            workoutKey = currSet.getWorkoutID();
-            orderNum = currSet.getSetNum();
-            currRep = currSet.getCurrRep();
+            currSet = setList.get(i);
 
             setButton.setOnClickListener(new
-                    SetListener(setButton, workoutKey, orderNum, currRep, maxRep, dao));
+                    SetListener(setButton, dao, workout, currSet));
 
             views.setTwo.addView(setButton);
             i++;
