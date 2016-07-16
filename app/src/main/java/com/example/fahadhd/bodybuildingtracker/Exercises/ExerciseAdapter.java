@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Sessions.SessionAdapter;
+import com.example.fahadhd.bodybuildingtracker.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 import java.util.ArrayList;
@@ -44,22 +45,6 @@ public class ExerciseAdapter extends BaseAdapter{
         return position;
     }
 
-    public class ViewHolder{
-        TextView name,orderNum, sets, separator, reps, weight;
-        //TODO: ADD third set underneath second.
-        LinearLayout setOne,setTwo,setThree;
-        public ViewHolder(View view){
-            name = (TextView)view.findViewById(R.id.exercises_item_name);
-            sets = (TextView)view.findViewById(R.id.exercises_item_sets);
-            separator = (TextView)view.findViewById(R.id.exercises_item_separator);
-            reps = (TextView)view.findViewById(R.id.exercises_item_reps);
-            weight = (TextView)view.findViewById(R.id.exercises_item_weight);
-            orderNum = (TextView)view.findViewById(R.id.exercises_item_order);
-            setOne = (LinearLayout) view.findViewById(R.id.button_container_set_1);
-            setTwo = (LinearLayout) view.findViewById(R.id.button_container_set_2);
-
-        }
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -87,13 +72,17 @@ public class ExerciseAdapter extends BaseAdapter{
 
         //Load buttons only once.
         if(viewHolder.setOne.getChildCount() == 0) {
-            addButtons(viewHolder, workout);
+            addButtons(viewHolder, workout,viewHolder);
+        }
+
+        if(Utility.allSetsStarted(workout)){
+            viewHolder.completed_dialog.setText("All sets done!");
         }
 
         return row;
     }
 
-    public void addButtons(ViewHolder views, Workout workout){
+    public void addButtons(ViewHolder views, Workout workout, ViewHolder viewHolder){
         int max_sets = workout.getMaxSets();
         int i = 0;
         ArrayList<Set> setList = workout.getSets();
@@ -105,7 +94,7 @@ public class ExerciseAdapter extends BaseAdapter{
             currSet = setList.get(i);
 
             setButton.setOnClickListener(new
-                    SetListener(setButton,dao,workout,currSet));
+                    SetListener(setButton,dao,workout,currSet,viewHolder));
 
             views.setOne.addView(setButton);
 
@@ -117,7 +106,7 @@ public class ExerciseAdapter extends BaseAdapter{
             currSet = setList.get(i);
 
             setButton.setOnClickListener(new
-                    SetListener(setButton, dao, workout, currSet));
+                    SetListener(setButton, dao, workout, currSet,viewHolder));
 
             views.setTwo.addView(setButton);
             i++;

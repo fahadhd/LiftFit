@@ -3,12 +3,15 @@ package com.example.fahadhd.bodybuildingtracker;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.fahadhd.bodybuildingtracker.Exercises.Set;
+import com.example.fahadhd.bodybuildingtracker.Exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
@@ -46,13 +49,31 @@ public class Utility {
         return  new Session(dateFormatted,user_weight,id);
     }
 
-    public static void startTimer(View v, boolean lastSet, boolean allFinished){
+    public static void startTimer(View v, boolean sets_started, boolean allFinished,
+                                  int currRep, int maxReps, int max_sets){
 
+        if(!sets_started){
+            if(currRep == maxReps) {
+                Snackbar.make(v, "Nice job! Rest up for the next one.", 18000).show();
+            }
+            if(currRep == maxReps-1) {
+                Snackbar.make(v, "That must have been tough, rest up a while.", 25000).show();
+            }
+        }
+        if(sets_started){
+            Snackbar.make(v, "Sets are done", Snackbar.LENGTH_LONG).show();
+        }
     }
 
-
-
-
+    //Returns true if all the sets were started in the current workout.
+    public static boolean allSetsStarted(Workout workout){
+        for(Set set: workout.getSets()){
+            if (set.getCurrRep() == 0){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 

@@ -99,6 +99,14 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/workout_complete_dialog"
+        android:layout_toRightOf="@+id/button_container_set_2"
+        android:layout_toEndOf="@+id/button_container_set_2"
+       />
+
 
 
 

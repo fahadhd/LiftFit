@@ -4,11 +4,13 @@ import android.app.Application;
 import android.widget.Toast;
 
 
+import com.example.fahadhd.bodybuildingtracker.Exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 
 public class TrackerApplication extends Application {
     TrackerDAO dao;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -20,4 +22,6 @@ public class TrackerApplication extends Application {
     public TrackerDAO getDatabase(){
         return dao;
     }
+
+
 }

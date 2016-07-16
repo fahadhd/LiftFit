@@ -8,7 +8,7 @@ import android.util.Log;
 
 
 public class TrackerDbHelper extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "tracker.db";
 
     public static final String TAG = TrackerDbHelper.class.getSimpleName();
@@ -47,7 +47,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 SetEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
                 SetEntry.COLUMN_WORK_KEY + " INTEGER NOT NULL, " +
-                SetEntry.COLUMN_CURR_REP + " INTEGER NOT NULL DEFAULT -1, " +
+                SetEntry.COLUMN_CURR_REP + " INTEGER NOT NULL DEFAULT 0, " +
                 SetEntry.COLUMN_SET_NUM + " INTEGER NOT NULL, " +
                 // Set up the workout column as a foreign key to workout table.
                 " FOREIGN KEY (" + SetEntry.COLUMN_WORK_KEY + ") REFERENCES " +
