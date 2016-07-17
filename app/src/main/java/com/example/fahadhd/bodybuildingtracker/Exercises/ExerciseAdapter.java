@@ -7,12 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.R;
-import com.example.fahadhd.bodybuildingtracker.Sessions.SessionAdapter;
 import com.example.fahadhd.bodybuildingtracker.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
@@ -49,17 +45,17 @@ public class ExerciseAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        ViewHolder viewHolder;
+        WorkoutViewHolder viewHolder;
 
         if(row == null){
             LayoutInflater inflater = (LayoutInflater) context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.exercises_list_item, null);
-            viewHolder = new ViewHolder(row);
+            viewHolder = new WorkoutViewHolder(row);
             row.setTag(viewHolder);
         }
         else{
-            viewHolder = (ViewHolder)row.getTag();
+            viewHolder = (WorkoutViewHolder)row.getTag();
         }
         Workout workout = workouts.get(position);
 
@@ -74,15 +70,21 @@ public class ExerciseAdapter extends BaseAdapter{
         if(viewHolder.setOne.getChildCount() == 0) {
             addButtons(viewHolder, workout,viewHolder);
         }
-
-        if(Utility.allSetsStarted(workout)){
-            viewHolder.completed_dialog.setText("All sets done!");
+        boolean sets_started = Utility.allSetsStarted(workout);
+        boolean sets_finished = (sets_started && Utility.allSetsFinished(workout));
+        if(sets_started && !sets_finished ){
+            viewHolder.completed_dialog.setText("You'll get in next time!");
         }
+       else if(sets_finished){
+            viewHolder.completed_dialog.setText("Congrats +5 lb next time!");
+        }
+
+
 
         return row;
     }
 
-    public void addButtons(ViewHolder views, Workout workout, ViewHolder viewHolder){
+    public void addButtons(WorkoutViewHolder views, Workout workout, WorkoutViewHolder viewHolder){
         int max_sets = workout.getMaxSets();
         int i = 0;
         ArrayList<Set> setList = workout.getSets();
@@ -94,7 +96,7 @@ public class ExerciseAdapter extends BaseAdapter{
             currSet = setList.get(i);
 
             setButton.setOnClickListener(new
-                    SetListener(setButton,dao,workout,currSet,viewHolder));
+                    SetListener(setButton,dao,workout,currSet,viewHolder,context));
 
             views.setOne.addView(setButton);
 
@@ -106,7 +108,7 @@ public class ExerciseAdapter extends BaseAdapter{
             currSet = setList.get(i);
 
             setButton.setOnClickListener(new
-                    SetListener(setButton, dao, workout, currSet,viewHolder));
+                    SetListener(setButton, dao, workout, currSet,viewHolder,context));
 
             views.setTwo.addView(setButton);
             i++;

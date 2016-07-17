@@ -5,11 +5,11 @@ import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.R;
 
-public class ViewHolder{
-    TextView name,orderNum, sets, separator, reps, weight,completed_dialog;
+public class WorkoutViewHolder {
+    public TextView name,orderNum, sets, separator, reps, weight,completed_dialog;
     //TODO: ADD third set underneath second.
     LinearLayout setOne,setTwo,setThree;
-    public ViewHolder(View view){
+    public WorkoutViewHolder(View view){
         name = (TextView)view.findViewById(R.id.exercises_item_name);
         sets = (TextView)view.findViewById(R.id.exercises_item_sets);
         separator = (TextView)view.findViewById(R.id.exercises_item_separator);
