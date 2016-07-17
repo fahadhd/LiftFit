@@ -71,34 +71,41 @@ public class SetListener implements View.OnClickListener {
     public void startTimer(View v, boolean sets_started, boolean allFinished){
 
         // Create the Snackbar
-        Snackbar snackbar = Snackbar.make(v, "Hello", Snackbar.LENGTH_LONG);
-        // Get the Snackbar's layout view
+        final Snackbar snackbar = Snackbar.make(v, "Hello", Snackbar.LENGTH_LONG);
+        // Customize snackbar view with my own.
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
         layout.setBackgroundColor(Color.RED);
         View snackView = mInflater.inflate(R.layout.my_snackbar, null);
         TextView textViewTop = (TextView) snackView.findViewById(R.id.timer);
         textViewTop.setText("0:00");
-        textViewTop.setTextColor(Color.WHITE);
 
         layout.addView(snackView, 0);
+
+        snackbar.setAction(R.string.dismiss, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                snackbar.dismiss();
+            }
+        });
+        snackbar.setActionTextColor(Color.WHITE);
 
 
         if(!sets_started){
             viewHolder.completed_dialog.setText(null);
             if(currRep == maxReps) {
-                snackbar.setText("Nice job! Rest up for the next one.");
+                snackbar.setText("Nice job! Rest up for the next one.").setDuration(18000);
                 snackbar.show();
             }
             if(currRep == maxReps-1) {
-                snackbar.setText("That must have been tough, rest up a while.");
+                snackbar.setText("Rest a bit longer for the next one!").setDuration(25000);
                 snackbar.show();
             }
         }
         if(sets_started && !allFinished){
-            viewHolder.completed_dialog.setText("You'll get in next time!");
+            viewHolder.completed_dialog.setText(R.string.failed);
         }
         else if(allFinished){
-            viewHolder.completed_dialog.setText("Congrats +5lb next time!");
+            viewHolder.completed_dialog.setText(R.string.congrats);
         }
     }
 

@@ -11,7 +11,10 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:paddingTop="10dp"
+        android:paddingRight="10dp"
         android:textSize="22dp"
+        android:textColor="@color/white"
         android:id="@+id/timer"/>
 
 </LinearLayout>
+
