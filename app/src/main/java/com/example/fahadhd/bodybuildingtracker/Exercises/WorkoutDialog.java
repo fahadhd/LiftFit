@@ -99,12 +99,13 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
             int weight;
             if(name.equals("")) {
                 workout_name.setError("Please Type An Exercise");
-
             }
             else{
                 weight = (weightString.equals("")) ? 185: Integer.parseInt(weightString);
                 communicator.getWorkoutInfo(name,weight,setChoice,repChoice);
+                //TODO: This causes the dialog to close slow.
                 dismiss();
+
             }
 
         }

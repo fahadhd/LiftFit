@@ -64,16 +64,19 @@ public class TrackerDAO {
         long workout_id =  db.insert(TrackerDbHelper.WorkoutEntry.TABLE_NAME,null,values);
         return workout_id;
     }
+    //Add all sets to a current workout
+    public void addSets(long workoutKey,int maxSets){
+        db.beginTransaction();
+        for(int i = 1; i <= maxSets; i++) {
+            ContentValues values  = new ContentValues();
+            values.put(TrackerDbHelper.SetEntry.COLUMN_WORK_KEY, workoutKey);
+            values.put(TrackerDbHelper.SetEntry.COLUMN_SET_NUM, i);
+            db.insert(TrackerDbHelper.SetEntry.TABLE_NAME,null,values);
+        }
 
-    //Add a set to a current workout
-    public long addSet(long workoutKey,int setNum){
-        ContentValues values  = new ContentValues();
+        db.setTransactionSuccessful();
+        db.endTransaction();
 
-        values.put(TrackerDbHelper.SetEntry.COLUMN_WORK_KEY, workoutKey);
-        values.put(TrackerDbHelper.SetEntry.COLUMN_SET_NUM, setNum);
-
-        long set_id = db.insert(TrackerDbHelper.SetEntry.TABLE_NAME,null,values);
-        return set_id;
     }
 
     //Update a current rep in a set. Returns the new current rep of a set.

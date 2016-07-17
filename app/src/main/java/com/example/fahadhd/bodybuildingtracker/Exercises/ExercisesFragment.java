@@ -82,19 +82,10 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         return rootView;
     }
 
-   public void setExistingWorkout(Session session){
-       String title = session.getDate() + "   Session  #"+session.getSessionId();
-       getActivity().setTitle(title);
+    public void setExistingWorkout(Session session){
+        String title = session.getDate() + "   Session  #"+session.getSessionId();
+        getActivity().setTitle(title);
     }
-
-    public void addWorkoutTask(String name, int weight, int max_sets, int max_reps){
-        long workoutID = dao.addWorkout(sessionID,workouts.size()+1,name,weight,max_sets,max_reps);
-        for(int i = 1; i <= max_sets; i++){
-            //Initializes each set in a current workout
-            dao.addSet(workoutID,i);
-        }
-    }
-
 
 
     /////////////////// ASYNC LOADER FOR ADAPTER////////////////////
@@ -106,9 +97,11 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<List<Workout>> loader, List<Workout> data) {
-        //TODO: Cache data when loader restarts
-        workouts.clear();
-        workouts.addAll(data);
+        if(workouts.size() == 0) workouts.addAll(data);
+        else{
+            workouts.add(data.get(data.size()-1));
+        }
+
         adapter.notifyDataSetChanged();
 
     }
