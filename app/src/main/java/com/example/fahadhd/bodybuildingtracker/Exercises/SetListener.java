@@ -1,14 +1,12 @@
 package com.example.fahadhd.bodybuildingtracker.Exercises;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Utility;
@@ -25,6 +23,7 @@ public class SetListener implements View.OnClickListener {
     WorkoutViewHolder viewHolder;
     Context mContext;
     LayoutInflater mInflater;
+
     public SetListener(Button setButton, TrackerDAO dao, Workout curr_workout, Set currSet,
                        WorkoutViewHolder viewHolder, Context context){
         this.setButton = setButton;
@@ -63,35 +62,24 @@ public class SetListener implements View.OnClickListener {
             setButton.setText(Integer.toString(currRep));
             boolean sets_started = Utility.allSetsStarted(curr_workout);
             boolean allFinished = (sets_started && Utility.allSetsFinished(curr_workout));
-            this.startTimer(v, sets_started, allFinished);
+            this.initializeSnackbar(v, sets_started, allFinished);
         }
     }
+
+
     //Starts timer when set button is pressed.
     //TODO: Change "+5lb next time" to  "+{user preference lb/ki} next time!.
-    public void startTimer(View v, boolean sets_started, boolean allFinished){
-
-        // Create the Snackbar
-        final Snackbar snackbar = Snackbar.make(v, "Hello", Snackbar.LENGTH_LONG);
-        // Customize snackbar view with my own.
-        Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
-        layout.setBackgroundColor(Color.RED);
+    public void initializeSnackbar(View view, boolean sets_started, boolean allFinished){
         View snackView = mInflater.inflate(R.layout.my_snackbar, null);
-        TextView textViewTop = (TextView) snackView.findViewById(R.id.timer);
-        textViewTop.setText("0:00");
-
-        layout.addView(snackView, 0);
-
-        snackbar.setAction(R.string.dismiss, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                snackbar.dismiss();
-            }
-        });
-        snackbar.setActionTextColor(Color.WHITE);
+        TextView timerView = (TextView) snackView.findViewById(R.id.timer);
+        Snackbar snackbar = Utility.startCustomSnackbar(view,snackView,timerView);
 
 
         if(!sets_started){
+            //Since all sets aren't done, hide the congrats/failure message.
             viewHolder.completed_dialog.setText(null);
+            ExerciseActivity.setTimer.startTimer(timerView);
+
             if(currRep == maxReps) {
                 snackbar.setText("Nice job! Rest up for the next one.").setDuration(18000);
                 snackbar.show();
@@ -101,6 +89,7 @@ public class SetListener implements View.OnClickListener {
                 snackbar.show();
             }
         }
+
         if(sets_started && !allFinished){
             viewHolder.completed_dialog.setText(R.string.failed);
         }
@@ -108,7 +97,5 @@ public class SetListener implements View.OnClickListener {
             viewHolder.completed_dialog.setText(R.string.congrats);
         }
     }
-
-
 
 }

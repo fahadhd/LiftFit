@@ -20,19 +20,15 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
-
+/*Front view of app with a floating action button to add a exercise at the top*/
 public class MainActivity extends AppCompatActivity {
 
    ViewSessionsFragment sessionsFragment;
+    //Database action object to query sqlite database tracker.db
     TrackerDAO dao;
 
     public static final String ADD_TASK = "Add_Session";
 
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

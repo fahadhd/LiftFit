@@ -70,6 +70,8 @@ public class ExerciseAdapter extends BaseAdapter{
         if(viewHolder.setOne.getChildCount() == 0) {
             addButtons(viewHolder, workout,viewHolder);
         }
+
+        //TODO: App is a little slow when running this code, optimize later possibly put in thread.
         boolean sets_started = Utility.allSetsStarted(workout);
         boolean sets_finished = (sets_started && Utility.allSetsFinished(workout));
         if(sets_started && !sets_finished ){
