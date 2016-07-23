@@ -14,7 +14,6 @@ import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 import java.util.ArrayList;
 
 //Tracker data access object to edit and add data to the tracker database.
-//TODO: Create an asynctask when opening the database if needed.
 public class TrackerDAO {
     public static final String TAG = TrackerDAO.class.getSimpleName();
     private TrackerDbHelper mDbHelper;
@@ -28,7 +27,7 @@ public class TrackerDAO {
             open();
         }
         catch(SQLiteException e){
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
+            Log.e(TAG, "SQLException on opening database " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -44,8 +43,7 @@ public class TrackerDAO {
         values.put(TrackerDbHelper.SessionEntry.COLUMN_DATE,date);
         values.put(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT, weight);
 
-        long session_id =  db.insert(TrackerDbHelper.SessionEntry.TABLE_NAME,null,values);
-        return session_id;
+        return db.insert(TrackerDbHelper.SessionEntry.TABLE_NAME,null,values);
 
 
     }
@@ -60,9 +58,7 @@ public class TrackerDAO {
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_SETS,maxSets);
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_REPS, maxReps);
 
-
-        long workout_id =  db.insert(TrackerDbHelper.WorkoutEntry.TABLE_NAME,null,values);
-        return workout_id;
+        return db.insert(TrackerDbHelper.WorkoutEntry.TABLE_NAME,null,values);
     }
     //Add all sets to a current workout
     public void addSets(long workoutKey,int maxSets){
@@ -73,10 +69,8 @@ public class TrackerDAO {
             values.put(TrackerDbHelper.SetEntry.COLUMN_SET_NUM, i);
             db.insert(TrackerDbHelper.SetEntry.TABLE_NAME,null,values);
         }
-
         db.setTransactionSuccessful();
         db.endTransaction();
-
     }
 
     //Update a current rep in a set. Returns the new current rep of a set.
@@ -191,7 +185,6 @@ public class TrackerDAO {
     //Updates the current workout from the database.
     //TODO: Get rid of all this excess code!
     public Workout updateWorkout(Workout workout){
-        ArrayList<Workout> workouts = new ArrayList<>();
         String[] columns = {
                 TrackerDbHelper.WorkoutEntry._ID,
                 TrackerDbHelper.WorkoutEntry.COLUMN_WORKOUT_NUM,

@@ -63,6 +63,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             addExercise.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ExerciseActivity.this.setTimer.dismissSnackBar();
                     WorkoutDialog dialog = new WorkoutDialog();
                     dialog.show(getFragmentManager(), "WorkoutDialog");
                 }
