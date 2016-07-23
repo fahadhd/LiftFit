@@ -34,7 +34,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     TrackerDAO dao;
     public static long sessionID;
     ArrayList<Workout> workouts;
-    public static SetTimer setTimer;
+    SetTimer setTimer;
     String name;
 
     @Override
@@ -69,7 +69,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             });
         }
         /**Initializing timer for sets**/
-        this.setTimer = new SetTimer();
+        setTimer = new SetTimer(this);
 
     }
 
@@ -77,6 +77,10 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     protected void onResume() {
         super.onResume();
 
+    }
+
+    public SetTimer getSetTimer(){
+        return this.setTimer;
     }
 
     @Override
@@ -87,10 +91,9 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         workouts = exercisesFragment.workouts;
         this.name = name;
         new AddWorkoutTask().execute(weight, max_sets, max_reps);
-
-
     }
 
+    /*************** Add workout data in background thread via async task*****************/
     public class AddWorkoutTask extends AsyncTask<Integer, Void, Void> {
 
         @Override
@@ -99,6 +102,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             int max_sets = params[1];
             int max_reps = params[2];
             addWorkoutTask(name, weight, max_sets, max_reps);
+            //Restart loader so it updates the new data to the list.
             ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
             return null;
         }
@@ -107,8 +111,8 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             long workoutID = dao.addWorkout(sessionID, workouts.size() + 1, name, weight, max_sets, max_reps);
             dao.addSets(workoutID, max_sets);
         }
-
     }
+    /***********************************************************************************/
 
 
 }

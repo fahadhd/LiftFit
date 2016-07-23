@@ -26,10 +26,10 @@ import java.util.List;
 
 
 public class ExercisesFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Workout>>{
+    TrackerDAO dao;
     ExerciseAdapter adapter;
     Session currentSession;
     long sessionID;
-    TrackerDAO dao;
     ArrayList<Workout> workouts = new ArrayList<>();
     ListView exerciseListView;
 
@@ -88,7 +88,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
 
-    /////////////////// ASYNC LOADER FOR ADAPTER////////////////////
+    /*************** ASYNC LOADER FOR ADAPTER********************/
     //Loads all workouts for current session in workouts list.
     @Override
     public Loader<List<Workout>> onCreateLoader(int id, Bundle args) {
@@ -110,5 +110,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     public void onLoaderReset(Loader<List<Workout>> loader) {
         workouts.clear();
     }
+    /************************************************************/
 
 }

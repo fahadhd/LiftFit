@@ -76,30 +76,7 @@ public class Utility {
     }
 
     //TODO: Find a way to notify activity when a snackbar is dismissed other than just hitting the dismiss button
-    public static Snackbar startCustomSnackbar(View exercise_view, final View snackView,
-                                               final TextView timerView){
-        // Create the Snackbar
-        final Snackbar snackbar = Snackbar.make(exercise_view, "", Snackbar.LENGTH_LONG);
 
-        /**** Customize snackbar view with my own.*****/
-        Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
-        layout.setBackgroundColor(Color.RED);
-        timerView.setText("0:00");
-        layout.addView(snackView, 0);
-        /*********************************************/
-
-        //Dismiss snackbar when user presses the X button.
-        snackbar.setAction(R.string.dismiss, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ExerciseActivity.setTimer.cancelTimer(timerView);
-                snackbar.dismiss();
-            }
-        });
-        snackbar.setActionTextColor(Color.WHITE);
-
-        return  snackbar;
-    }
 
 
 

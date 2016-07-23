@@ -23,6 +23,8 @@ public class SetListener implements View.OnClickListener {
     WorkoutViewHolder viewHolder;
     Context mContext;
     LayoutInflater mInflater;
+    ExerciseActivity exerciseActivity;
+    SetTimer setTimer;
 
     public SetListener(Button setButton, TrackerDAO dao, Workout curr_workout, Set currSet,
                        WorkoutViewHolder viewHolder, Context context){
@@ -37,7 +39,10 @@ public class SetListener implements View.OnClickListener {
         this.currSet = currSet;
         this.viewHolder = viewHolder;
         this.mContext = context;
-        this.mInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        this.mInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
+        this.exerciseActivity = (ExerciseActivity) mContext;
+        this.setTimer = exerciseActivity.getSetTimer();
+
 
 
         //Displays the correct rep number of a set.
@@ -51,6 +56,7 @@ public class SetListener implements View.OnClickListener {
         //Updating the current rep and workout object.
         currRep = dao.updateRep(setWorkoutKey,setNum,currRep,maxReps);
         curr_workout = dao.updateWorkout(curr_workout);
+        setTimer.cancelTimer();
 
         //Display the default button when a set's rep number reaches 0.
         if(currRep == 0){
@@ -62,39 +68,32 @@ public class SetListener implements View.OnClickListener {
             setButton.setText(Integer.toString(currRep));
             boolean sets_started = Utility.allSetsStarted(curr_workout);
             boolean allFinished = (sets_started && Utility.allSetsFinished(curr_workout));
-            this.initializeSnackbar(v, sets_started, allFinished);
+            this.initializeSnackbar(v,sets_started, allFinished);
         }
     }
 
 
     //Starts timer when set button is pressed.
     //TODO: Change "+5lb next time" to  "+{user preference lb/ki} next time!.
-    public void initializeSnackbar(View view, boolean sets_started, boolean allFinished){
-        View snackView = mInflater.inflate(R.layout.my_snackbar, null);
-        TextView timerView = (TextView) snackView.findViewById(R.id.timer);
-        Snackbar snackbar = Utility.startCustomSnackbar(view,snackView,timerView);
-
-
+    public void initializeSnackbar( View view, boolean sets_started, boolean allFinished){
         if(!sets_started){
             //Since all sets aren't done, hide the congrats/failure message.
-            viewHolder.completed_dialog.setText(null);
-            ExerciseActivity.setTimer.startTimer(timerView);
-
+            viewHolder.completed_dialog.setText(null);;
             if(currRep == maxReps) {
-                snackbar.setText("Nice job! Rest up for the next one.").setDuration(18000);
-                snackbar.show();
+                setTimer.startTimer("Nice job! Rest up for the next one.",18000);
             }
             if(currRep == maxReps-1) {
-                snackbar.setText("Rest a bit longer for the next one!").setDuration(25000);
-                snackbar.show();
+                setTimer.startTimer("Rest a bit longer for the next one!",25000);
             }
         }
 
         if(sets_started && !allFinished){
             viewHolder.completed_dialog.setText(R.string.failed);
+            setTimer.dismissSnackBar().cancelTimer();
         }
         else if(allFinished){
             viewHolder.completed_dialog.setText(R.string.congrats);
+            setTimer.dismissSnackBar().cancelTimer();
         }
     }
 
