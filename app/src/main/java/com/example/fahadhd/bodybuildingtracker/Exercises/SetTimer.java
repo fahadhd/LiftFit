@@ -1,7 +1,6 @@
 package com.example.fahadhd.bodybuildingtracker.Exercises;
 
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -10,8 +9,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.R;
-
-import java.util.zip.Inflater;
 
 /**Controls the timer for each set during a workout. Timer duration depends on user preference.**/
 public class SetTimer implements Runnable {
@@ -34,13 +31,14 @@ public class SetTimer implements Runnable {
 
     public SetTimer startTimer(String message, int duration){
         this.current_time = 0L;
+        this.resetTimer();
         currSnackBar = initCustomSnackbar();
         currSnackBar.setText(message).setDuration(duration);
         handler.postDelayed(this,1000);
         currSnackBar.show();
         return this;
     }
-    public SetTimer cancelTimer(){
+    public SetTimer resetTimer(){
         handler.removeCallbacks(this);
         return this;
     }
@@ -79,7 +77,7 @@ public class SetTimer implements Runnable {
             @Override
             public void onClick(View v) {
                 snackbar.dismiss();
-                SetTimer.this.cancelTimer();
+                SetTimer.this.resetTimer();
             }
         });
         snackbar.setActionTextColor(Color.WHITE);

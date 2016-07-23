@@ -56,11 +56,11 @@ public class SetListener implements View.OnClickListener {
         //Updating the current rep and workout object.
         currRep = dao.updateRep(setWorkoutKey,setNum,currRep,maxReps);
         curr_workout = dao.updateWorkout(curr_workout);
-        setTimer.cancelTimer();
 
         //Display the default button when a set's rep number reaches 0.
         if(currRep == 0){
             setButton.setText(null);
+            setTimer.dismissSnackBar();
             viewHolder.completed_dialog.setText(null);
 
         }
@@ -89,11 +89,11 @@ public class SetListener implements View.OnClickListener {
 
         if(sets_started && !allFinished){
             viewHolder.completed_dialog.setText(R.string.failed);
-            setTimer.dismissSnackBar().cancelTimer();
+            setTimer.dismissSnackBar();
         }
         else if(allFinished){
             viewHolder.completed_dialog.setText(R.string.congrats);
-            setTimer.dismissSnackBar().cancelTimer();
+            setTimer.dismissSnackBar();
         }
     }
 
