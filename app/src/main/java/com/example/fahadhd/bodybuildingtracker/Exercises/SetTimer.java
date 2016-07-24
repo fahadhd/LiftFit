@@ -20,13 +20,10 @@ public class SetTimer implements Runnable {
     ExerciseActivity exerciseActivity;
 
     public  SetTimer(ExerciseActivity exerciseActivity){
-        LayoutInflater inflater =  exerciseActivity.getLayoutInflater();
         this.handler = new Handler();
         this.current_time = 0L;
         this.exerciseActivity = exerciseActivity;
         this.exerciseView = exerciseActivity.findViewById(R.id.exercises_list_main);
-        this.snackView = inflater.inflate(R.layout.my_snackbar, null);
-        this.timerView = (TextView) snackView.findViewById(R.id.timer);
     }
 
     public SetTimer startTimer(String message, int duration){
