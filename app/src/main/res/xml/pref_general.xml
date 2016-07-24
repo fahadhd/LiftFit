@@ -19,15 +19,15 @@
         android:title="@string/pref_title_display_name" />
 
     <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-         dismiss it. -->
+       dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
-        android:defaultValue="-1"
-        android:entries="@array/pref_example_list_titles"
-        android:entryValues="@array/pref_example_list_values"
-        android:key="example_list"
+        android:defaultValue="@string/pref_units_pounds"
+        android:entries="@array/pref_unit_list_titles"
+        android:entryValues="@array/pref_unit_list_values"
+        android:key="unit_list"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/pref_title_add_friends_to_messages" />
+        android:title="@string/pref_title_unit" />
 
 </PreferenceScreen>

@@ -21,17 +21,18 @@
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
+    <string name="pref_title_unit">Weight Unit</string>
+    <string-array name="pref_unit_list_titles">
+        <item>Pounds</item>
+        <item>Kilograms</item>
     </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
+    <string-array name="pref_unit_list_values">
+        <item>@string/pref_units_pounds</item>
+        <item>@string/pref_units_kilograms</item>
     </string-array>
+
+    <string name="pref_units_pounds">pounds</string>
+    <string name="pref_units_kilograms">kilograms</string>
 
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
