@@ -2,21 +2,9 @@
 
     <SwitchPreference
         android:defaultValue="true"
-        android:key="example_switch"
-        android:summary="@string/pref_description_social_recommendations"
-        android:title="@string/pref_title_social_recommendations" />
-
-    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-    <EditTextPreference
-        android:capitalize="words"
-        android:defaultValue="@string/pref_default_display_name"
-        android:inputType="textCapWords"
-        android:key="example_text"
-        android:maxLines="1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="@string/pref_title_display_name" />
+        android:key="timer_switch"
+        android:summary="@string/pref_description_timer"
+        android:title="@string/pref_title_timer" />
 
     <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
        dismiss it. -->
@@ -25,9 +13,22 @@
         android:defaultValue="@string/pref_units_pounds"
         android:entries="@array/pref_unit_list_titles"
         android:entryValues="@array/pref_unit_list_values"
-        android:key="unit_list"
+        android:key="@string/pref_unit_list_key"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_unit" />
+
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_default_user_weight"
+        android:inputType="number"
+        android:key="@string/pref_user_weight_key"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_user_weight" />
+
 
 </PreferenceScreen>
