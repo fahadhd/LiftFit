@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class).
-                        putExtra(ADD_TASK,Utility.addSession(dao));
+                        putExtra(ADD_TASK,Utility.addSession(dao,MainActivity.this));
 
                 startActivity(exercise);
             }

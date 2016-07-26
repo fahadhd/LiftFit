@@ -2,8 +2,10 @@ package com.example.fahadhd.bodybuildingtracker;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -42,13 +44,16 @@ public class Utility {
             }
         });
     }
-    public static Session addSession(TrackerDAO dao){
+    public static Session addSession(TrackerDAO dao, MainActivity activity){
         SimpleDateFormat fmt = new SimpleDateFormat("MMMM dd");
         GregorianCalendar calendar = new GregorianCalendar();
         fmt.setCalendar(calendar);
         String dateFormatted = fmt.format(calendar.getTime());
-        //TODO: Add user_weight to settings and acquire it from preferences.
-        int user_weight = 185;
+        SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(activity);
+        int user_weight = Integer.parseInt(shared_pref.getString(activity.getString
+                (R.string.pref_user_weight_key),activity.getString
+                (R.string.pref_default_user_weight)));
+
         long id =  dao.addSession(dateFormatted,user_weight);
         return  new Session(dateFormatted,user_weight,id);
     }
@@ -74,14 +79,5 @@ public class Utility {
         }
         return true;
     }
-
-    //TODO: Find a way to notify activity when a snackbar is dismissed other than just hitting the dismiss button
-
-
-
-
-
-
-
 
 }

@@ -41,9 +41,8 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.exercise_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
 
 
