@@ -2,9 +2,9 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/blue_grey_500</item>
+        <item name="colorPrimaryDark">@color/blue_grey_700</item>
+        <item name="colorAccent">@color/orange_a400</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -13,7 +13,7 @@
     </style>
 
     <style name="Main.Actionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:textColorPrimary">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/orange_a400</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
     </style>

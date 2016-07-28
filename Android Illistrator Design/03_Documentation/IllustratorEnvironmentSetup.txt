@@ -1,0 +1,8 @@
+Illustrator setup
+
+- set grid 64pt, 8 pt subdivison. 16 pt subdivision when adjusting text
+- enable snap to grid 
+- show/hide grid (tip: bind ctrl+h to show/hide grid)
+- enable snap to point
+- to export XHDPI png, change resolution to 216 PPI (export/.PNG/in dialog select other)
+
