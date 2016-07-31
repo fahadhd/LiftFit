@@ -1,6 +1,7 @@
 package com.example.fahadhd.bodybuildingtracker.Sessions;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 public class SessionAdapter extends BaseAdapter {
     Context context;
     ArrayList<Session> sessions;
+
     public SessionAdapter(Context mContext, ArrayList<Session> sessions) {
         this.context = mContext;
         this.sessions = sessions;
@@ -36,14 +38,15 @@ public class SessionAdapter extends BaseAdapter {
         return position;
     }
 
-    public class ViewHolder{
+    public class ViewHolder {
         TextView date;
         TextView user_weight;
         TextView sessionID;
-        public ViewHolder(View view){
-            this.date = (TextView)view.findViewById(R.id.date);
-            this.user_weight = (TextView)view.findViewById(R.id.user_weight);
-            this.sessionID = (TextView)view.findViewById(R.id.sessionID);
+
+        public ViewHolder(View view) {
+            this.date = (TextView) view.findViewById(R.id.date);
+            this.user_weight = (TextView) view.findViewById(R.id.user_weight);
+            this.sessionID = (TextView) view.findViewById(R.id.sessionID);
         }
 
     }
@@ -58,7 +61,7 @@ public class SessionAdapter extends BaseAdapter {
         if (row == null) {
             LayoutInflater inflater = (LayoutInflater) context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.sessions_list_item, null);
+            row = inflater.inflate(R.layout.sessions_list_item, parent, false);
             viewHolder = new ViewHolder(row);
             row.setTag(viewHolder);
         }
@@ -73,7 +76,7 @@ public class SessionAdapter extends BaseAdapter {
         viewHolder.user_weight.setText(session.getWeight().toString());
         viewHolder.sessionID.setText(session.getSessionId().toString());
         return row;
+
+
     }
-
-
 }

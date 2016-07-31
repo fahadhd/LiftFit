@@ -1,56 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:orientation="vertical"
-    >
-    <LinearLayout
+    android:background="@drawable/list_background"
+    android:orientation="horizontal">
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="80dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Session"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/sessionID"/>
-    </LinearLayout>
-    <LinearLayout
+        android:textColor="@color/orange_a400"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:id="@+id/sessionID"
+        android:layout_marginLeft="33dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="5dp"
+         />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="10dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/date"/>
-    </LinearLayout>
-    <LinearLayout
+        android:textColor="@color/orange_a400"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:id="@+id/date"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"/>
+
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="65dp"
-        android:layout_marginBottom="20dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="User Weight"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/user_weight"/>
-    </LinearLayout>
+        android:textColor="@color/orange_a400"
+        android:textStyle="bold"
+        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:id="@+id/user_weight"
+        />
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/orange_a400"-->
+        <!--android:text="A"-->
+        <!--android:id="@+id/session_type"/>-->
+
 
 
 </LinearLayout>
