@@ -45,7 +45,7 @@ public class Utility {
         });
     }
     public static Session addSession(TrackerDAO dao, MainActivity activity){
-        SimpleDateFormat fmt = new SimpleDateFormat("MMMM dd");
+        SimpleDateFormat fmt = new SimpleDateFormat("MMM dd");
         GregorianCalendar calendar = new GregorianCalendar();
         fmt.setCalendar(calendar);
         String dateFormatted = fmt.format(calendar.getTime());

@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
+        tools:listitem="@layout/sessions_list_item"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"
         android:cacheColorHint="#00000000"
