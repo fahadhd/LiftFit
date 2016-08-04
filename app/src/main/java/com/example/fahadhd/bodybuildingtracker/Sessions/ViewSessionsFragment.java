@@ -36,7 +36,6 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
     }
 
     private SessionAdapter adapter;
-    public static Session lastSession;
     private ArrayList<Session> sessions = new ArrayList<>();
     ListView sessionsListView;
     TrackerDAO dao;
@@ -86,7 +85,6 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
 
         return rootView;
     }
-
 
 
     ////////////////////////// ASYNC LOADER FOR LIST ADAPTERS/////////////////////////

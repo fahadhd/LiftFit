@@ -104,7 +104,7 @@ public class TrackerDAO {
             String date = cursor.getString(dateIndex);
             int weight = cursor.getInt(weightIndex);
             long sessionId = cursor.getLong(sessionNum);
-            sessions.add(new Session(date,weight,sessionId));
+            sessions.add(new Session(date,weight,sessionId,getWorkouts(sessionId)));
         }
         cursor.close();
 

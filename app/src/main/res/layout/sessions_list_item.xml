@@ -6,11 +6,13 @@
 
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical">
-
+    <!--List view Background-->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/list_background"/>
+
+    <!--Info for the octagon icons-->
     <TextView
         android:layout_width="83dp"
         android:layout_height="44dp"
@@ -38,7 +40,7 @@
         android:textSize="20sp"
         android:id="@+id/sessionID"
 
- />
+        />
 
     <TextView
         android:layout_width="45dp"
@@ -52,15 +54,105 @@
         android:text="185"
         android:textSize="20sp"
         android:id="@+id/user_weight"
- />
+        />
+
+    <!--First Workout Preview-->
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:id="@+id/workout_one_title"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/workout_one_row_one"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_alignBaseline="@+id/user_weight"
+        android:layout_marginLeft="20dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/workout_one_row_two"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_below="@+id/workout_one_row_one"
+        android:layout_marginLeft="20dp"
+        />
+
+    <!--Second Workout Preview-->
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:id="@+id/workout_two_title"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="80dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/workout_two_row_one"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_alignBaseline="@+id/user_weight"
+        android:layout_marginLeft="90dp"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/workout_two_row_two"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_below="@+id/workout_two_row_one"
+        android:layout_marginLeft="90dp"
+        />
+
+
+
+    <!--Third Workout Preview-->
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:id="@+id/workout_three_title"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="150dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/workout_three_row_one"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_alignBaseline="@+id/user_weight"
+        android:layout_marginLeft="160dp"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/workout_three_row_two"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_below="@+id/workout_two_row_one"
+        android:layout_marginLeft="160dp"
+        />
+
+
+
+
+
 
 
     <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textColor="@color/orange_a400"-->
-        <!--android:text="A"-->
-        <!--android:id="@+id/session_type"/>-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textColor="@color/orange_a400"-->
+    <!--android:text="A"-->
+    <!--android:id="@+id/session_type"/>-->
 
 
 

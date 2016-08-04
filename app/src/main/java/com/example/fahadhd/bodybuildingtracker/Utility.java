@@ -22,6 +22,7 @@ import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 //Handles all helper methods for various classes
@@ -44,6 +45,7 @@ public class Utility {
             }
         });
     }
+
     public static Session addSession(TrackerDAO dao, MainActivity activity){
         SimpleDateFormat fmt = new SimpleDateFormat("MMM dd");
         GregorianCalendar calendar = new GregorianCalendar();
@@ -55,7 +57,7 @@ public class Utility {
                 (R.string.pref_default_user_weight)));
 
         long id =  dao.addSession(dateFormatted,user_weight);
-        return  new Session(dateFormatted,user_weight,id);
+        return  new Session(dateFormatted,user_weight,id,null);
     }
 
 
@@ -79,5 +81,18 @@ public class Utility {
         }
         return true;
     }
+
+    public static String[] previewTextHelper(Workout workout){
+        ArrayList<Set> sets = workout.getSets();
+        String row_one = "", row_two = "";
+        for(int i = 0; (i <= 4) && (i < sets.size()); i++){
+            row_one += Integer.toString(sets.get(i).getCurrRep());
+        }
+        for(int i = 5; (i <= 7) && (i < sets.size()); i++){
+            row_two += Integer.toString(sets.get(i).getCurrRep());
+        }
+        return new String[] {row_one,row_two};
+    }
+
 
 }

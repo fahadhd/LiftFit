@@ -17,17 +17,18 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay">
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/session_button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity = "right"
-                app:fabSize="mini"
-                android:src="@android:drawable/ic_input_get"/>
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/session_button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity = "right|bottom"
+        android:layout_margin="20dp"
+     />
 
 
 
