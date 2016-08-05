@@ -3,35 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-
+    android:background="@drawable/list_bar"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical">
-    <!--List view Background-->
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/list_background"/>
+
 
     <!--Info for the octagon icons-->
     <TextView
-        android:layout_width="83dp"
-        android:layout_height="44dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/octagon"
         android:textColor="@color/orange_a400"
-        android:layout_marginLeft="53dp"
-        android:layout_marginTop="25dp"
-
-
         android:textStyle="bold"
-        android:textSize="13sp"
-        android:text="Aug 24"
-
+        android:textSize="17sp"
+        android:text="Aug 27"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
         android:id="@+id/date" />
 
     <TextView
-        android:layout_width="45dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/octagon"
         android:layout_marginTop="62dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="16dp"
 
         android:textColor="@color/orange_a400"
         android:textStyle="bold"
@@ -43,9 +39,10 @@
         />
 
     <TextView
-        android:layout_width="45dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
+        android:background="@drawable/octagon"
+        android:layout_marginLeft="33dp"
         android:layout_toRightOf="@+id/sessionID"
         android:layout_alignTop="@id/sessionID"
         android:textColor="@color/orange_a400"
@@ -54,6 +51,21 @@
         android:text="185"
         android:textSize="20sp"
         android:id="@+id/user_weight"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/octagon"
+        android:layout_alignLeft="@+id/date"
+        android:layout_marginTop="119dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/orange_a400"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="A"
+        android:textSize="20sp"
+        android:id="@+id/session_type"
         />
 
     <!--First Workout Preview-->
@@ -141,18 +153,6 @@
         android:layout_marginLeft="160dp"
         />
 
-
-
-
-
-
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:textColor="@color/orange_a400"-->
-    <!--android:text="A"-->
-    <!--android:id="@+id/session_type"/>-->
 
 
 
