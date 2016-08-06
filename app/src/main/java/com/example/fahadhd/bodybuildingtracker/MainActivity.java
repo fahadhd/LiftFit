@@ -1,29 +1,22 @@
 package com.example.fahadhd.bodybuildingtracker;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.Exercises.ExerciseActivity;
-import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
-import com.example.fahadhd.bodybuildingtracker.Sessions.ViewSessionsFragment;
+import com.example.fahadhd.bodybuildingtracker.Sessions.SessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
-import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
 /*Front view of app with a floating action button to add a exercise at the top*/
 public class MainActivity extends AppCompatActivity {
 
-   ViewSessionsFragment sessionsFragment;
+   SessionsFragment sessionsFragment;
     //Database action object to query sqlite database tracker.db
     TrackerDAO dao;
 
@@ -41,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         dao = application.getDatabase();
 
 
-        sessionsFragment =  ((ViewSessionsFragment)getSupportFragmentManager()
+        sessionsFragment =  ((SessionsFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.sessions_fragment));
 
         FloatingActionButton addTask = (FloatingActionButton) findViewById(R.id.session_button);

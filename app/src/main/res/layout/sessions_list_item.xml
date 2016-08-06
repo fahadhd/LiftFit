@@ -94,6 +94,15 @@
         android:layout_below="@+id/workout_one_row_one"
         android:layout_marginLeft="20dp"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/workout_one_weight"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_below="@+id/workout_one_row_two"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        />
 
     <!--Second Workout Preview-->
     <TextView
@@ -120,6 +129,16 @@
         android:id="@+id/workout_two_row_two"
         android:layout_toRightOf="@+id/user_weight"
         android:layout_below="@+id/workout_two_row_one"
+        android:layout_marginLeft="90dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/workout_two_weight"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_below="@+id/workout_two_row_two"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="90dp"
         />
 
@@ -150,6 +169,16 @@
         android:id="@+id/workout_three_row_two"
         android:layout_toRightOf="@+id/user_weight"
         android:layout_below="@+id/workout_two_row_one"
+        android:layout_marginLeft="160dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/workout_three_weight"
+        android:layout_toRightOf="@+id/user_weight"
+        android:layout_below="@+id/workout_three_row_two"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="160dp"
         />
 

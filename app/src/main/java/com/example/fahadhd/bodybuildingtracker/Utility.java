@@ -87,9 +87,15 @@ public class Utility {
         String row_one = "", row_two = "";
         for(int i = 0; (i <= 4) && (i < sets.size()); i++){
             row_one += Integer.toString(sets.get(i).getCurrRep());
+            if(i < 4){
+                row_one+= " ";
+            }
         }
         for(int i = 5; (i <= 7) && (i < sets.size()); i++){
             row_two += Integer.toString(sets.get(i).getCurrRep());
+            if(i < 7){
+                row_two+= " ";
+            }
         }
         return new String[] {row_one,row_two};
     }

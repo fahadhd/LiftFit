@@ -31,7 +31,7 @@ public class ExerciseLoader extends AsyncTaskLoader<List<Workout>> {
 
     @Override
     public List<Workout> loadInBackground() {
-        return dao.getWorkouts(sessionID);
+        return dao.getWorkouts(sessionID,false);
     }
 
     @Override

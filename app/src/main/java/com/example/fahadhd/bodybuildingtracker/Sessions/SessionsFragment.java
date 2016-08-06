@@ -30,16 +30,15 @@ import java.util.List;
  * past workout and allows the ability to add a new workout which will then start another
  * activity.
  */
-public class ViewSessionsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Session>>{
+public class SessionsFragment extends Fragment{
 
-    public ViewSessionsFragment() {
+    public SessionsFragment() {
     }
 
     private SessionAdapter adapter;
     private ArrayList<Session> sessions = new ArrayList<>();
     ListView sessionsListView;
     TrackerDAO dao;
-
 
 
     public static final String INTENT_KEY = "Session_ID";
@@ -49,17 +48,8 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
         super.onCreate(savedInstanceState);
         TrackerApplication application  = (TrackerApplication)getActivity().getApplication();
         dao = application.getDatabase();
-
+        new GetSessions().execute();
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        getActivity().getSupportLoaderManager().initLoader(R.id.session_loader_id,null,this);
-    }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,27 +76,21 @@ public class ViewSessionsFragment extends Fragment implements LoaderManager.Load
         return rootView;
     }
 
+    public class GetSessions extends AsyncTask<Void,Void,ArrayList<Session>>{
 
-    ////////////////////////// ASYNC LOADER FOR LIST ADAPTERS/////////////////////////
-    /*Let the loader handle adding data to the list view of session*/
-    @Override
-    public Loader<List<Session>> onCreateLoader(int id, Bundle args) {
-        return new SessionLoader(getActivity().getApplicationContext(),dao);
+        @Override
+        protected ArrayList<Session> doInBackground(Void... params) {
+            return SessionsFragment.this.dao.getSessions();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Session> sessions) {
+            SessionsFragment.this.sessions.addAll(sessions);
+        }
     }
 
-    @Override
-    public void onLoadFinished(Loader<List<Session>> loader, List<Session> data) {
 
-           for(Session session:data){
-               sessions.add(0,session);
-           }
-    }
 
-    @Override
-    public void onLoaderReset(Loader<List<Session>> loader) {
-            sessions.clear();
-
-    }
 
 
 }

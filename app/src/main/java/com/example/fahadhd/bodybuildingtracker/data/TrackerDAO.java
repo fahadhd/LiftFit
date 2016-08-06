@@ -104,7 +104,7 @@ public class TrackerDAO {
             String date = cursor.getString(dateIndex);
             int weight = cursor.getInt(weightIndex);
             long sessionId = cursor.getLong(sessionNum);
-            sessions.add(new Session(date,weight,sessionId,getWorkouts(sessionId)));
+            sessions.add(0,new Session(date,weight,sessionId,getWorkouts(sessionId,true)));
         }
         cursor.close();
 
@@ -142,7 +142,7 @@ public class TrackerDAO {
         return sets;
     }
 
-    public ArrayList<Workout> getWorkouts(long sessionID){
+    public ArrayList<Workout> getWorkouts(long sessionID,boolean getPreviews){
         ArrayList<Workout> workouts = new ArrayList<>();
         String[] columns = {
                 TrackerDbHelper.WorkoutEntry._ID,
@@ -157,7 +157,10 @@ public class TrackerDAO {
         Cursor cursor = db.
                 query(TrackerDbHelper.WorkoutEntry.TABLE_NAME,columns,where,null,null,null,null);
 
-        while(cursor.moveToNext()){
+        int workoutNum = (getPreviews) ? 3 : 8;
+        int i = 0;
+
+        while(cursor.moveToNext() && i < workoutNum){
             int workoutKey = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry._ID);
             int workout_order_column = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry.COLUMN_WORKOUT_NUM);
             int name_column = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry.COLUMN_NAME);
@@ -177,6 +180,7 @@ public class TrackerDAO {
                     weight,maxSets,maxReps,sets);
 
             workouts.add(workout);
+            i++;
         }
         cursor.close();
         return workouts;

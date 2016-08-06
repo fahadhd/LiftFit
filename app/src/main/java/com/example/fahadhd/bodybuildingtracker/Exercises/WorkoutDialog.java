@@ -103,7 +103,6 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
             else{
                 weight = (weightString.equals("")) ? 185: Integer.parseInt(weightString);
                 communicator.getWorkoutInfo(name,weight,setChoice,repChoice);
-                //TODO: This causes the dialog to close slow.
                 dismiss();
 
             }

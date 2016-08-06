@@ -1,7 +1,6 @@
 package com.example.fahadhd.bodybuildingtracker.Exercises;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,14 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
-import com.example.fahadhd.bodybuildingtracker.Sessions.ViewSessionsFragment;
+import com.example.fahadhd.bodybuildingtracker.Sessions.SessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
-import com.example.fahadhd.bodybuildingtracker.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 import java.util.ArrayList;
@@ -63,10 +60,10 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         Intent sessionIntent = getActivity().getIntent();
 
         //Get session information from main activity
-        if(sessionIntent != null && sessionIntent.hasExtra(ViewSessionsFragment.INTENT_KEY)) {
+        if(sessionIntent != null && sessionIntent.hasExtra(SessionsFragment.INTENT_KEY)) {
 
             currentSession = (Session) sessionIntent.getSerializableExtra
-                    (ViewSessionsFragment.INTENT_KEY);
+                    (SessionsFragment.INTENT_KEY);
             setExistingWorkout(currentSession);
         }
         else if (sessionIntent != null && sessionIntent.hasExtra(MainActivity.ADD_TASK)){
