@@ -32,17 +32,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TrackerApplication application  = (TrackerApplication)getActivity().getApplication();

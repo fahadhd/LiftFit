@@ -36,7 +36,7 @@ public class SessionsFragment extends Fragment{
     }
 
     private SessionAdapter adapter;
-    private ArrayList<Session> sessions = new ArrayList<>();
+    private ArrayList<Session> sessions;
     ListView sessionsListView;
     TrackerDAO dao;
 
@@ -48,6 +48,7 @@ public class SessionsFragment extends Fragment{
         super.onCreate(savedInstanceState);
         TrackerApplication application  = (TrackerApplication)getActivity().getApplication();
         dao = application.getDatabase();
+        sessions = application.getSessions();
         new GetSessions().execute();
     }
 
@@ -80,12 +81,22 @@ public class SessionsFragment extends Fragment{
 
         @Override
         protected ArrayList<Session> doInBackground(Void... params) {
-            return SessionsFragment.this.dao.getSessions();
+            return dao.getSessions();
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Session> sessions) {
-            SessionsFragment.this.sessions.addAll(sessions);
+        protected void onPostExecute(ArrayList<Session> result) {
+            if(sessions.isEmpty()){
+                sessions.addAll(result);
+            }
+            else if(result.size() > sessions.size()){
+                sessions.add(0,result.get(0));
+            }
+            else{
+                sessions.clear();
+                sessions.addAll(result);
+            }
+            adapter.notifyDataSetChanged();
         }
     }
 
