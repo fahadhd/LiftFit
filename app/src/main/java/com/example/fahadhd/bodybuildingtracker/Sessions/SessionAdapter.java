@@ -107,6 +107,7 @@ public class SessionAdapter extends BaseAdapter {
 
 
     public static void setTextPreviews(ArrayList<Workout> workouts, ViewHolder viewHolder){
+        if(workouts == null) return;
         Workout workout_one = (workouts.size() > 0) ? workouts.get(0) : null;
         Workout workout_two = (workouts.size() > 1) ? workouts.get(1) : null;
         Workout workout_three = (workouts.size() > 2) ? workouts.get(2) : null;
