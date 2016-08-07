@@ -1,11 +1,13 @@
 package com.example.fahadhd.bodybuildingtracker;
 
 import android.app.Application;
+import android.os.AsyncTask;
 import android.widget.Toast;
 
 
 import com.example.fahadhd.bodybuildingtracker.Exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
+import com.example.fahadhd.bodybuildingtracker.Sessions.SessionAdapter;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 public class TrackerApplication extends Application {
     TrackerDAO dao;
     ArrayList<Session> sessions;
+    public static int currSessionPosition;
 
     @Override
     public void onCreate() {
@@ -21,7 +24,7 @@ public class TrackerApplication extends Application {
         //this.deleteDatabase(TrackerDbHelper.DATABASE_NAME);
         dao = new TrackerDAO(getApplicationContext());
         sessions = new ArrayList<>();
-        // Toast.makeText(this,"APP ON_CREATE WAS CALLED",Toast.LENGTH_SHORT).show();
+        currSessionPosition = 0;
     }
 
     public TrackerDAO getDatabase(){
@@ -30,5 +33,9 @@ public class TrackerApplication extends Application {
 
     public ArrayList<Session> getSessions() {
         return sessions;
+    }
+
+    public int getCurrSessionPosition() {
+        return currSessionPosition;
     }
 }

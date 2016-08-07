@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.Exercises.ExerciseActivity;
 import com.example.fahadhd.bodybuildingtracker.Sessions.SessionsFragment;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     TrackerDAO dao;
 
     public static final String ADD_TASK = "Add_Session";
+
 
 
     @Override
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class).
                         putExtra(ADD_TASK,Utility.addSession(dao,MainActivity.this));
-
+                sessionsFragment.refreshData();
                 startActivity(exercise);
             }
         });

@@ -100,7 +100,7 @@ public class SessionAdapter extends BaseAdapter {
         viewHolder.date.setText(session.getDate());
         viewHolder.user_weight.setText(session.getWeight().toString());
         viewHolder.sessionID.setText(session.getSessionId().toString());
-       setTextPreviews(session.getWorkouts(),viewHolder);
+        setTextPreviews(session.getWorkouts(),viewHolder);
         return row;
 
     }
@@ -113,30 +113,43 @@ public class SessionAdapter extends BaseAdapter {
         Workout workout_three = (workouts.size() > 2) ? workouts.get(2) : null;
 
         if(workout_one != null){
-          String[] rows = Utility.previewTextHelper(workout_one);
+            String[] rows = Utility.previewTextHelper(workout_one);
             viewHolder.one_title.setText(workout_one.getName());
             viewHolder.one_row_one.setText(rows[0]);
             viewHolder.one_row_two.setText(rows[1]);
-         viewHolder.one_weight.setText(Integer.toString(workout_one.getWeight()));
+            viewHolder.one_weight.setText(Integer.toString(workout_one.getWeight()));
+        }
+        else{
+            viewHolder.one_title.setText("");
+            viewHolder.one_row_one.setText("");
+            viewHolder.one_row_two.setText("");
+            viewHolder.one_weight.setText("");
         }
         if(workout_two != null){
             String[] rows = Utility.previewTextHelper(workout_two);
             viewHolder.two_title.setText(workout_two.getName());
             viewHolder.two_row_one.setText(rows[0]);
             viewHolder.two_row_two.setText(rows[1]);
-           viewHolder.two_weight.setText(Integer.toString(workout_two.getWeight()));
+            viewHolder.two_weight.setText(Integer.toString(workout_two.getWeight()));
+        }
+        else{
+            viewHolder.two_title.setText("");
+            viewHolder.two_row_one.setText("");
+            viewHolder.two_row_two.setText("");
+            viewHolder.two_weight.setText("");
         }
         if(workout_three != null){
             String[] rows = Utility.previewTextHelper(workout_three);
             viewHolder.three_title.setText(workout_three.getName());
             viewHolder.three_row_one.setText(rows[0]);
             viewHolder.three_row_two.setText(rows[1]);
-           viewHolder.three_weight.setText(Integer.toString(workout_three.getWeight()));
+            viewHolder.three_weight.setText(Integer.toString(workout_three.getWeight()));
         }
-
-
-
-
+        else{
+            viewHolder.three_title.setText("");
+            viewHolder.three_row_one.setText("");
+            viewHolder.three_row_two.setText("");
+            viewHolder.three_weight.setText("");
+        }
     }
-
 }

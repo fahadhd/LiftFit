@@ -104,7 +104,7 @@ public class TrackerDAO {
             String date = cursor.getString(dateIndex);
             int weight = cursor.getInt(weightIndex);
             long sessionId = cursor.getLong(sessionNum);
-            sessions.add(0,new Session(date,weight,sessionId,null));
+            sessions.add(0,new Session(date,weight,sessionId,getWorkouts(sessionId,true)));
         }
         cursor.close();
 
@@ -160,7 +160,7 @@ public class TrackerDAO {
         int workoutNum = (getPreviews) ? 3 : 8;
         int i = 0;
 
-        while(cursor.moveToNext() && i < workoutNum){
+        while(i < workoutNum && cursor.moveToNext()){
             int workoutKey = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry._ID);
             int workout_order_column = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry.COLUMN_WORKOUT_NUM);
             int name_column = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry.COLUMN_NAME);
@@ -227,6 +227,29 @@ public class TrackerDAO {
         return null;
     }
 
+    public Session getSession(long sessionID){
+        String[] columns = {TrackerDbHelper.SessionEntry._ID,TrackerDbHelper.SessionEntry.COLUMN_DATE,
+                TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT};
+        String where = TrackerDbHelper.SessionEntry._ID+" = "+sessionID;
+        Cursor cursor = db.
+                query(TrackerDbHelper.SessionEntry.TABLE_NAME,columns,where,null,null,null,null);
+
+        if(cursor.moveToNext()){
+            int dateIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_DATE);
+            int weightIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT);
+            int sessionNum = cursor.getColumnIndex(TrackerDbHelper.SessionEntry._ID);
+
+            String date = cursor.getString(dateIndex);
+            int weight = cursor.getInt(weightIndex);
+            long sessionId = cursor.getLong(sessionNum);
+            cursor.close();
+            return new Session(date,weight,sessionId,getWorkouts(sessionId,true));
+        }
+        else {
+            cursor.close();
+            return null;
+        }
+    }
 
 
 

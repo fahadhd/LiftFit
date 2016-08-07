@@ -49,13 +49,20 @@ public class SessionsFragment extends Fragment{
         TrackerApplication application  = (TrackerApplication)getActivity().getApplication();
         dao = application.getDatabase();
         sessions = application.getSessions();
-        new GetSessions().execute();
+        if(sessions.isEmpty()){
+            refreshData();
+        }
+        Intent sessionIntent = getActivity().getIntent();
+        if(sessionIntent != null && sessionIntent.hasExtra(ExerciseActivity.SESSION_ID)) {
+            new UpdateSession().execute(sessionIntent.getLongExtra(ExerciseActivity.SESSION_ID,0));
+        }
+        adapter = new SessionAdapter(getActivity(),sessions);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        adapter = new SessionAdapter(getActivity(),sessions);
+
         View rootView = inflater.inflate(R.layout.sessions_list_fragment, container, false);
 
 
@@ -77,7 +84,22 @@ public class SessionsFragment extends Fragment{
         return rootView;
     }
 
-    public class GetSessions extends AsyncTask<Void,Void,ArrayList<Session>>{
+    public void refreshSessionData(long sessionID){
+        Session updatedSession = dao.getSession(sessionID);
+        for(int i = 0 ; i < sessions.size(); i++){
+            if(sessions.get(i).getSessionId() == sessionID){
+                sessions.set(i,updatedSession);
+                return;
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void refreshData(){
+        new GetSessions().execute();
+    }
+
+    public class GetSessions extends AsyncTask<Void,Void,ArrayList<Session>> {
 
         @Override
         protected ArrayList<Session> doInBackground(Void... params) {
@@ -100,8 +122,12 @@ public class SessionsFragment extends Fragment{
         }
     }
 
+    public class UpdateSession extends AsyncTask<Long,Void,Void>{
 
-
-
-
+        @Override
+        protected Void doInBackground(Long... params) {
+            refreshSessionData(params[0]);
+            return null;
+        }
+    }
 }

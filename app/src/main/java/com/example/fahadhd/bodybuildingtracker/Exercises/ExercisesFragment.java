@@ -6,10 +6,14 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
@@ -72,6 +76,8 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         String title = session.getDate() + "   Session  #"+session.getSessionId();
         getActivity().setTitle(title);
     }
+
+
 
 
     /*************** ASYNC LOADER FOR ADAPTER********************/

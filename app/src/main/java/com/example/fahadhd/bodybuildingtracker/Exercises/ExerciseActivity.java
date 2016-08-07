@@ -10,6 +10,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
+import com.example.fahadhd.bodybuildingtracker.Sessions.SessionsFragment;
+import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
@@ -36,16 +40,14 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     ArrayList<Workout> workouts;
     SetTimer setTimer;
     String name;
+    TrackerApplication application;
+    public static final String SESSION_ID= "sessionID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
-
-
-
-
-
+        application  = (TrackerApplication)this.getApplication();
         exercisesFragment = (ExercisesFragment) getSupportFragmentManager().
                 findFragmentById(R.id.exercises_fragment);
 
@@ -91,6 +93,18 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         workouts = exercisesFragment.workouts;
         this.name = name;
         new AddWorkoutTask().execute(weight, max_sets, max_reps);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(getApplicationContext(),MainActivity.class).
+                        putExtra(SESSION_ID,exercisesFragment.sessionID));
+
+                return true;
+        }
+        return (super.onOptionsItemSelected(menuItem));
     }
 
     /*************** Add workout data in background thread via async task*****************/
