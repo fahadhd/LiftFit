@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class).
                         putExtra(ADD_TASK,Utility.addSession(dao,MainActivity.this));
-                sessionsFragment.refreshData();
                 startActivity(exercise);
             }
         });

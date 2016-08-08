@@ -31,6 +31,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     ExerciseAdapter adapter;
     Session currentSession;
     long sessionID;
+    ArrayList<Session> sessions;
     ArrayList<Workout> workouts = new ArrayList<>();
     ListView exerciseListView;
 
@@ -40,6 +41,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         super.onCreate(savedInstanceState);
         TrackerApplication application  = (TrackerApplication)getActivity().getApplication();
         dao = application.getDatabase();
+        sessions = application.getSessions();
     }
 
     @Override
@@ -62,6 +64,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         else if (sessionIntent != null && sessionIntent.hasExtra(MainActivity.ADD_TASK)){
             currentSession = (Session) sessionIntent.getSerializableExtra
                     (MainActivity.ADD_TASK);
+            sessions.add(0,currentSession);
             getActivity().setTitle("Today's Workout");
         }
         sessionID = currentSession.getSessionId();

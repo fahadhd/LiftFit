@@ -37,7 +37,7 @@ public class TrackerDAO {
     }
 
 
-
+    /**************************INSERTIONS TO THE DATABASE********************************/
     public long addSession(String date, int weight){
         ContentValues values  = new ContentValues();
         values.put(TrackerDbHelper.SessionEntry.COLUMN_DATE,date);
@@ -73,22 +73,8 @@ public class TrackerDAO {
         db.endTransaction();
     }
 
-    //Update a current rep in a set. Returns the new current rep of a set.
-    public int updateRep(long workoutKey, int setNum, int currRep, int maxRep){
-        String workoutKeyName = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY;
-        String setNumName = TrackerDbHelper.SetEntry.COLUMN_SET_NUM;
-        String where = workoutKeyName+" = "+workoutKey + " AND " + setNumName+" = " +setNum;
-
-        //If the current rep is less than the max rep increment it by one else set it to 0.
-        int newRep = (currRep <= 0) ?  maxRep: currRep-1  ;
-        ContentValues values = new ContentValues();
-        values.put(TrackerDbHelper.SetEntry.COLUMN_CURR_REP,newRep);
-
-        db.update(TrackerDbHelper.SetEntry.TABLE_NAME,values,where,null);
-        return newRep;
-    }
-
-
+    /**************************QUERIES TO THE DATABASE********************************/
+    //Returns all sessions in the workout. A bit costly, only executed once when app starts.
     public ArrayList<Session> getSessions(){
         ArrayList<Session> sessions = new ArrayList<>();
         String[] columns = {TrackerDbHelper.SessionEntry._ID,TrackerDbHelper.SessionEntry.COLUMN_DATE,
@@ -111,37 +97,33 @@ public class TrackerDAO {
 
         return sessions;
     }
+    //Returns a single session corresponding to the id.
+    public Session getSession(long sessionID){
+        String[] columns = {TrackerDbHelper.SessionEntry._ID,TrackerDbHelper.SessionEntry.COLUMN_DATE,
+                TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT};
+        String where = TrackerDbHelper.SessionEntry._ID+" = "+sessionID;
+        Cursor cursor = db.
+                query(TrackerDbHelper.SessionEntry.TABLE_NAME,columns,where,null,null,null,null);
 
-    public ArrayList<Set> getSets(long workoutID){
-        ArrayList<Set> sets = new ArrayList<>();
-        String[] columns = {
-                TrackerDbHelper.SetEntry._ID,
-                TrackerDbHelper.SetEntry.COLUMN_SET_NUM,
-                TrackerDbHelper.SetEntry.COLUMN_CURR_REP
-        };
+        if(cursor.moveToNext()){
+            int dateIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_DATE);
+            int weightIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT);
+            int sessionNum = cursor.getColumnIndex(TrackerDbHelper.SessionEntry._ID);
 
-        String where = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY+" = "+workoutID;
-
-        Cursor cursor = db.query(
-                TrackerDbHelper.SetEntry.TABLE_NAME,
-                columns,where,
-                null,null,null,null);
-
-        while(cursor.moveToNext()){
-            int setKey = cursor.getColumnIndex(TrackerDbHelper.SetEntry._ID);
-            int orderNumKey = cursor.getColumnIndex(TrackerDbHelper.SetEntry.COLUMN_SET_NUM);
-            int curRepKey = cursor.getColumnIndex(TrackerDbHelper.SetEntry.COLUMN_CURR_REP);
-
-            long setID = cursor.getLong(setKey);
-            int orderNum = cursor.getInt(orderNumKey);
-            int currRep = cursor.getInt(curRepKey);
-
-            sets.add(new Set(setID,workoutID,orderNum,currRep));
+            String date = cursor.getString(dateIndex);
+            int weight = cursor.getInt(weightIndex);
+            long sessionId = cursor.getLong(sessionNum);
+            cursor.close();
+            return new Session(date,weight,sessionId,getWorkouts(sessionId,true));
         }
-        cursor.close();
-        return sets;
+        else {
+            cursor.close();
+            return null;
+        }
     }
 
+    //Returns all workouts of a session. Returns only the first three workouts if getPreviews is true.
+    //TODO: Make sure you can only add up to 8 workouts per session.
     public ArrayList<Workout> getWorkouts(long sessionID,boolean getPreviews){
         ArrayList<Workout> workouts = new ArrayList<>();
         String[] columns = {
@@ -186,9 +168,8 @@ public class TrackerDAO {
         return workouts;
     }
 
-    //Updates the current workout from the database.
-    //TODO: Get rid of all this excess code!
-    public Workout updateWorkout(Workout workout){
+    //Returns a single workout corresponding to its id.
+    public Workout getWorkout(long workoutID){
         String[] columns = {
                 TrackerDbHelper.WorkoutEntry._ID,
                 TrackerDbHelper.WorkoutEntry.COLUMN_WORKOUT_NUM,
@@ -197,7 +178,7 @@ public class TrackerDAO {
                 TrackerDbHelper.WorkoutEntry.COLUMN_MAX_SETS,
                 TrackerDbHelper.WorkoutEntry.COLUMN_MAX_REPS};
 
-        String where = TrackerDbHelper.WorkoutEntry._ID+" = "+workout.getWorkoutID();
+        String where = TrackerDbHelper.WorkoutEntry._ID+" = "+workoutID;
 
         Cursor cursor = db.
                 query(TrackerDbHelper.WorkoutEntry.TABLE_NAME,columns,where,null,null,null,null);
@@ -218,7 +199,7 @@ public class TrackerDAO {
             int maxReps = cursor.getInt(max_reps_column);
 
             ArrayList<Set> sets = getSets(workoutId);
-            Workout newWorkout = new Workout(workout.getWorkoutID(),workoutId,orderNum,name,
+            Workout newWorkout = new Workout(workoutID,workoutId,orderNum,name,
                     weight,maxSets,maxReps,sets);
             cursor.close();
             return  newWorkout;
@@ -227,30 +208,51 @@ public class TrackerDAO {
         return null;
     }
 
-    public Session getSession(long sessionID){
-        String[] columns = {TrackerDbHelper.SessionEntry._ID,TrackerDbHelper.SessionEntry.COLUMN_DATE,
-                TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT};
-        String where = TrackerDbHelper.SessionEntry._ID+" = "+sessionID;
-        Cursor cursor = db.
-                query(TrackerDbHelper.SessionEntry.TABLE_NAME,columns,where,null,null,null,null);
+    //Returns all the sets in a current workout
+    public ArrayList<Set> getSets(long workoutID){
+        ArrayList<Set> sets = new ArrayList<>();
+        String[] columns = {
+                TrackerDbHelper.SetEntry._ID,
+                TrackerDbHelper.SetEntry.COLUMN_SET_NUM,
+                TrackerDbHelper.SetEntry.COLUMN_CURR_REP
+        };
 
-        if(cursor.moveToNext()){
-            int dateIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_DATE);
-            int weightIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT);
-            int sessionNum = cursor.getColumnIndex(TrackerDbHelper.SessionEntry._ID);
+        String where = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY+" = "+workoutID;
 
-            String date = cursor.getString(dateIndex);
-            int weight = cursor.getInt(weightIndex);
-            long sessionId = cursor.getLong(sessionNum);
-            cursor.close();
-            return new Session(date,weight,sessionId,getWorkouts(sessionId,true));
+        Cursor cursor = db.query(
+                TrackerDbHelper.SetEntry.TABLE_NAME,
+                columns,where,
+                null,null,null,null);
+
+        while(cursor.moveToNext()){
+            int setKey = cursor.getColumnIndex(TrackerDbHelper.SetEntry._ID);
+            int orderNumKey = cursor.getColumnIndex(TrackerDbHelper.SetEntry.COLUMN_SET_NUM);
+            int curRepKey = cursor.getColumnIndex(TrackerDbHelper.SetEntry.COLUMN_CURR_REP);
+
+            long setID = cursor.getLong(setKey);
+            int orderNum = cursor.getInt(orderNumKey);
+            int currRep = cursor.getInt(curRepKey);
+
+            sets.add(new Set(setID,workoutID,orderNum,currRep));
         }
-        else {
-            cursor.close();
-            return null;
-        }
+        cursor.close();
+        return sets;
     }
+    /**************************UPDATES TO THE DATABASE********************************/
+    //Update a current rep in a set. Returns the new current rep of a set.
+    public int updateRep(long workoutKey, int setNum, int currRep, int maxRep){
+        String workoutKeyName = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY;
+        String setNumName = TrackerDbHelper.SetEntry.COLUMN_SET_NUM;
+        String where = workoutKeyName+" = "+workoutKey + " AND " + setNumName+" = " +setNum;
 
+        //If the current rep is less than the max rep increment it by one else set it to 0.
+        int newRep = (currRep <= 0) ?  maxRep: currRep-1  ;
+        ContentValues values = new ContentValues();
+        values.put(TrackerDbHelper.SetEntry.COLUMN_CURR_REP,newRep);
+
+        db.update(TrackerDbHelper.SetEntry.TABLE_NAME,values,where,null);
+        return newRep;
+    }
 
 
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class TrackerApplication extends Application {
     TrackerDAO dao;
     ArrayList<Session> sessions;
-    public static int currSessionPosition;
+
 
     @Override
     public void onCreate() {
@@ -24,7 +24,6 @@ public class TrackerApplication extends Application {
         //this.deleteDatabase(TrackerDbHelper.DATABASE_NAME);
         dao = new TrackerDAO(getApplicationContext());
         sessions = new ArrayList<>();
-        currSessionPosition = 0;
     }
 
     public TrackerDAO getDatabase(){
@@ -35,7 +34,4 @@ public class TrackerApplication extends Application {
         return sessions;
     }
 
-    public int getCurrSessionPosition() {
-        return currSessionPosition;
-    }
 }

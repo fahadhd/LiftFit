@@ -49,14 +49,14 @@ public class SessionsFragment extends Fragment{
         TrackerApplication application  = (TrackerApplication)getActivity().getApplication();
         dao = application.getDatabase();
         sessions = application.getSessions();
-        if(sessions.isEmpty()){
-            refreshData();
+        if(sessions.isEmpty() || sessions.size() == 1){
+          refreshData();
         }
         Intent sessionIntent = getActivity().getIntent();
         if(sessionIntent != null && sessionIntent.hasExtra(ExerciseActivity.SESSION_ID)) {
             new UpdateSession().execute(sessionIntent.getLongExtra(ExerciseActivity.SESSION_ID,0));
         }
-        adapter = new SessionAdapter(getActivity(),sessions);
+
     }
 
     @Override
@@ -64,7 +64,7 @@ public class SessionsFragment extends Fragment{
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.sessions_list_fragment, container, false);
-
+        adapter = new SessionAdapter(getActivity(),sessions);
 
         sessionsListView = (ListView) rootView.findViewById(R.id.session_list_main);
 
@@ -110,9 +110,6 @@ public class SessionsFragment extends Fragment{
         protected void onPostExecute(ArrayList<Session> result) {
             if(sessions.isEmpty()){
                 sessions.addAll(result);
-            }
-            else if(result.size() > sessions.size()){
-                sessions.add(0,result.get(0));
             }
             else{
                 sessions.clear();

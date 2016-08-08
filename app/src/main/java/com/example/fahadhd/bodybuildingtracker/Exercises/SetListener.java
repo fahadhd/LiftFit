@@ -1,12 +1,9 @@
 package com.example.fahadhd.bodybuildingtracker.Exercises;
 
 import android.content.Context;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Utility;
@@ -55,7 +52,7 @@ public class SetListener implements View.OnClickListener {
     public void onClick(View v) {
         //Updating the current rep and workout object.
         currRep = dao.updateRep(setWorkoutKey,setNum,currRep,maxReps);
-        curr_workout = dao.updateWorkout(curr_workout);
+        curr_workout = dao.getWorkout(curr_workout.getWorkoutID());
 
         //Display the default button when a set's rep number reaches 0.
         if(currRep == 0){
