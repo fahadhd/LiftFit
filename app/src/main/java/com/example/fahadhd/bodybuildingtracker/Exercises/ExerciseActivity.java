@@ -37,11 +37,11 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     ExercisesFragment exercisesFragment;
     TrackerDAO dao;
     public static long sessionID;
+    ArrayList<Session> sessions;
     ArrayList<Workout> workouts;
     SetTimer setTimer;
     String name;
     TrackerApplication application;
-    public static final String SESSION_ID= "sessionID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         application  = (TrackerApplication)this.getApplication();
         exercisesFragment = (ExercisesFragment) getSupportFragmentManager().
                 findFragmentById(R.id.exercises_fragment);
-
         /**Creates a new exercise loader if one doesn't exist or refreshes the data if one does exist.**/
         if (this.getSupportLoaderManager().getLoader(R.id.exercise_loader_id) == null) {
             this.getSupportLoaderManager().initLoader(R.id.exercise_loader_id, null, exercisesFragment);
@@ -94,18 +93,19 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         this.name = name;
         new AddWorkoutTask().execute(weight, max_sets, max_reps);
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(),MainActivity.class).
-                        putExtra(SESSION_ID,exercisesFragment.sessionID));
-
+                exercisesFragment.refreshSessionData();
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 return true;
         }
         return (super.onOptionsItemSelected(menuItem));
     }
+
+
+
 
     /*************** Add workout data in background thread via async task*****************/
     public class AddWorkoutTask extends AsyncTask<Integer, Void, Void> {

@@ -32,15 +32,12 @@ import java.util.List;
  */
 public class SessionsFragment extends Fragment{
 
-    public SessionsFragment() {
-    }
-
     private SessionAdapter adapter;
     private ArrayList<Session> sessions;
     ListView sessionsListView;
     TrackerDAO dao;
 
-
+    public static final String POSITION_KEY = "position";
     public static final String INTENT_KEY = "Session_ID";
 
     @Override
@@ -50,13 +47,8 @@ public class SessionsFragment extends Fragment{
         dao = application.getDatabase();
         sessions = application.getSessions();
         if(sessions.isEmpty() || sessions.size() == 1){
-          refreshData();
+          new GetSessions().execute();
         }
-        Intent sessionIntent = getActivity().getIntent();
-        if(sessionIntent != null && sessionIntent.hasExtra(ExerciseActivity.SESSION_ID)) {
-            new UpdateSession().execute(sessionIntent.getLongExtra(ExerciseActivity.SESSION_ID,0));
-        }
-
     }
 
     @Override
@@ -75,7 +67,7 @@ public class SessionsFragment extends Fragment{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getActivity(),ExerciseActivity.class).
-                        putExtra(INTENT_KEY,sessions.get(position));
+                        putExtra(INTENT_KEY,sessions.get(position)).putExtra(POSITION_KEY,position);
                 startActivity(intent);
             }
         });
@@ -84,23 +76,7 @@ public class SessionsFragment extends Fragment{
         return rootView;
     }
 
-    public void refreshSessionData(long sessionID){
-        Session updatedSession = dao.getSession(sessionID);
-        for(int i = 0 ; i < sessions.size(); i++){
-            if(sessions.get(i).getSessionId() == sessionID){
-                sessions.set(i,updatedSession);
-                return;
-            }
-        }
-        adapter.notifyDataSetChanged();
-    }
-
-    public void refreshData(){
-        new GetSessions().execute();
-    }
-
     public class GetSessions extends AsyncTask<Void,Void,ArrayList<Session>> {
-
         @Override
         protected ArrayList<Session> doInBackground(Void... params) {
             return dao.getSessions();
@@ -119,12 +95,4 @@ public class SessionsFragment extends Fragment{
         }
     }
 
-    public class UpdateSession extends AsyncTask<Long,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Long... params) {
-            refreshSessionData(params[0]);
-            return null;
-        }
-    }
 }

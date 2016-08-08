@@ -31,6 +31,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     ExerciseAdapter adapter;
     Session currentSession;
     long sessionID;
+    int positon;
     ArrayList<Session> sessions;
     ArrayList<Workout> workouts = new ArrayList<>();
     ListView exerciseListView;
@@ -59,13 +60,16 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
             currentSession = (Session) sessionIntent.getSerializableExtra
                     (SessionsFragment.INTENT_KEY);
+            positon = sessionIntent.getIntExtra(SessionsFragment.POSITION_KEY,0);
             setExistingWorkout(currentSession);
         }
         else if (sessionIntent != null && sessionIntent.hasExtra(MainActivity.ADD_TASK)){
             currentSession = (Session) sessionIntent.getSerializableExtra
                     (MainActivity.ADD_TASK);
+            //Add new session to cached data-+3*9
             sessions.add(0,currentSession);
-            getActivity().setTitle("Today's Workout");
+            positon = 0;
+            getActivity().setTitle("Current Workout");
         }
         sessionID = currentSession.getSessionId();
 
@@ -81,6 +85,10 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
 
+    public void refreshSessionData(){
+        Session updatedSession = dao.getSession(sessionID);
+        sessions.set(positon,updatedSession);
+    }
 
 
     /*************** ASYNC LOADER FOR ADAPTER********************/
