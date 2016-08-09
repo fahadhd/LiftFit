@@ -2,6 +2,7 @@ package com.example.fahadhd.bodybuildingtracker.Sessions;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,16 +98,29 @@ public class SessionAdapter extends BaseAdapter {
         }
 
         Session session = sessions.get(position);
-        viewHolder.date.setText(session.getDate());
-        viewHolder.user_weight.setText(session.getWeight().toString());
-        viewHolder.sessionID.setText(session.getSessionId().toString());
-        setTextPreviews(session.getWorkouts(),viewHolder);
+        setInfoText("Date",session.getDate(),viewHolder);
+        setInfoText("Session",Long.toString(session.getSessionId()),viewHolder);
+        setInfoText("Weight",Integer.toString(session.getWeight()),viewHolder);
+
+        setPreviewText(session.getWorkouts(),viewHolder);
         return row;
 
     }
 
+    public void setInfoText(String title, String description, ViewHolder viewHolder){
+        switch (title) {
+            case "Date": viewHolder.date.setText(Html.fromHtml("<small><font color=\"black\">" + title + "</font></small>" + "<br />" +
+                    "<b>" + description + "</b>"));
+            case "Session": viewHolder.sessionID.setText(Html.fromHtml("<small><font color=\"black\">" + title + "</font></small>" + "<br />" +
+                    "<b>" + description + "</b>"));
+            case "Weight": viewHolder.user_weight.setText(Html.fromHtml("<small><font color=\"black\">" + title + "</font></small>" + "<br />" +
+                    "<b>" + description + "</b>"));
 
-    public static void setTextPreviews(ArrayList<Workout> workouts, ViewHolder viewHolder){
+        }
+
+    }
+
+    public static void setPreviewText(ArrayList<Workout> workouts, ViewHolder viewHolder){
         if(workouts == null) return;
         Workout workout_one = (workouts.size() > 0) ? workouts.get(0) : null;
         Workout workout_two = (workouts.size() > 1) ? workouts.get(1) : null;
