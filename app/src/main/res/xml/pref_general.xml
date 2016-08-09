@@ -14,9 +14,8 @@
         android:entries="@array/pref_unit_list_titles"
         android:entryValues="@array/pref_unit_list_values"
         android:key="@string/pref_unit_list_key"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
-        android:title="@string/pref_title_unit" />
+        android:title="@string/pref_title_unit"
+        />
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->

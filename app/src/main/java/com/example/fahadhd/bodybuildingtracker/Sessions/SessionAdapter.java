@@ -1,8 +1,11 @@
 package com.example.fahadhd.bodybuildingtracker.Sessions;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.text.Html;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +53,8 @@ public class SessionAdapter extends BaseAdapter {
         TextView sessionID;
 
         /********* Workout Previews ************/
-        TextView one_title, two_title, three_title;
-        TextView one_row_one, one_row_two, two_row_one, two_row_two,three_row_one, three_row_two;
-        TextView one_weight, two_weight, three_weight;
+        TextView previewOne, previewTwo,previewThree;
+
         /***************************************/
 
         public ViewHolder(View view) {
@@ -60,20 +62,10 @@ public class SessionAdapter extends BaseAdapter {
             this.user_weight = (TextView) view.findViewById(R.id.user_weight);
             this.sessionID = (TextView) view.findViewById(R.id.sessionID);
 
-            this.one_title = (TextView) view.findViewById(R.id.workout_one_title);
-            this.two_title = (TextView) view.findViewById(R.id.workout_two_title);
-            this.three_title = (TextView) view.findViewById(R.id.workout_three_title);
+            this.previewOne = (TextView) view.findViewById(R.id.preview_one);
+            this.previewTwo = (TextView) view.findViewById(R.id.preview_two);
+            this.previewThree = (TextView) view.findViewById(R.id.preview_three);
 
-            this.one_row_one = (TextView) view.findViewById(R.id.workout_one_row_one);
-            this.one_row_two = (TextView) view.findViewById(R.id.workout_one_row_two);
-            this.two_row_one = (TextView) view.findViewById(R.id.workout_two_row_one);
-            this.two_row_two = (TextView) view.findViewById(R.id.workout_two_row_two);
-            this.three_row_one = (TextView) view.findViewById(R.id.workout_three_row_one);
-            this.three_row_two = (TextView) view.findViewById(R.id.workout_three_row_two);
-
-            this.one_weight = (TextView) view.findViewById(R.id.workout_one_weight);
-            this.two_weight = (TextView) view.findViewById(R.id.workout_two_weight);
-            this.three_weight = (TextView) view.findViewById(R.id.workout_three_weight);
         }
 
     }
@@ -96,11 +88,19 @@ public class SessionAdapter extends BaseAdapter {
         else {
             viewHolder = (ViewHolder) row.getTag();
         }
-
+        /*****************Shared Preferences Info for user weight*****************************/
+        SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(context);
+        String pounds = context.getString(R.string.pref_units_pounds);
+        String unit = shared_pref.getString(context.getString(R.string.pref_unit_list_key),pounds);
         Session session = sessions.get(position);
+        int user_weight = session.getWeight();
+        Double kiloWeight = user_weight*0.45359237;
+        if(!unit.equals(pounds)) user_weight = kiloWeight.intValue();
+        /**********************************************/
+
         setInfoText("Date",session.getDate(),viewHolder);
         setInfoText("Session",Long.toString(session.getSessionId()),viewHolder);
-        setInfoText("Weight",Integer.toString(session.getWeight()),viewHolder);
+        setInfoText("Weight",Integer.toString(user_weight),viewHolder);
 
         setPreviewText(session.getWorkouts(),viewHolder);
         return row;
@@ -120,50 +120,35 @@ public class SessionAdapter extends BaseAdapter {
 
     }
 
-    public static void setPreviewText(ArrayList<Workout> workouts, ViewHolder viewHolder){
+    public void setPreviewText(ArrayList<Workout> workouts, ViewHolder viewHolder){
         if(workouts == null) return;
         Workout workout_one = (workouts.size() > 0) ? workouts.get(0) : null;
         Workout workout_two = (workouts.size() > 1) ? workouts.get(1) : null;
         Workout workout_three = (workouts.size() > 2) ? workouts.get(2) : null;
 
         if(workout_one != null){
-            String[] rows = Utility.previewTextHelper(workout_one);
-            viewHolder.one_title.setText(workout_one.getName());
-            viewHolder.one_row_one.setText(rows[0]);
-            viewHolder.one_row_two.setText(rows[1]);
-            viewHolder.one_weight.setText(Integer.toString(workout_one.getWeight()));
+            CharSequence rows = Utility.previewTextHelper(workout_one,context);
+            viewHolder.previewOne.setText(rows);
+
         }
         else{
-            viewHolder.one_title.setText("");
-            viewHolder.one_row_one.setText("");
-            viewHolder.one_row_two.setText("");
-            viewHolder.one_weight.setText("");
+            viewHolder.previewOne.setText("");
         }
         if(workout_two != null){
-            String[] rows = Utility.previewTextHelper(workout_two);
-            viewHolder.two_title.setText(workout_two.getName());
-            viewHolder.two_row_one.setText(rows[0]);
-            viewHolder.two_row_two.setText(rows[1]);
-            viewHolder.two_weight.setText(Integer.toString(workout_two.getWeight()));
+            CharSequence rows = Utility.previewTextHelper(workout_two,context);
+            viewHolder.previewTwo.setText(rows);
+
         }
         else{
-            viewHolder.two_title.setText("");
-            viewHolder.two_row_one.setText("");
-            viewHolder.two_row_two.setText("");
-            viewHolder.two_weight.setText("");
+            viewHolder.previewTwo.setText("");
         }
         if(workout_three != null){
-            String[] rows = Utility.previewTextHelper(workout_three);
-            viewHolder.three_title.setText(workout_three.getName());
-            viewHolder.three_row_one.setText(rows[0]);
-            viewHolder.three_row_two.setText(rows[1]);
-            viewHolder.three_weight.setText(Integer.toString(workout_three.getWeight()));
+            CharSequence rows = Utility.previewTextHelper(workout_three,context);
+            viewHolder.previewThree.setText(rows);
+
         }
         else{
-            viewHolder.three_title.setText("");
-            viewHolder.three_row_one.setText("");
-            viewHolder.three_row_two.setText("");
-            viewHolder.three_weight.setText("");
+            viewHolder.previewThree.setText("");
         }
     }
 }

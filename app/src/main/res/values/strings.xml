@@ -42,8 +42,8 @@
         <item>@string/pref_units_kilograms</item>
     </string-array>
 
-    <string name="pref_units_pounds">pounds</string>
-    <string name="pref_units_kilograms">kilograms</string>
+    <string name="pref_units_pounds">LB</string>
+    <string name="pref_units_kilograms">Kg</string>
 
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>

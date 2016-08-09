@@ -4,190 +4,111 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/list_bar"/>
+
+
+
+    <TextView
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:src="@drawable/list_bar"/>
-
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/octagon"
-            android:textColor="@color/orange_a400"
-            android:textStyle="bold"
-            android:textSize="12sp"
-            android:paddingBottom="8dp"
-            android:layout_marginLeft="46dp"
-            android:lines="2"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            />
-
-
-
-        <TextView
-            android:id="@+id/sessionID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/octagon"
-            android:paddingBottom="8dp"
-            android:layout_marginTop="41dp"
-            android:layout_marginLeft="16dp"
-            android:textColor="@color/orange_a400"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:text="105"
-            android:textSize="12sp"
-            />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/octagon"
-            android:paddingBottom="8dp"
-            android:layout_marginLeft="76dp"
-            android:layout_alignBaseline="@+id/sessionID"
-            android:layout_alignTop="@id/sessionID"
-            android:textColor="@color/orange_a400"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="185"
-            android:textSize="12sp"
-            android:id="@+id/user_weight"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/octagon"
-            android:layout_alignLeft="@+id/date"
-            android:layout_marginTop="77dp"
-            android:textColor="@color/orange_a400"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="A"
-            android:textSize="16sp"
-            android:id="@+id/session_type"
-            />
-
-
-
-    <!--First Workout Preview-->
-    <TextView
-        android:layout_width="70dp"
-        android:layout_height="40dp"
+        android:background="@drawable/octagon"
+        android:textColor="@color/orange_a400"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:paddingBottom="8dp"
+        android:layout_marginLeft="46dp"
+        android:lines="2"
+        android:layout_marginTop="5dp"
         android:gravity="center"
-        android:id="@+id/workout_one_title"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/workout_one_row_one"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_alignBaseline="@+id/user_weight"
-        android:layout_marginLeft="20dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/workout_one_row_two"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_below="@+id/workout_one_row_one"
-        android:layout_marginLeft="20dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/workout_one_weight"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_below="@+id/workout_one_row_two"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
         />
 
-    <!--Second Workout Preview-->
     <TextView
-        android:layout_width="70dp"
-        android:layout_height="40dp"
+        android:id="@+id/sessionID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/octagon"
+        android:paddingBottom="8dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginLeft="16dp"
+        android:textColor="@color/orange_a400"
+        android:textStyle="bold"
         android:gravity="center"
-        android:id="@+id/workout_two_title"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="80dp"
+        android:text="105"
+        android:textSize="12sp"
         />
+
+
     <TextView
+        android:id="@+id/user_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/workout_two_row_one"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_alignBaseline="@+id/user_weight"
-        android:layout_marginLeft="90dp"
-
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/workout_two_row_two"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_below="@+id/workout_two_row_one"
-        android:layout_marginLeft="90dp"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/workout_two_weight"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_below="@+id/workout_two_row_two"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="90dp"
-        />
-
-
-
-    <!--Third Workout Preview-->
-    <TextView
-        android:layout_width="70dp"
-        android:layout_height="40dp"
+        android:background="@drawable/octagon"
+        android:paddingBottom="8dp"
+        android:layout_marginLeft="76dp"
+        android:layout_alignBaseline="@+id/sessionID"
+        android:layout_alignTop="@id/sessionID"
+        android:textColor="@color/orange_a400"
         android:gravity="center"
-        android:id="@+id/workout_three_title"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="150dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/workout_three_row_one"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_alignBaseline="@+id/user_weight"
-        android:layout_marginLeft="160dp"
-
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/workout_three_row_two"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_below="@+id/workout_two_row_one"
-        android:layout_marginLeft="160dp"
+        android:textStyle="bold"
+        android:text="185"
+        android:textSize="12sp"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/workout_three_weight"
-        android:layout_toRightOf="@+id/user_weight"
-        android:layout_below="@+id/workout_three_row_two"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="160dp"
+        android:background="@drawable/octagon"
+        android:layout_alignLeft="@+id/date"
+        android:layout_marginTop="77dp"
+        android:textColor="@color/orange_a400"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="A"
+        android:textSize="16sp"
+        android:id="@+id/session_type"
         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/date"
+        android:layout_alignLeft="@+id/user_weight"
+        android:layout_marginLeft="60dp"
+        >
+        <TextView
+            android:id="@+id/preview_one"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:textSize="12sp"
+
+            />
+        <TextView
+            android:id="@+id/preview_two"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:textSize="12sp"
+
+            />
+        <TextView
+            android:id="@+id/preview_three"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:textSize="12sp"
+
+            />
+    </LinearLayout>
+
+
+
+
 
 </RelativeLayout>
