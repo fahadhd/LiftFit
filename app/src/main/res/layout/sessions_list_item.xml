@@ -79,30 +79,36 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/date"
         android:layout_alignLeft="@+id/user_weight"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="45dp"
         >
         <TextView
             android:id="@+id/preview_one"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="0.8"
             android:textSize="12sp"
+            android:paddingBottom="3dp"
 
             />
         <TextView
             android:id="@+id/preview_two"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="0.8"
             android:textSize="12sp"
+            android:paddingBottom="3dp"
 
             />
         <TextView
             android:id="@+id/preview_three"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
+            android:gravity="center"
+            android:layout_weight="0.8"
             android:textSize="12sp"
+            android:paddingBottom="3dp"
 
             />
     </LinearLayout>

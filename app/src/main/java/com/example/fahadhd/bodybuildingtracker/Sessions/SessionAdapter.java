@@ -95,6 +95,7 @@ public class SessionAdapter extends BaseAdapter {
         Session session = sessions.get(position);
         int user_weight = session.getWeight();
         Double kiloWeight = user_weight*0.45359237;
+        //Change from pounds to kilograms if that is what user prefers
         if(!unit.equals(pounds)) user_weight = kiloWeight.intValue();
         /**********************************************/
 
@@ -106,7 +107,7 @@ public class SessionAdapter extends BaseAdapter {
         return row;
 
     }
-
+    //Text for the polygons for each session
     public void setInfoText(String title, String description, ViewHolder viewHolder){
         switch (title) {
             case "Date": viewHolder.date.setText(Html.fromHtml("<small><font color=\"black\">" + title + "</font></small>" + "<br />" +
@@ -119,7 +120,7 @@ public class SessionAdapter extends BaseAdapter {
         }
 
     }
-
+    //Sets the previews of 0-3 workouts for each session in the list view.
     public void setPreviewText(ArrayList<Workout> workouts, ViewHolder viewHolder){
         if(workouts == null) return;
         Workout workout_one = (workouts.size() > 0) ? workouts.get(0) : null;

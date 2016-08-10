@@ -28,6 +28,8 @@ import com.example.fahadhd.bodybuildingtracker.Exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -92,43 +94,62 @@ public class Utility {
     }
     //Displays the workout previews in the session list view.
     public static CharSequence previewTextHelper(Workout workout, Context context){
+        //Gets and stores the rows of sets from the workout in two strings
         ArrayList<Set> sets = workout.getSets();
         String row_one = "", row_two = "";
-        for(int i = 0; (i < 4) && (i < sets.size()); i++){
+        for(int i = 0; (i < 5) && (i < sets.size()); i++){
             row_one += Integer.toString(sets.get(i).getCurrRep());
             if(i < 4){
                 row_one+= " ";
             }
         }
-        for(int i = 4; (i < 9) && (i < sets.size()); i++){
+        for(int i = 5; (i < 8) && (i < sets.size()); i++){
             row_two += Integer.toString(sets.get(i).getCurrRep());
             if(i < 7){
                 row_two+= " ";
             }
         }
-        /**************************Rows Preview*********************************/
+        /**********************SpannableStringBuilder for previews*******************/
+        int start = 0, end;
+        SpannableStringBuilder preview;
+        /********************************Title*************************************/
+        String title = WordUtils.capitalizeFully(workout.getName());
+        preview = new SpannableStringBuilder(title);
+        end = preview.length();
+       preview.setSpan(new RelativeSizeSpan(1f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        preview.setSpan(new ForegroundColorSpan(Color.WHITE),start,end,0);
+        /************************** Rows Preview *********************************/
         //Adds both sets of rows to the spannable string and sets their color
-        String rows = row_one+'\n'+row_two;
+       char newLine = (row_two.length() > 0) ? '\n': 0;
+        String rows = '\n'+row_one+newLine+row_two;
+        preview.append(rows);
+        start = end;
+        end = preview.length();
         int rowColor = ContextCompat.getColor(context,R.color.blue_grey_200);
-        SpannableStringBuilder preview = new SpannableStringBuilder(rows);
-        preview.setSpan(new ForegroundColorSpan(rowColor),0,rows.length(),0);
-        //Makes the rows slighter larger
-        preview.setSpan(new RelativeSizeSpan(1.4f), 0, rows.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        preview.setSpan(new ForegroundColorSpan(rowColor),start,end,0);
 
-        /**************************Unit Preview********************************/
+        //Makes the rows slighter larger
+        preview.setSpan(new RelativeSizeSpan(1.3f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        /************************** Unit Preview ********************************/
         SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(context);
         String pounds = context.getString(R.string.pref_units_pounds);
         String unit = shared_pref.getString(context.getString(R.string.pref_unit_list_key),pounds);
 
-        /**************************Weight Preview ********************************/
+        /************************** Weight Preview ********************************/
         //Converts the weight to kilogram according to user preference.
         Double userWeight = (unit.equals(pounds)) ? workout.getWeight(): workout.getWeight()*0.45359237;
         String weight = '\n'+" "+Integer.toString(userWeight.intValue());
         int weightColor = ContextCompat.getColor(context,R.color.orange_a400);
         preview.append(weight);
+        start = end;
+        end = preview.length();
+
         //Adds the user weight to the preview and sets its color
-        preview.setSpan(new ForegroundColorSpan(weightColor),rows.length(),preview.length(),0);
+        preview.setSpan(new ForegroundColorSpan(weightColor),start,end,0);
+
         //Adds unit after weight
+
         preview.append(unit);
 
         return preview;
