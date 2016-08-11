@@ -108,7 +108,7 @@ public class Utility {
         String title = WordUtils.capitalizeFully(workout.getName());
         preview = new SpannableStringBuilder(title);
         end = preview.length();
-       preview.setSpan(new RelativeSizeSpan(1f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        preview.setSpan(new RelativeSizeSpan(1f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         preview.setSpan(new ForegroundColorSpan(Color.WHITE),start,end,0);
         /************************** Rows Preview *********************************/
         //Adds both sets of rows to the spannable string and sets their color
@@ -124,16 +124,14 @@ public class Utility {
         preview.setSpan(new RelativeSizeSpan(1.3f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         /************************** Unit Preview ********************************/
-        SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(context);
-        String pounds = context.getString(R.string.pref_units_pounds);
-        String unit = shared_pref.getString(context.getString(R.string.pref_unit_list_key),pounds);
+        String unit = getUnit(context);
 
         /************************** Weight Preview ********************************/
         //Converts the weight to kilogram according to user preference.
-        Double userWeight = (unit.equals(pounds)) ? workout.getWeight(): workout.getWeight()*0.45359237;
-        String weight = '\n'+" "+Integer.toString(userWeight.intValue());
+        Double weightUnit = (unit.equals("LB")) ? workout.getWeight(): workout.getWeight()*0.45359237;
+        String weightString = '\n'+" "+Integer.toString(weightUnit.intValue());
         int weightColor = ContextCompat.getColor(context,R.color.orange_a400);
-        preview.append(weight);
+        preview.append(weightString);
         start = end;
         end = preview.length();
 
@@ -146,6 +144,14 @@ public class Utility {
 
         return preview;
     }
+
+    public static String getUnit(Context context){
+        SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(context);
+        String pounds = context.getString(R.string.pref_units_pounds);
+        return shared_pref.getString(context.getString(R.string.pref_unit_list_key),pounds);
+    }
+
+
 
 
 }

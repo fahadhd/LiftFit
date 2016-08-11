@@ -55,4 +55,14 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_main2">Main2Activity</string>
+
+    <!--////////////////Workout Button Image Descriptions/////////////////-->
+    <string name="workout_button_one">First Workout Button</string>
+    <string name="workout_button_two">Second Workout Button</string>
+    <string name="workout_button_three">Third Workout Button</string>
+    <string name="workout_button_four">Fourth Workout Button</string>
+    <string name="workout_button_five">Fifth Workout Button</string>
+    <string name="workout_button_six">Six Workout Button</string>
+    <string name="workout_button_seven">Seventh Workout Button</string>
+    <string name="workout_button_eight">Eight Workout Button</string>
 </resources>

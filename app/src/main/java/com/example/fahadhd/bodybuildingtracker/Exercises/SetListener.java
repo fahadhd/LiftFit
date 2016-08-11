@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Utility;
@@ -12,6 +13,7 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 //Button listener for sets. Each workout can have up to 8 set buttons.
 public class SetListener implements View.OnClickListener {
     Button setButton;
+    ImageButton workoutButton;
     long setWorkoutKey;
     int setNum,currRep,maxReps,maxSets;
     TrackerDAO dao;
@@ -45,6 +47,31 @@ public class SetListener implements View.OnClickListener {
         //Displays the correct rep number of a set.
         if(currRep > 0) {
             setButton.setText(Integer.toString(currRep));
+        }
+    }
+
+    public SetListener(ImageButton setButton, TrackerDAO dao, Workout curr_workout, Set currSet,
+                       WorkoutViewHolder viewHolder, Context context){
+        this.workoutButton = setButton;
+        this.setWorkoutKey = currSet.getWorkoutID();
+        this.setNum = currSet.getOrderNum();
+        this.currRep =  currSet.getCurrRep();
+        this.maxReps = curr_workout.getMaxReps();
+        this.maxSets = curr_workout.getMaxSets();
+        this.dao = dao;
+        this.curr_workout = curr_workout;
+        this.currSet = currSet;
+        this.viewHolder = viewHolder;
+        this.mContext = context;
+        this.mInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
+        this.exerciseActivity = (ExerciseActivity) mContext;
+        this.setTimer = exerciseActivity.getSetTimer();
+
+
+
+        //Displays the correct rep number of a set.
+        if(currRep > 0) {
+           // workoutButton.setText(Integer.toString(currRep));
         }
     }
     @Override

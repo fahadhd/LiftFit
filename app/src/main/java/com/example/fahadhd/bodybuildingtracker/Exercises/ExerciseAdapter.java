@@ -2,15 +2,23 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
 
@@ -59,16 +67,13 @@ public class ExerciseAdapter extends BaseAdapter{
         }
         Workout workout = workouts.get(position);
 
-        viewHolder.name.setText(workout.getName());
-        viewHolder.orderNum.setText(Integer.toString(workout.getOrderNum()));
-        viewHolder.sets.setText(Integer.toString(workout.getMaxSets()));
-        viewHolder.separator.setText("X");
-        viewHolder.reps.setText(Integer.toString(workout.getMaxReps()));
-        viewHolder.weight.setText(Integer.toString(workout.getWeight()));
+        viewHolder.workoutInfo.setText(spanWorkoutInfo(workout));
+        activateButtons(viewHolder,workout);
+
 
         //Load buttons only once.
         if(viewHolder.setOne.getChildCount() == 0) {
-            addButtons(viewHolder, workout,viewHolder);
+            //addButtons(workout,viewHolder);
         }
 
         //TODO: App is a little slow when running this code, optimize later possibly put in thread.
@@ -77,16 +82,46 @@ public class ExerciseAdapter extends BaseAdapter{
         if(sets_started && !sets_finished ){
             viewHolder.completed_dialog.setText("You'll get in next time!");
         }
-       else if(sets_finished){
+        else if(sets_finished){
             viewHolder.completed_dialog.setText("Congrats +5 lb next time!");
         }
 
-
-
         return row;
     }
+    public void activateButtons(WorkoutViewHolder viewHolder, Workout workout){
+        int maxSets = workout.getMaxSets();
+        ArrayList<Set> setList = workout.getSets();
+        ImageButton currButton;
+        Set currSet;
+        for(int i = 0; i < maxSets; i++){
+            switch (i){
+                case 0:
+                    currButton = viewHolder.buttonOne;
+                    currButton.setVisibility(View.VISIBLE);
+                    currSet = setList.get(i);
+                    currButton.setOnClickListener(new
+                            SetListener(currButton,dao,workout,currSet,viewHolder,context));
+                    break;
+                case 1: viewHolder.buttonTwo.setVisibility(View.VISIBLE);
+                    break;
+                case 2: viewHolder.buttonThree.setVisibility(View.VISIBLE);
+                    break;
+                case 3: viewHolder.buttonFour.setVisibility(View.VISIBLE);
+                    break;
+                case 4: viewHolder.buttonFive.setVisibility(View.VISIBLE);
+                    break;
+                case 5: viewHolder.buttonSix.setVisibility(View.VISIBLE);
+                    break;
+                case 6: viewHolder.buttonSeven.setVisibility(View.VISIBLE);
+                    break;
+                case 7: viewHolder.buttonEight.setVisibility(View.VISIBLE);
+                    break;
+            }
 
-    public void addButtons(WorkoutViewHolder views, Workout workout, WorkoutViewHolder viewHolder){
+        }
+
+    }
+    public void addButtons(Workout workout, WorkoutViewHolder viewHolder){
         int max_sets = workout.getMaxSets();
         int i = 0;
         ArrayList<Set> setList = workout.getSets();
@@ -100,7 +135,7 @@ public class ExerciseAdapter extends BaseAdapter{
             setButton.setOnClickListener(new
                     SetListener(setButton,dao,workout,currSet,viewHolder,context));
 
-            views.setOne.addView(setButton);
+            viewHolder.setOne.addView(setButton);
 
             i++;
         }
@@ -112,10 +147,52 @@ public class ExerciseAdapter extends BaseAdapter{
             setButton.setOnClickListener(new
                     SetListener(setButton, dao, workout, currSet,viewHolder,context));
 
-            views.setTwo.addView(setButton);
+            viewHolder.setTwo.addView(setButton);
             i++;
         }
 
+    }
+
+    //TODO: Put in utility class and use it for session list item as well.
+    public SpannableStringBuilder spanWorkoutInfo(Workout workout){
+        int start, end;
+        String buffer = WordUtils.capitalizeFully(workout.getName().replaceAll("\\s+","\n"));
+        end = buffer.length();
+        /******************Workout Title********************/
+        SpannableStringBuilder spanBuilder = new SpannableStringBuilder(buffer);
+        //spanBuilder.setSpan(new ForegroundColorSpan(Color.BLACK),start,end,0);
+        /******************Workout Weight********************/
+        String unit = Utility.getUnit(context);
+        Double weightUnit = (unit.equals("LB")) ? workout.getWeight(): workout.getWeight()*0.45359237;
+        buffer = '\n'+" "+Integer.toString(weightUnit.intValue());
+        spanBuilder.append(buffer);
+        int weightColor = ContextCompat.getColor(context,R.color.orange_a400);
+        start = end;
+        end = spanBuilder.length();
+        spanBuilder.setSpan(new ForegroundColorSpan(weightColor),start,end,0);
+        /******************Workout Unit*******************/
+        spanBuilder.append(unit);
+        start = end;
+        end = spanBuilder.length();
+        /******************Workout Sets x Reps*******************/
+        buffer = '\n'+Integer.toString(workout.getMaxSets());
+        spanBuilder.append(buffer);
+        start = end;
+        end = spanBuilder.length();
+        spanBuilder.setSpan(new ForegroundColorSpan(weightColor),start,end,0);
+
+        spanBuilder.append(" X ");
+        start = end;
+        end = spanBuilder.length();
+        spanBuilder.setSpan(new RelativeSizeSpan(0.7f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        buffer = Integer.toString(workout.getMaxReps());
+        spanBuilder.append(buffer);
+        start = end;
+        end = spanBuilder.length();
+        spanBuilder.setSpan(new ForegroundColorSpan(weightColor),start,end,0);
+
+        return spanBuilder;
     }
 
 

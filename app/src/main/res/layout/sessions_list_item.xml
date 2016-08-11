@@ -77,9 +77,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/date"
+
         android:layout_alignLeft="@+id/user_weight"
         android:layout_marginLeft="45dp"
+        android:layout_marginTop="17dp"
         >
         <TextView
             android:id="@+id/preview_one"

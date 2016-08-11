@@ -11,9 +11,10 @@
     android:clickable="false">
 
     <ListView
+        android:id="@+id/exercises_list_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/exercises_list_main"/>
-
-
+        tools:listitem="@layout/exercises_list_item"
+        android:divider="@android:color/transparent"
+        android:cacheColorHint="#00000000"/>
 </FrameLayout>
