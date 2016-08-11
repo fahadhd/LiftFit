@@ -70,10 +70,9 @@ public class SetTimer implements Runnable {
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
         layout.setBackgroundColor(Color.GRAY);
         TextView snackbarText = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
-        snackbarText.setTextSize(12f);
+        snackbarText.setTextSize(14f);
         //layout basically works like a list where you can add views at the top and remove them.
-        ((ViewGroup)timerView.getParent()).removeView(timerView);
-        layout.addView(timerView, 0);
+        layout.addView(mySnackView, 0);
 
         /*********************************************/
         /**Dismiss snackbar when user presses the X button.**/
@@ -85,16 +84,13 @@ public class SetTimer implements Runnable {
             }
         });
 
-
+        //Make the action button width smaller.
         snackbar.setActionTextColor(Color.WHITE);
         Button action = (Button) snackbar.getView().findViewById(android.support.design.R.id.snackbar_action);
         ViewGroup.LayoutParams params= action.getLayoutParams();
         params.width= 100;
+
         action.setLayoutParams(params);
-
-
-
-
 
         return snackbar;
     }
