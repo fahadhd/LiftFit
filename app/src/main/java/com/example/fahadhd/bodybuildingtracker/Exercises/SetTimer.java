@@ -3,9 +3,13 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.R;
@@ -14,7 +18,7 @@ import com.example.fahadhd.bodybuildingtracker.R;
 public class SetTimer implements Runnable {
     Handler handler;
     TextView timerView;
-    View exerciseView, snackView;
+    View exerciseView, mySnackView;
     long current_time;
     Snackbar currSnackBar;
     ExerciseActivity exerciseActivity;
@@ -60,15 +64,18 @@ public class SetTimer implements Runnable {
         final Snackbar snackbar = Snackbar.make(exerciseView, "", Snackbar.LENGTH_LONG);
         LayoutInflater inflater =  exerciseActivity.getLayoutInflater();
         /**** Customize snackbar view with my own.*****/
+        this.mySnackView = inflater.inflate(R.layout.my_snackbar, null);
+        this.timerView = (TextView) mySnackView.findViewById(R.id.timer);
 
-        this.snackView = inflater.inflate(R.layout.my_snackbar, null);
-        this.timerView = (TextView) snackView.findViewById(R.id.timer);
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
-        layout.setBackgroundColor(Color.RED);
-        timerView.setText("0:00");
-        layout.addView(snackView, 0);
-        /*********************************************/
+        layout.setBackgroundColor(Color.GRAY);
+        TextView snackbarText = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+        snackbarText.setTextSize(12f);
+        //layout basically works like a list where you can add views at the top and remove them.
+        ((ViewGroup)timerView.getParent()).removeView(timerView);
+        layout.addView(timerView, 0);
 
+        /*********************************************/
         /**Dismiss snackbar when user presses the X button.**/
         snackbar.setAction(R.string.dismiss, new View.OnClickListener() {
             @Override
@@ -77,7 +84,17 @@ public class SetTimer implements Runnable {
                 SetTimer.this.resetTimer();
             }
         });
+
+
         snackbar.setActionTextColor(Color.WHITE);
+        Button action = (Button) snackbar.getView().findViewById(android.support.design.R.id.snackbar_action);
+        ViewGroup.LayoutParams params= action.getLayoutParams();
+        params.width= 100;
+        action.setLayoutParams(params);
+
+
+
+
 
         return snackbar;
     }

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Utility;
@@ -49,6 +50,11 @@ public class ExerciseAdapter extends BaseAdapter{
         return position;
     }
 
+    @Override
+    public boolean isEnabled(int position) {
+        return false;
+    }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -80,10 +86,10 @@ public class ExerciseAdapter extends BaseAdapter{
         boolean sets_started = Utility.allSetsStarted(workout);
         boolean sets_finished = (sets_started && Utility.allSetsFinished(workout));
         if(sets_started && !sets_finished ){
-            viewHolder.completed_dialog.setText("You'll get in next time!");
+            //viewHolder.completed_dialog.setText("You'll get in next time!");
         }
         else if(sets_finished){
-            viewHolder.completed_dialog.setText("Congrats +5 lb next time!");
+            //viewHolder.completed_dialog.setText("Congrats +5 lb next time!");
         }
 
         return row;
@@ -91,33 +97,25 @@ public class ExerciseAdapter extends BaseAdapter{
     public void activateButtons(WorkoutViewHolder viewHolder, Workout workout){
         int maxSets = workout.getMaxSets();
         ArrayList<Set> setList = workout.getSets();
-        ImageButton currButton;
+        TextView currButton;
         Set currSet;
         for(int i = 0; i < maxSets; i++){
-            switch (i){
-                case 0:
-                    currButton = viewHolder.buttonOne;
-                    currButton.setVisibility(View.VISIBLE);
-                    currSet = setList.get(i);
-                    currButton.setOnClickListener(new
-                            SetListener(currButton,dao,workout,currSet,viewHolder,context));
-                    break;
-                case 1: viewHolder.buttonTwo.setVisibility(View.VISIBLE);
-                    break;
-                case 2: viewHolder.buttonThree.setVisibility(View.VISIBLE);
-                    break;
-                case 3: viewHolder.buttonFour.setVisibility(View.VISIBLE);
-                    break;
-                case 4: viewHolder.buttonFive.setVisibility(View.VISIBLE);
-                    break;
-                case 5: viewHolder.buttonSix.setVisibility(View.VISIBLE);
-                    break;
-                case 6: viewHolder.buttonSeven.setVisibility(View.VISIBLE);
-                    break;
-                case 7: viewHolder.buttonEight.setVisibility(View.VISIBLE);
-                    break;
-            }
+            currSet = setList.get(i);
 
+            switch (i){
+                case 0: currButton = viewHolder.buttonOne; break;
+                case 1: currButton = viewHolder.buttonTwo; break;
+                case 2: currButton = viewHolder.buttonThree; break;
+                case 3: currButton = viewHolder.buttonFour; break;
+                case 4: currButton = viewHolder.buttonFive; break;
+                case 5: currButton = viewHolder.buttonSix; break;
+                case 6: currButton = viewHolder.buttonSeven; break;
+                case 7:currButton = viewHolder.buttonEight; break;
+                default: currSet = setList.get(0); currButton = viewHolder.buttonOne;
+            }
+            currButton.setVisibility(View.VISIBLE);
+            currButton.setOnClickListener(new
+                    SetListener(currButton,dao,workout,currSet,viewHolder,context));
         }
 
     }

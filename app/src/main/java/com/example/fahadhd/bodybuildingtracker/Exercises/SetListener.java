@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Utility;
@@ -13,7 +13,7 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 //Button listener for sets. Each workout can have up to 8 set buttons.
 public class SetListener implements View.OnClickListener {
     Button setButton;
-    ImageButton workoutButton;
+    TextView workoutButton;
     long setWorkoutKey;
     int setNum,currRep,maxReps,maxSets;
     TrackerDAO dao;
@@ -50,7 +50,7 @@ public class SetListener implements View.OnClickListener {
         }
     }
 
-    public SetListener(ImageButton setButton, TrackerDAO dao, Workout curr_workout, Set currSet,
+    public SetListener(TextView setButton, TrackerDAO dao, Workout curr_workout, Set currSet,
                        WorkoutViewHolder viewHolder, Context context){
         this.workoutButton = setButton;
         this.setWorkoutKey = currSet.getWorkoutID();
@@ -71,7 +71,7 @@ public class SetListener implements View.OnClickListener {
 
         //Displays the correct rep number of a set.
         if(currRep > 0) {
-           // workoutButton.setText(Integer.toString(currRep));
+            workoutButton.setText(Integer.toString(currRep));
         }
     }
     @Override
@@ -83,22 +83,22 @@ public class SetListener implements View.OnClickListener {
 
         //Display the default button when a set's rep number reaches 0.
         if(currRep == 0){
-            setButton.setText(null);
+           workoutButton.setText(null);
             setTimer.dismissSnackBar();
             viewHolder.completed_dialog.setText(null);
         }
         else {
-            setButton.setText(Integer.toString(currRep));
+            workoutButton.setText(Integer.toString(currRep));
             boolean sets_started = Utility.allSetsStarted(curr_workout);
             boolean allFinished = (sets_started && Utility.allSetsFinished(curr_workout));
-            this.initializeSnackbar(v,sets_started, allFinished);
+            this.initializeSnackbar(sets_started, allFinished);
         }
     }
 
 
     //Starts timer when set button is pressed.
     //TODO: Change "+5lb next time" to  "+{user preference lb/ki} next time!.
-    public void initializeSnackbar( View view, boolean sets_started, boolean allFinished){
+    public void initializeSnackbar( boolean sets_started, boolean allFinished){
         if(!sets_started){
             //Since all sets aren't done, hide the congrats/failure message.
             viewHolder.completed_dialog.setText(null);;
@@ -111,11 +111,11 @@ public class SetListener implements View.OnClickListener {
         }
 
         if(sets_started && !allFinished){
-            viewHolder.completed_dialog.setText(R.string.failed);
+           // viewHolder.completed_dialog.setText(R.string.failed);
             setTimer.dismissSnackBar();
         }
         else if(allFinished){
-            viewHolder.completed_dialog.setText(R.string.congrats);
+           // viewHolder.completed_dialog.setText(R.string.congrats);
             setTimer.dismissSnackBar();
         }
     }

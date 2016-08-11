@@ -65,4 +65,6 @@
     <string name="workout_button_six">Six Workout Button</string>
     <string name="workout_button_seven">Seventh Workout Button</string>
     <string name="workout_button_eight">Eight Workout Button</string>
+
+    <string name="timer_text">0:00</string>
 </resources>
