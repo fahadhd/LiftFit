@@ -1,23 +1,18 @@
-package com.example.fahadhd.bodybuildingtracker.Sessions;
+package com.example.fahadhd.bodybuildingtracker.sessions;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.fahadhd.bodybuildingtracker.Exercises.Set;
-import com.example.fahadhd.bodybuildingtracker.Exercises.Workout;
+import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.Utility;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

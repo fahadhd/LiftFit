@@ -1,4 +1,4 @@
-package com.example.fahadhd.bodybuildingtracker.Exercises;
+package com.example.fahadhd.bodybuildingtracker.exercises;
 
 
 import android.content.Context;

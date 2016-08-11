@@ -1,4 +1,4 @@
-package com.example.fahadhd.bodybuildingtracker.Exercises;
+package com.example.fahadhd.bodybuildingtracker.exercises;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;

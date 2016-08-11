@@ -8,10 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.example.fahadhd.bodybuildingtracker.Exercises.ExerciseActivity;
-import com.example.fahadhd.bodybuildingtracker.Sessions.SessionsFragment;
+import com.example.fahadhd.bodybuildingtracker.exercises.ExerciseActivity;
+import com.example.fahadhd.bodybuildingtracker.sessions.SessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 /*Front view of app with a floating action button to add a exercise at the top*/

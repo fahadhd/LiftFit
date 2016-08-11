@@ -7,9 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import com.example.fahadhd.bodybuildingtracker.Exercises.Set;
-import com.example.fahadhd.bodybuildingtracker.Exercises.Workout;
-import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
+import com.example.fahadhd.bodybuildingtracker.exercises.Set;
+import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
+import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 
 import java.util.ArrayList;
 

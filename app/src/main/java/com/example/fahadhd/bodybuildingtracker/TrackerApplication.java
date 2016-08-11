@@ -1,15 +1,11 @@
 package com.example.fahadhd.bodybuildingtracker;
 
 import android.app.Application;
-import android.os.AsyncTask;
-import android.widget.Toast;
 
 
-import com.example.fahadhd.bodybuildingtracker.Exercises.Workout;
-import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
-import com.example.fahadhd.bodybuildingtracker.Sessions.SessionAdapter;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
-import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
+import com.example.fahadhd.bodybuildingtracker.sessions.Session;
+
 
 import java.util.ArrayList;
 

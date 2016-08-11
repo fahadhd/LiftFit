@@ -1,6 +1,6 @@
-package com.example.fahadhd.bodybuildingtracker.Sessions;
+package com.example.fahadhd.bodybuildingtracker.sessions;
 
-import com.example.fahadhd.bodybuildingtracker.Exercises.Workout;
+import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
 
 import java.io.Serializable;
 import java.util.ArrayList;

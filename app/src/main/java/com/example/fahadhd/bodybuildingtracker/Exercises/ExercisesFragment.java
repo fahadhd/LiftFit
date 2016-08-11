@@ -1,4 +1,4 @@
-package com.example.fahadhd.bodybuildingtracker.Exercises;
+package com.example.fahadhd.bodybuildingtracker.exercises;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -6,19 +6,15 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
-import com.example.fahadhd.bodybuildingtracker.Sessions.SessionsFragment;
-import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
+import com.example.fahadhd.bodybuildingtracker.sessions.SessionsFragment;
+import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 

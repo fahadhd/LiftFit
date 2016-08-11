@@ -1,4 +1,4 @@
-package com.example.fahadhd.bodybuildingtracker.Exercises;
+package com.example.fahadhd.bodybuildingtracker.exercises;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -59,7 +59,6 @@ public class SetListener implements View.OnClickListener {
             setButton.setText(null);
             setTimer.dismissSnackBar();
             viewHolder.completed_dialog.setText(null);
-
         }
         else {
             setButton.setText(Integer.toString(currRep));

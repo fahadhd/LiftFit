@@ -1,36 +1,22 @@
-package com.example.fahadhd.bodybuildingtracker.Exercises;
+package com.example.fahadhd.bodybuildingtracker.exercises;
 
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
-import com.example.fahadhd.bodybuildingtracker.Sessions.Session;
-import com.example.fahadhd.bodybuildingtracker.Sessions.SessionsFragment;
+import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
-import com.example.fahadhd.bodybuildingtracker.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 //TODO: clean up classy kind of messy
 public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog.Communicator {
