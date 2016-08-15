@@ -119,13 +119,10 @@ public class Utility {
         end = preview.length();
         int rowColor = ContextCompat.getColor(context,R.color.blue_grey_200);
         preview.setSpan(new ForegroundColorSpan(rowColor),start,end,0);
-
         //Makes the rows slighter larger
         preview.setSpan(new RelativeSizeSpan(1.3f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
         /************************** Unit Preview ********************************/
         String unit = getUnit(context);
-
         /************************** Weight Preview ********************************/
         //Converts the weight to kilogram according to user preference.
         Double weightUnit = (unit.equals("LB")) ? workout.getWeight(): workout.getWeight()*0.45359237;
@@ -150,8 +147,4 @@ public class Utility {
         String pounds = context.getString(R.string.pref_units_pounds);
         return shared_pref.getString(context.getString(R.string.pref_unit_list_key),pounds);
     }
-
-
-
-
 }

@@ -22,7 +22,6 @@ public class TestDb extends AndroidTestCase{
         TrackerDAO dao = new TrackerDAO(mContext);
         assertTrue(dao.db.isOpen());
         long sesKey = dao.addSession("June 5", 185);
-        long weightKey =  dao.addWorkout(sesKey,1, "squats",255,5);
 
     }
 

@@ -17,8 +17,6 @@
         android:layout_marginTop="5dp"/>
 
     <!--/////////////WORKOUT BUTTONS//////////////-->
-
-    <!--//////////////Button One//////////////////-->
     <TextView
         android:id="@+id/workout_button_one"
         android:contentDescription="@string/workout_button_one"
@@ -32,7 +30,6 @@
         android:background="@drawable/workout_button_selector"
         android:textColor="@color/black"
         />
-
 
     <TextView
         android:id="@+id/workout_button_two"
@@ -126,43 +123,4 @@
         android:textColor="@color/black"
         />
     <!--////////////////////////////////////////////-->
-
-
-    <!--&lt;!&ndash; _______________First Set of Buttons_______________ &ndash;&gt;-->
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_container_set_1"
-
-        android:layout_marginLeft="40dp"
-        android:layout_marginStart="40dp"
-        android:orientation="horizontal">
-
-    </LinearLayout>
-
-    <!-- _______________Second Set of Buttons_______________ -->
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_container_set_2"
-        android:layout_marginLeft="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_below="@+id/button_container_set_1"
-        android:orientation="horizontal">
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/workout_complete_dialog"
-        android:layout_toRightOf="@+id/button_container_set_2"
-        android:layout_toEndOf="@+id/button_container_set_2"
-        />
-
-
-
-
 </RelativeLayout>

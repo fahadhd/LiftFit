@@ -77,20 +77,17 @@ public class ExerciseAdapter extends BaseAdapter{
         activateButtons(viewHolder,workout);
 
 
-        //Load buttons only once.
-        if(viewHolder.setOne.getChildCount() == 0) {
-            //addButtons(workout,viewHolder);
-        }
+
 
         //TODO: App is a little slow when running this code, optimize later possibly put in thread.
-        boolean sets_started = Utility.allSetsStarted(workout);
-        boolean sets_finished = (sets_started && Utility.allSetsFinished(workout));
-        if(sets_started && !sets_finished ){
-            //viewHolder.completed_dialog.setText("You'll get in next time!");
-        }
-        else if(sets_finished){
-            //viewHolder.completed_dialog.setText("Congrats +5 lb next time!");
-        }
+//        boolean sets_started = Utility.allSetsStarted(workout);
+//        boolean sets_finished = (sets_started && Utility.allSetsFinished(workout));
+//        if(sets_started && !sets_finished ){
+//            //viewHolder.completed_dialog.setText("You'll get in next time!");
+//        }
+//        else if(sets_finished){
+//            //viewHolder.completed_dialog.setText("Congrats +5 lb next time!");
+//        }
 
         return row;
     }
@@ -117,39 +114,8 @@ public class ExerciseAdapter extends BaseAdapter{
             currButton.setOnClickListener(new
                     SetListener(currButton,dao,workout,currSet,viewHolder,context));
         }
-
     }
-    public void addButtons(Workout workout, WorkoutViewHolder viewHolder){
-        int max_sets = workout.getMaxSets();
-        int i = 0;
-        ArrayList<Set> setList = workout.getSets();
-        Set currSet;
-        Button setButton;
 
-        while (i < 3 && i < max_sets) {
-            setButton = new Button(context);
-            currSet = setList.get(i);
-
-            setButton.setOnClickListener(new
-                    SetListener(setButton,dao,workout,currSet,viewHolder,context));
-
-            viewHolder.setOne.addView(setButton);
-
-            i++;
-        }
-
-        while (i < 6 && i < max_sets) {
-            setButton = new Button(context);
-            currSet = setList.get(i);
-
-            setButton.setOnClickListener(new
-                    SetListener(setButton, dao, workout, currSet,viewHolder,context));
-
-            viewHolder.setTwo.addView(setButton);
-            i++;
-        }
-
-    }
 
     //TODO: Put in utility class and use it for session list item as well.
     public SpannableStringBuilder spanWorkoutInfo(Workout workout){

@@ -8,6 +8,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
@@ -23,7 +25,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     ExercisesFragment exercisesFragment;
     TrackerDAO dao;
     public static long sessionID;
-    ArrayList<Session> sessions;
     ArrayList<Workout> workouts;
     SetTimer setTimer;
     String name;
@@ -58,6 +59,14 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         /**Initializing timer for sets**/
         setTimer = new SetTimer(this);
 
+        Button timerButton = (Button)findViewById(R.id.timer_button);
+        timerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startService(new Intent(ExerciseActivity.this,TimerActivity.class));
+            }
+        });
+
     }
 
     @Override
@@ -72,7 +81,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 
     @Override
     public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
-
         dao = exercisesFragment.dao;
         sessionID = exercisesFragment.sessionID;
         workouts = exercisesFragment.workouts;

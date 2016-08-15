@@ -12,11 +12,7 @@ public class WorkoutViewHolder {
     public TextView buttonOne,buttonTwo,buttonThree,buttonFour;
     public TextView buttonFive,buttonSix,buttonSeven,buttonEight;
     //TODO: ADD third set underneath second.
-    LinearLayout setOne,setTwo,setThree;
     public WorkoutViewHolder(View view){
-        setOne = (LinearLayout) view.findViewById(R.id.button_container_set_1);
-        setTwo = (LinearLayout) view.findViewById(R.id.button_container_set_2);
-        completed_dialog = (TextView) view.findViewById(R.id.workout_complete_dialog);
         workoutInfo = (TextView) view.findViewById(R.id.workout_info);
 
         /*********Workout Buttons***********/

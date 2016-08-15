@@ -55,8 +55,8 @@ public class SetTimer implements Runnable {
         current_time += 1000;
         int secs = (int) (current_time / 1000);
         int minutes = secs / 60;
-        secs = secs % 60;
-        timerView.setText(Integer.toString(minutes) + ":" + String.format("%02d", secs));
+
+        timerView.setText(Integer.toString(minutes) + ":" + String.format("%02d", secs % 60));
         handler.postDelayed(this, 1000);
     }
 

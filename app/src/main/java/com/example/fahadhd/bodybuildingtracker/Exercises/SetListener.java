@@ -12,7 +12,6 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 //Button listener for sets. Each workout can have up to 8 set buttons.
 public class SetListener implements View.OnClickListener {
-    Button setButton;
     TextView workoutButton;
     long setWorkoutKey;
     int setNum,currRep,maxReps,maxSets;
@@ -24,31 +23,6 @@ public class SetListener implements View.OnClickListener {
     LayoutInflater mInflater;
     ExerciseActivity exerciseActivity;
     SetTimer setTimer;
-
-    public SetListener(Button setButton, TrackerDAO dao, Workout curr_workout, Set currSet,
-                       WorkoutViewHolder viewHolder, Context context){
-        this.setButton = setButton;
-        this.setWorkoutKey = currSet.getWorkoutID();
-        this.setNum = currSet.getOrderNum();
-        this.currRep =  currSet.getCurrRep();
-        this.maxReps = curr_workout.getMaxReps();
-        this.maxSets = curr_workout.getMaxSets();
-        this.dao = dao;
-        this.curr_workout = curr_workout;
-        this.currSet = currSet;
-        this.viewHolder = viewHolder;
-        this.mContext = context;
-        this.mInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
-        this.exerciseActivity = (ExerciseActivity) mContext;
-        this.setTimer = exerciseActivity.getSetTimer();
-
-
-
-        //Displays the correct rep number of a set.
-        if(currRep > 0) {
-            setButton.setText(Integer.toString(currRep));
-        }
-    }
 
     public SetListener(TextView setButton, TrackerDAO dao, Workout curr_workout, Set currSet,
                        WorkoutViewHolder viewHolder, Context context){
@@ -101,12 +75,12 @@ public class SetListener implements View.OnClickListener {
     public void initializeSnackbar( boolean sets_started, boolean allFinished){
         if(!sets_started){
             //Since all sets aren't done, hide the congrats/failure message.
-            viewHolder.completed_dialog.setText(null);;
+            //viewHolder.completed_dialog.setText(null);
             if(currRep == maxReps) {
-                setTimer.startTimer("Nice job! Rest up for the next one.",18000);
+                setTimer.startTimer("Nice job! Rest up for the next one.",180000);
             }
             if(currRep == maxReps-1) {
-                setTimer.startTimer("Rest a bit longer for the next one!",25000);
+                setTimer.startTimer("Rest a bit longer for the next one!",250000);
             }
         }
 
