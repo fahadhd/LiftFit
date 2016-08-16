@@ -1,21 +1,33 @@
-package com.example.fahadhd.bodybuildingtracker;
+package com.example.fahadhd.bodybuildingtracker.utilities;
 
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.fahadhd.bodybuildingtracker.MainActivity;
+import com.example.fahadhd.bodybuildingtracker.R;
+import com.example.fahadhd.bodybuildingtracker.exercises.ExerciseActivity;
 import com.example.fahadhd.bodybuildingtracker.exercises.Set;
+import com.example.fahadhd.bodybuildingtracker.exercises.SetTimer;
 import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
@@ -147,4 +159,7 @@ public class Utility {
         String pounds = context.getString(R.string.pref_units_pounds);
         return shared_pref.getString(context.getString(R.string.pref_unit_list_key),pounds);
     }
+
+
+
 }

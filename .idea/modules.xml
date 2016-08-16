@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Ultimate_WeightLifting_Tracker.iml" filepath="$PROJECT_DIR$/Ultimate_WeightLifting_Tracker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Weight-Lifting-Tracker.iml" filepath="$PROJECT_DIR$/Weight-Lifting-Tracker.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

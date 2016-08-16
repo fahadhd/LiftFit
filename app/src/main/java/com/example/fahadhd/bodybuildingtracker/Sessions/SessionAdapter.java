@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.R;
-import com.example.fahadhd.bodybuildingtracker.Utility;
+import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 
 import java.util.ArrayList;
 

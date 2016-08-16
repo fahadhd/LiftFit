@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.example.fahadhd.bodybuildingtracker.exercises.ExerciseActivity;
 import com.example.fahadhd.bodybuildingtracker.sessions.SessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 
 /*Front view of app with a floating action button to add a exercise at the top*/
 public class MainActivity extends AppCompatActivity {
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class).
-                        putExtra(ADD_TASK,Utility.addSession(dao,MainActivity.this));
+                        putExtra(ADD_TASK, Utility.addSession(dao,MainActivity.this));
                 startActivity(exercise);
             }
         });

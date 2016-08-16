@@ -63,18 +63,18 @@ public class SetTimer implements Runnable {
     public Snackbar initCustomSnackbar(){
         final Snackbar snackbar = Snackbar.make(exerciseView, "", Snackbar.LENGTH_LONG);
         LayoutInflater inflater =  exerciseActivity.getLayoutInflater();
-        /**** Customize snackbar view with my own.*****/
-        this.mySnackView = inflater.inflate(R.layout.my_snackbar, null);
-        this.timerView = (TextView) mySnackView.findViewById(R.id.timer);
 
+        /**** Customizing snackbar view with my own.*****/
+        this.mySnackView = inflater.inflate(R.layout.my_snackbar,null);
+        this.timerView = (TextView) mySnackView.findViewById(R.id.timer);
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
         layout.setBackgroundColor(Color.GRAY);
         TextView snackbarText = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
         snackbarText.setTextSize(14f);
         //layout basically works like a list where you can add views at the top and remove them.
         layout.addView(mySnackView, 0);
-
         /*********************************************/
+
         /**Dismiss snackbar when user presses the X button.**/
         snackbar.setAction(R.string.dismiss, new View.OnClickListener() {
             @Override

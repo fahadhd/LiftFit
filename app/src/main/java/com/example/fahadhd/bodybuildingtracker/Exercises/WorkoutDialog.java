@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.fahadhd.bodybuildingtracker.R;
-import com.example.fahadhd.bodybuildingtracker.Utility;
+import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 
 //Dialog to add a workout to a current session. Sends resulting data to ExerciseActivity.
 

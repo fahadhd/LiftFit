@@ -11,12 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.R;
-import com.example.fahadhd.bodybuildingtracker.Utility;
+import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -64,7 +62,7 @@ public class ExerciseAdapter extends BaseAdapter{
         if(row == null){
             LayoutInflater inflater = (LayoutInflater) context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.exercises_list_item, null);
+            row = inflater.inflate(R.layout.exercises_list_item, parent,false);
             viewHolder = new WorkoutViewHolder(row);
             row.setTag(viewHolder);
         }
