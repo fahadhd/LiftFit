@@ -2,6 +2,8 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 
 
 import android.app.ActivityManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,9 +13,11 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -154,26 +158,28 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(mTimerService != null && mTimerService.getSessionID() != sessionID){
-                unBindTimerService();
-                unregisterReceiver(broadcastReceiver);
-                return;
-            }
-            if(intent.getAction().equals(Constants.TIMER.TIMER_OFF) && mySnackBar != null){
-                mySnackBar.dismiss();
-                isServiceOn = false;
-                return;
-            }
-            if(!snackBarOn){
-                if(mySnackBar == null){
-                    mySnackBar = initCustomSnackbar(mTimerService.getMessage());
+            if(mTimerService != null) {
+                if (mTimerService.getSessionID() != sessionID) {
+                    unBindTimerService();
+                    unregisterReceiver(broadcastReceiver);
+                    return;
                 }
-                mySnackBar.setDuration(20000);
-                mySnackBar.show();
-                snackBarOn = true;
+                if (intent.getAction().equals(Constants.TIMER.TIMER_OFF) ||
+                        (snackBarOn && mySnackBar!= null && !mySnackBar.isShown())) {
+                    stopTimerService();
+                    return;
+                }
+                if (!snackBarOn) {
+                    if (mySnackBar == null) {
+                        mySnackBar = initCustomSnackbar(mTimerService.getMessage());
+                    }
+                    mySnackBar.setDuration(600000);
+                    mySnackBar.show();
+                    snackBarOn = true;
+                }
 
+                updateTimerUI();
             }
-            updateTimerUI();
         }
     };
 
@@ -234,12 +240,11 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     /************************ HELPER METHODS FOR SNACKBAR TIMER *********************************/
     //Receives the current timer from the timer service broadcast and updates the UI
     public boolean updateTimerUI(){
-        if(!timerUp && mTimerService.isTimerUp() && mySnackBar!= null){
-            timerUp = true;
+        if(mTimerService.isTimerUp() && !timerUp && mySnackBar!= null){
             Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) mySnackBar.getView();
             layout.setBackgroundColor(Color.BLUE);
             snackbarText.setText(mTimerService.getMessage());
-            //TODO: Put notification and alarm here
+            timerUp = true;
         }
         this.currentTime = mTimerService.getTimer();
         int secs = (int) (currentTime / 1000);
@@ -251,7 +256,10 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         if(isServiceOn){
             mTimerService.resetTimer(message);
             timerUp = false;
-            if(mySnackBar != null) mySnackBar.dismiss(); snackBarOn = false;
+            if(mySnackBar != null){
+                mySnackBar.dismiss();
+                snackBarOn = false;
+            }
         }
         else {
             timerIntent.setAction(Constants.ACTION.START_FOREGROUND_ACTION);
@@ -274,7 +282,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             unregisterReceiver(broadcastReceiver);
             isServiceOn = false;
         }
-        if(mySnackBar != null) mySnackBar.dismiss(); snackBarOn = false;
+        if(mySnackBar != null){mySnackBar.dismiss(); snackBarOn = false;}
     }
 
 
@@ -282,7 +290,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.TIMER.TIMER_RUNNING);
         intentFilter.addAction(Constants.TIMER.TIMER_OFF);
-        registerReceiver(broadcastReceiver, new IntentFilter(Constants.TIMER.TIMER_RUNNING));
+        registerReceiver(broadcastReceiver, intentFilter);
     }
 
 
@@ -303,5 +311,4 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         }
         return false;
     }
-
 }

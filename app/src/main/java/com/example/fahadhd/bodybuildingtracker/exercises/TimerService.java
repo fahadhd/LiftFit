@@ -1,6 +1,7 @@
 package com.example.fahadhd.bodybuildingtracker.exercises;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -26,6 +28,7 @@ public class TimerService extends Service {
     private static String TAG = TimerService.class.getSimpleName();
     public IBinder mBinder = new MyBinder();
     Intent timerIntent = new Intent(Constants.TIMER.TIMER_RUNNING);
+    NotificationCompat.Builder mBuilder;
     long currentTimer,duration,sessionID = -1;
     long timeSinceLastOn, elapsedTimeSinceOff;
     public String message;
@@ -37,11 +40,10 @@ public class TimerService extends Service {
     public void onCreate() {
         super.onCreate();
         currentTimer = elapsedTimeSinceOff = 0L;
-        duration = 60000;
+        duration = 6000;
         timerUp = false;
         message = "Rest a bit";
         timeSinceLastOn = SystemClock.elapsedRealtime();
-
         /**Broadcast receiver to check if the screen is on **/
         IntentFilter screenStateFilter = new IntentFilter();
         screenStateFilter.addAction(Intent.ACTION_SCREEN_ON);
@@ -56,11 +58,12 @@ public class TimerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(intent != null) {
             if (intent.getAction().equals(Constants.ACTION.START_FOREGROUND_ACTION)) {
-                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, createTimerNotification());
                 if(intent.hasExtra(Constants.GENERAL.SESSION_ID))
                     sessionID = intent.getLongExtra(Constants.GENERAL.SESSION_ID,0);
                 if(intent.hasExtra(Constants.TIMER.TIMER_MSG))
                     message = intent.getStringExtra(Constants.TIMER.TIMER_MSG);
+                mBuilder = createTimerNotification();
+                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, mBuilder.build());
             }
             else if (intent.getAction().equals(Constants.ACTION.STOP_FOREGROUND_ACTION)) {
                 stopForeground(true);
@@ -76,6 +79,7 @@ public class TimerService extends Service {
             if(!timerUp && currentTimer >= duration){
                 timerUp = true;
                 message = "Rest time is over!";
+                displayTimerUpNotification();
             }
             currentTimer += 1000;
             broadCastTimer();
@@ -107,6 +111,15 @@ public class TimerService extends Service {
 
     public long getSessionID(){
         return (sessionID != -1) ? sessionID : -1;
+    }
+
+    public void displayTimerUpNotification(){
+        // Gets an instance of the NotificationManager service
+        final NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mBuilder.setSmallIcon(R.drawable.ic_timer_off).setColor(Color.BLUE);
+        mBuilder.setContentTitle("Timer Done!").setContentText("Get that next set!");
+        mNotifyMgr.notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, mBuilder.build());
     }
 
     @Override
@@ -153,26 +166,30 @@ public class TimerService extends Service {
     };
 
     /**Since this is foreground service it must have a notification**/
-    private Notification createTimerNotification() {
+    private NotificationCompat.Builder createTimerNotification() {
+        /*************** In charge of returning to app when user clicks notification ******/
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setAction(Constants.ACTION.START_NOTIFICATION_ACTION);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent,0);
-
+        /*********************************************************************************/
+//        Bitmap my_icon = BitmapFactory.decodeResource(getResources(),
+//                R.drawable.ic_notification);
         Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                R.mipmap.ic_launcher);
+                R.drawable.ic_notification);
 
-        Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle("Service Timer")
-                .setTicker("Count up timer")
-                .setContentText("timer")
-                .setSmallIcon(R.mipmap.ic_launcher)
+        return (new NotificationCompat.Builder(this)
+                .setContentTitle("Timer Running")
                 .setLargeIcon(Bitmap.createScaledBitmap(icon, 128, 128, false))
+                .setSmallIcon(R.drawable.ic_stat_timer_on)
+                .setContentText(message)
                 .setContentIntent(pendingIntent)
-                .setOngoing(true)
-                .build();
-        return notification;
+                .setColor(Color.BLACK)
+                .setLights(Color.BLUE, 500, 500)
+                .setDefaults(NotificationCompat.DEFAULT_VIBRATE)
+                .setDefaults(NotificationCompat.DEFAULT_SOUND)
+                .setStyle(new NotificationCompat.InboxStyle()));
     }
 }
