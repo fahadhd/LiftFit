@@ -1,6 +1,5 @@
 package com.example.fahadhd.bodybuildingtracker.exercises;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -32,7 +31,7 @@ public class TimerService extends Service {
     long currentTimer,duration,sessionID = -1;
     long timeSinceLastOn, elapsedTimeSinceOff;
     public String message;
-    boolean timerUp;
+    boolean durationReached;
     Handler handler = new Handler();
 
 
@@ -41,7 +40,7 @@ public class TimerService extends Service {
         super.onCreate();
         currentTimer = elapsedTimeSinceOff = 0L;
         duration = 6000;
-        timerUp = false;
+        durationReached = false;
         message = "Rest a bit";
         timeSinceLastOn = SystemClock.elapsedRealtime();
         /**Broadcast receiver to check if the screen is on **/
@@ -76,8 +75,8 @@ public class TimerService extends Service {
     public Runnable timerThread = new Runnable() {
         @Override
         public void run() {
-            if(!timerUp && currentTimer >= duration){
-                timerUp = true;
+            if(!durationReached && currentTimer >= duration){
+                durationReached = true;
                 message = "Rest time is over!";
                 displayTimerUpNotification();
             }
@@ -94,8 +93,8 @@ public class TimerService extends Service {
         return currentTimer;
     }
 
-    public boolean isTimerUp() {
-        return timerUp;
+    public boolean isDurationReached() {
+        return durationReached;
     }
 
     public String getMessage(){
@@ -105,8 +104,14 @@ public class TimerService extends Service {
     public void resetTimer(String message){
         Log.v(TAG,"Resetting Timer");
         currentTimer = 0L;
-        timerUp = false;
+        durationReached = false;
         this.message = message;
+        /********* Resets the notification as well *************/
+        final NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mBuilder.setSmallIcon(R.drawable.ic_stat_timer_on).setColor(Color.BLACK);
+        mBuilder.setContentTitle("Timer running").setContentText(message);
+        mNotifyMgr.notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, mBuilder.build());
     }
 
     public long getSessionID(){
@@ -117,10 +122,12 @@ public class TimerService extends Service {
         // Gets an instance of the NotificationManager service
         final NotificationManager mNotifyMgr =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mBuilder.setSmallIcon(R.drawable.ic_timer_off).setColor(Color.BLUE);
+        mBuilder.setSmallIcon(R.drawable.ic_timer_off).setColor(Color.BLACK);
         mBuilder.setContentTitle("Timer Done!").setContentText("Get that next set!");
         mNotifyMgr.notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, mBuilder.build());
     }
+
+
 
     @Override
     public void onDestroy() {

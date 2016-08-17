@@ -2,8 +2,6 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 
 
 import android.app.ActivityManager;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,11 +11,9 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
@@ -51,7 +46,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     View mySnackView; TextView timerView, snackbarText;
     Snackbar mySnackBar;
     long currentTime = 0L;
-    boolean mServiceBound = false, timerUp = false, snackBarOn = false;
+    boolean mServiceBound = false, durationUpdated = false, snackBarOn = false;
     boolean isServiceOn = false;
     /******************************************/
 
@@ -159,6 +154,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         @Override
         public void onReceive(Context context, Intent intent) {
             if(mTimerService != null) {
+                //Unbinds from service if its a service for another workout
                 if (mTimerService.getSessionID() != sessionID) {
                     unBindTimerService();
                     unregisterReceiver(broadcastReceiver);
@@ -177,7 +173,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
                     mySnackBar.show();
                     snackBarOn = true;
                 }
-
                 updateTimerUI();
             }
         }
@@ -240,11 +235,11 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     /************************ HELPER METHODS FOR SNACKBAR TIMER *********************************/
     //Receives the current timer from the timer service broadcast and updates the UI
     public boolean updateTimerUI(){
-        if(mTimerService.isTimerUp() && !timerUp && mySnackBar!= null){
+        if(!durationUpdated && mTimerService.isDurationReached() && mySnackBar != null){
             Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) mySnackBar.getView();
             layout.setBackgroundColor(Color.BLUE);
             snackbarText.setText(mTimerService.getMessage());
-            timerUp = true;
+            durationUpdated = true;
         }
         this.currentTime = mTimerService.getTimer();
         int secs = (int) (currentTime / 1000);
@@ -255,7 +250,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     public void startTimerService(String message){
         if(isServiceOn){
             mTimerService.resetTimer(message);
-            timerUp = false;
+            durationUpdated = false;
             if(mySnackBar != null){
                 mySnackBar.dismiss();
                 snackBarOn = false;
@@ -283,6 +278,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             isServiceOn = false;
         }
         if(mySnackBar != null){mySnackBar.dismiss(); snackBarOn = false;}
+        durationUpdated = false;
     }
 
 
