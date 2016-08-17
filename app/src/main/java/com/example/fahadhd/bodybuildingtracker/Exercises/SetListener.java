@@ -1,12 +1,10 @@
 package com.example.fahadhd.bodybuildingtracker.exercises;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.fahadhd.bodybuildingtracker.service.TimerService;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
@@ -22,7 +20,6 @@ public class SetListener implements View.OnClickListener {
     Context mContext;
     LayoutInflater mInflater;
     ExerciseActivity exerciseActivity;
-    SetTimer setTimer;
 
     public SetListener(TextView setButton, TrackerDAO dao, Workout curr_workout, Set currSet,
                        WorkoutViewHolder viewHolder, Context context) {
@@ -39,7 +36,7 @@ public class SetListener implements View.OnClickListener {
         this.mContext = context;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.exerciseActivity = (ExerciseActivity) mContext;
-        this.setTimer = exerciseActivity.getSetTimer();
+
 
 
         //Displays the correct rep number of a set.
@@ -58,7 +55,7 @@ public class SetListener implements View.OnClickListener {
         //Display the default button when a set's rep number reaches 0.
         if (currRep == 0) {
             workoutButton.setText(null);
-            setTimer.dismissSnackBar();
+            exerciseActivity.stopTimerService();
             //viewHolder.completed_dialog.setText(null);
         } else {
             workoutButton.setText(Integer.toString(currRep));

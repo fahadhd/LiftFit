@@ -3,15 +3,19 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,32 +27,28 @@ import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
-import com.example.fahadhd.bodybuildingtracker.service.TimerService;
-import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 import com.example.fahadhd.bodybuildingtracker.utilities.Constants;
-import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 
 import java.util.ArrayList;
 
-//TODO: clean up classy kind of messy
 public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog.Communicator {
     ExercisesFragment exercisesFragment;
+    public static final String TAG = MainActivity.class.getSimpleName();
     TrackerDAO dao;
     public static long sessionID;
     ArrayList<Workout> workouts;
-    SetTimer setTimer;
     String name;
     TrackerApplication application;
     /***********Snackbar variables**************/
-    View mySnackView;
-    public static TextView timerView;
+    TimerService mTimerService;
+    Intent timerIntent;
+    View mySnackView; TextView timerView, snackbarText;
     Snackbar mySnackBar;
-    Intent timerService;
-    long currentTime = 0L,duration = 4000;
-    boolean snackBarOn = false, receiverRegistered = false;
-    String serviceMessage;
+    long currentTime = 0L;
+    boolean mServiceBound = false, timerUp = false, snackBarOn = false;
+    boolean isServiceOn = false;
     /******************************************/
 
     @Override
@@ -58,9 +58,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         application  = (TrackerApplication)this.getApplication();
         exercisesFragment = (ExercisesFragment) getSupportFragmentManager().
                 findFragmentById(R.id.exercises_fragment);
-
         sessionID = exercisesFragment.sessionID;
-        timerService = new Intent(this, TimerService.class);
         mySnackView = getLayoutInflater().inflate(R.layout.my_snackbar, null);
         timerView = (TextView) mySnackView.findViewById(R.id.timer);
 
@@ -77,41 +75,36 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             addExercise.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ExerciseActivity.this.setTimer.dismissSnackBar();
                     WorkoutDialog dialog = new WorkoutDialog();
                     dialog.show(getFragmentManager(), "WorkoutDialog");
                 }
             });
         }
-        /**Initializing timer for sets**/
-        setTimer = new SetTimer(this);
-
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //Register receiver if service is running
-        if(isMyServiceRunning(TimerService.class))
-            registerTimerBroadcasts();
+        timerIntent = new Intent(this, TimerService.class);
+        currentTime = 0L;
+        //Binds to an existing running service
+        if (isMyServiceRunning(TimerService.class)) {
+            isServiceOn = true;
+            Log.v(TAG,"Bound to service");
+            bindService(timerIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+            registerTimerReceiver();
+        }
+
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
     @Override
     protected void onStop() {
         super.onStop();
-        if(receiverRegistered) unregisterReceiver(broadcastReceiver); receiverRegistered = false;
-    }
-
-
-
-    public SetTimer getSetTimer(){
-        return this.setTimer;
+        if(isServiceOn && mServiceBound) {
+            unBindTimerService();
+            unregisterReceiver(broadcastReceiver);
+        }
     }
 
     @Override
@@ -133,8 +126,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     }
 
 
-
-    /*************** Add workout data in background thread via async task*****************/
+    /*************** Adds workout data in background thread via async task*****************/
     public class AddWorkoutTask extends AsyncTask<Integer, Void, Void> {
 
         @Override
@@ -155,84 +147,52 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     }
 
 
-    /****************************** Timer Snackbar Services *****************************************************/
+    /****************************** Timer Snackbar ****************************************/
 
-    /**************************** BroadCast Receiver in charge of snackbar counter *******************/
+    /****************** BroadCast Receiver in charge of snackbar counter *****************/
+
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals(Constants.ACTION.BROADCAST_ACTION_OFF) && mySnackBar != null){
-                if(mySnackBar.isShown()) mySnackBar.dismiss();
-                return;
-            }
-            if(intent.hasExtra(Constants.TIMER.TIMER_ID) && intent.getLongExtra(Constants.TIMER.TIMER_ID,0L) != sessionID){
+            if(mTimerService != null && mTimerService.getSessionID() != sessionID){
+                unBindTimerService();
                 unregisterReceiver(broadcastReceiver);
-                receiverRegistered = false;
                 return;
             }
-            /**Starting the snackbar back up if it was dismissed before timer was up**/
-            if(serviceMessage == null && intent.hasExtra(Constants.TIMER.TIMER_MSG)){
-                serviceMessage = intent.getStringExtra(Constants.TIMER.TIMER_MSG);
+            if(intent.getAction().equals(Constants.TIMER.TIMER_OFF) && mySnackBar != null){
+                mySnackBar.dismiss();
+                isServiceOn = false;
+                return;
             }
-           showSnackbar();
+            if(!snackBarOn){
+                if(mySnackBar == null){
+                    mySnackBar = initCustomSnackbar(mTimerService.getMessage());
+                }
+                mySnackBar.setDuration(20000);
+                mySnackBar.show();
+                snackBarOn = true;
 
-            //Updating the timer in snackbar view
-            updateUI(intent);
+            }
+            updateTimerUI();
         }
     };
 
-    public void startTimerService(String message){
-        //Dismiss snackbar and stop service before starting a new one
-        stopTimerService();
-        serviceMessage = message;
-        showSnackbar();
-
-        timerService.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
-        timerService.putExtra(Constants.TIMER.DURATION,duration);
-        timerService.putExtra(Constants.TIMER.TIMER_ID,sessionID);
-        timerService.putExtra(Constants.TIMER.TIMER_MSG,serviceMessage);
-        startService(timerService);
-        registerTimerBroadcasts();
-    }
-
-    public void stopTimerService(){
-        if(snackBarOn) mySnackBar.dismiss(); snackBarOn = false;
-
-        if(isMyServiceRunning(TimerService.class)) {
-            timerService.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
-            startService(timerService);
-            unregisterReceiver(broadcastReceiver);
-            receiverRegistered = false;
+    /****************** Service to bind exercise activity with timer service ****************/
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mServiceBound = false;
         }
-    }
 
-    //Receives the timer from the service and updates the UI
-    public boolean updateUI(Intent intent){
-        if(!intent.hasExtra(Constants.TIMER.CURRENT_TIME)) return false;
-
-        this.currentTime = intent.getLongExtra(Constants.TIMER.CURRENT_TIME, 0L);
-
-        if(this.currentTime == duration) return false;
-
-
-        int secs = (int) (currentTime / 1000);
-        int minutes = secs / 60;
-
-        timerView.setText(Integer.toString(minutes) + ":" + String.format("%02d", secs%60));
-        return true;
-    }
-
-    public  boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            TimerService.MyBinder myBinder = (TimerService.MyBinder) service;
+            mTimerService = myBinder.getService();
+            mServiceBound = true;
         }
-        return false;
-    }
+    };
 
-
+    /******** Returns a custom snackbar to be used for the timer between sets **************/
     public Snackbar initCustomSnackbar(String message){
         View exerciseView;
         exerciseView = findViewById(R.id.exercises_list_main);
@@ -245,9 +205,9 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         timerView = (TextView) mySnackView.findViewById(R.id.timer);
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
         layout.setBackgroundColor(Color.GRAY);
-        TextView snackbarText = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+        snackbarText = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
         snackbarText.setTextSize(14f);
-        //layout basically works like a list where you can add views at the top and remove them.
+        //layout basically works like a list where you can add views at the top and also remove them.
         layout.addView(mySnackView, 0);
         /*********************************************/
 
@@ -270,25 +230,78 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         return snackbar;
     }
 
-    public void registerTimerBroadcasts(){
-        IntentFilter screenStateFilter = new IntentFilter();
-        screenStateFilter.addAction(Constants.ACTION.BROADCAST_ACTION);
-        screenStateFilter.addAction(Constants.ACTION.BROADCAST_ACTION_OFF);
-        registerReceiver(broadcastReceiver, screenStateFilter);
 
-        receiverRegistered = true;
+    /************************ HELPER METHODS FOR SNACKBAR TIMER *********************************/
+    //Receives the current timer from the timer service broadcast and updates the UI
+    public boolean updateTimerUI(){
+        if(!timerUp && mTimerService.isTimerUp() && mySnackBar!= null){
+            timerUp = true;
+            Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) mySnackBar.getView();
+            layout.setBackgroundColor(Color.BLUE);
+            snackbarText.setText(mTimerService.getMessage());
+            //TODO: Put notification and alarm here
+        }
+        this.currentTime = mTimerService.getTimer();
+        int secs = (int) (currentTime / 1000);
+        int minutes = secs / 60;
+        timerView.setText(Integer.toString(minutes) + ":" + String.format("%02d", secs%60));
+        return true;
+    }
+    public void startTimerService(String message){
+        if(isServiceOn){
+            mTimerService.resetTimer(message);
+            timerUp = false;
+            if(mySnackBar != null) mySnackBar.dismiss(); snackBarOn = false;
+        }
+        else {
+            timerIntent.setAction(Constants.ACTION.START_FOREGROUND_ACTION);
+            timerIntent.putExtra(Constants.GENERAL.SESSION_ID, sessionID);
+            timerIntent.putExtra(Constants.TIMER.TIMER_MSG, message);
+            startService(timerIntent);
+            isServiceOn = true;
+            Log.v(TAG, "Bound to service");
+            bindService(timerIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+            registerTimerReceiver();
+        }
+        mySnackBar = initCustomSnackbar(message);
     }
 
-    public void showSnackbar(){
-        if(!snackBarOn){
-            mySnackBar = initCustomSnackbar(serviceMessage);
-            snackBarOn = true;
-            mySnackBar.setDuration((int)duration*5);
-            mySnackBar.show();
+    public void stopTimerService(){
+        unBindTimerService();
+        if(isServiceOn) {
+            timerIntent.setAction(Constants.ACTION.STOP_FOREGROUND_ACTION);
+            startService(timerIntent);
+            unregisterReceiver(broadcastReceiver);
+            isServiceOn = false;
+        }
+        if(mySnackBar != null) mySnackBar.dismiss(); snackBarOn = false;
+    }
+
+
+    public void registerTimerReceiver(){
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.TIMER.TIMER_RUNNING);
+        intentFilter.addAction(Constants.TIMER.TIMER_OFF);
+        registerReceiver(broadcastReceiver, new IntentFilter(Constants.TIMER.TIMER_RUNNING));
+    }
+
+
+    public void unBindTimerService(){
+        if(mServiceBound) {
+            Log.v(TAG,"UnBounded from service");
+            unbindService(mServiceConnection);
+            mServiceBound = false;
         }
     }
 
-    /************************** Timer Services End *******************************/
-
+    public  boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

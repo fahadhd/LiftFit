@@ -1,4 +1,4 @@
-package com.example.fahadhd.bodybuildingtracker.service;
+package com.example.fahadhd.bodybuildingtracker.exercises;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
@@ -18,31 +19,28 @@ import android.util.Log;
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
-import com.example.fahadhd.bodybuildingtracker.exercises.ExerciseActivity;
 import com.example.fahadhd.bodybuildingtracker.utilities.Constants;
 
-//Timer service which uses a handler to monitor tick rate. Also uses a broadcast receiver
-//to update the timer if the device was in sleep mode.
+
 public class TimerService extends Service {
-    Intent intent;
-    public static final String TAG = TimerService.class.getSimpleName();
-    private final Handler handler = new Handler();
-    long currentTime, duration;
+    private static String TAG = TimerService.class.getSimpleName();
+    public IBinder mBinder = new MyBinder();
+    Intent timerIntent = new Intent(Constants.TIMER.TIMER_RUNNING);
+    long currentTimer,duration,sessionID = -1;
     long timeSinceLastOn, elapsedTimeSinceOff;
-    long timerID;
-    String message;
+    public String message;
+    boolean timerUp;
+    Handler handler = new Handler();
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-        currentTime = duration = elapsedTimeSinceOff = 0L;
+        currentTimer = elapsedTimeSinceOff = 0L;
+        duration = 60000;
+        timerUp = false;
+        message = "Rest a bit";
         timeSinceLastOn = SystemClock.elapsedRealtime();
-        intent = new Intent(Constants.ACTION.BROADCAST_ACTION);
-
-        /**Starting Timer here**/
-        handler.removeCallbacks(timerThread);
-        handler.postDelayed(timerThread,500);
-        /**********************/
 
         /**Broadcast receiver to check if the screen is on **/
         IntentFilter screenStateFilter = new IntentFilter();
@@ -51,24 +49,20 @@ public class TimerService extends Service {
         registerReceiver(broadcastReceiver, screenStateFilter);
         /***************************************************/
 
+        handler.postDelayed(timerThread,0);
     }
 
     @Override
-    /**Depending on action issued by MainActivity either puts service in foreground with duration
-     * or destroys the service**/
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(intent != null) {
-            if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
-                if (intent.hasExtra(Constants.TIMER.DURATION))
-                    duration = intent.getLongExtra(Constants.TIMER.DURATION, 0);
-                if(intent.hasExtra(Constants.TIMER.TIMER_ID))
-                    timerID = intent.getLongExtra(Constants.TIMER.TIMER_ID,0);
+            if (intent.getAction().equals(Constants.ACTION.START_FOREGROUND_ACTION)) {
+                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, createTimerNotification());
+                if(intent.hasExtra(Constants.GENERAL.SESSION_ID))
+                    sessionID = intent.getLongExtra(Constants.GENERAL.SESSION_ID,0);
                 if(intent.hasExtra(Constants.TIMER.TIMER_MSG))
                     message = intent.getStringExtra(Constants.TIMER.TIMER_MSG);
-
-                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, createTimerNotification());
             }
-            else if (intent.getAction().equals(Constants.ACTION.STOPFOREGROUND_ACTION)) {
+            else if (intent.getAction().equals(Constants.ACTION.STOP_FOREGROUND_ACTION)) {
                 stopForeground(true);
                 stopSelf();
             }
@@ -76,43 +70,65 @@ public class TimerService extends Service {
         return START_STICKY;
     }
 
-    /**Thread the handler uses to push to message queue. This creates a timer effect.**/
-    private Runnable timerThread = new Runnable() {
+    public Runnable timerThread = new Runnable() {
         @Override
         public void run() {
-            if(currentTime >= duration){
-                stopSelf();
-                return;
+            if(!timerUp && currentTimer >= duration){
+                timerUp = true;
+                message = "Rest time is over!";
             }
-            currentTime += 1000;
-            sendTimerInfo();
+            currentTimer += 1000;
+            broadCastTimer();
             handler.postDelayed(this,1000);
         }
     };
+    public void broadCastTimer(){
+        Log.v(TAG,"Timer is running. Current tick is: "+currentTimer);
+        sendBroadcast(timerIntent);
+    }
+    public long getTimer(){
+        return currentTimer;
+    }
 
-    /**Broadcasts the timer in which the MainActivity will receive it and update the UI**/
-    private void sendTimerInfo(){
-        Log.d(TAG, "timer running: tick is " + currentTime);
-        intent.putExtra(Constants.TIMER.CURRENT_TIME, currentTime);
-        intent.putExtra(Constants.TIMER.TIMER_ID,timerID);
-        intent.putExtra(Constants.TIMER.TIMER_MSG,message);
-        sendBroadcast(intent);
+    public boolean isTimerUp() {
+        return timerUp;
+    }
+
+    public String getMessage(){
+        return message;
+    }
+
+    public void resetTimer(String message){
+        Log.v(TAG,"Resetting Timer");
+        currentTimer = 0L;
+        timerUp = false;
+        this.message = message;
+    }
+
+    public long getSessionID(){
+        return (sessionID != -1) ? sessionID : -1;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG,"timer service finished");
+        Log.v(TAG,"Timer service has stopped");
         unregisterReceiver(broadcastReceiver);
-        intent.setAction(Constants.ACTION.BROADCAST_ACTION_OFF);
-        sendBroadcast(intent);
+        timerIntent.setAction(Constants.TIMER.TIMER_OFF);
+        sendBroadcast(timerIntent);
         handler.removeCallbacks(timerThread);
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
+    }
+
+    public class MyBinder extends Binder {
+        public TimerService getService() {
+            return TimerService.this;
+        }
     }
 
     /******************** Broadcast Receiver To Check if Screen is on**************************************/
@@ -124,8 +140,8 @@ public class TimerService extends Service {
             if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
                 Log.d(TAG,"Screen is turned on");
                 elapsedTimeSinceOff = SystemClock.elapsedRealtime() - timeSinceLastOn;
-                Log.d(TAG," screen was off and updating current time by "+elapsedTimeSinceOff);
-                currentTime += elapsedTimeSinceOff;
+                Log.d(TAG," screen was off and updating current time by"+elapsedTimeSinceOff);
+                currentTimer += elapsedTimeSinceOff;
                 handler.postDelayed(timerThread,0);
             }
             /**Turns off the timer when the screen is off**/
@@ -138,9 +154,8 @@ public class TimerService extends Service {
 
     /**Since this is foreground service it must have a notification**/
     private Notification createTimerNotification() {
-        //TODO: Fix notification and finalize it
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
+        notificationIntent.setAction(Constants.ACTION.START_NOTIFICATION_ACTION);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,

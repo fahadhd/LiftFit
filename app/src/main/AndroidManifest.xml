@@ -39,7 +39,7 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity" />
-        <service android:name=".service.TimerService" android:process=":ServiceTimer_background"/>
+        <service android:name=".exercises.TimerService"/>
     </application>
 
 </manifest>
