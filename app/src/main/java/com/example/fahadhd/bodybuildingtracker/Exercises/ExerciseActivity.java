@@ -12,16 +12,21 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
@@ -54,6 +59,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
+
         application  = (TrackerApplication)this.getApplication();
         exercisesFragment = (ExercisesFragment) getSupportFragmentManager().
                 findFragmentById(R.id.exercises_fragment);
@@ -69,7 +75,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         }
 
         /**Button in charge of adding workouts to the list_view. First displays a dialog for input**/
-        FloatingActionButton addExercise = (FloatingActionButton) findViewById(R.id.add_exercise);
+        ImageButton addExercise = (ImageButton) findViewById(R.id.btn_add_workout);
         if (addExercise != null) {
             addExercise.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,7 +85,16 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
                 }
             });
         }
-
+        FloatingActionButton fabExercise = (FloatingActionButton) findViewById(R.id.add_exercise);
+        if (fabExercise != null) {
+            fabExercise.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WorkoutDialog dialog = new WorkoutDialog();
+                    dialog.show(getFragmentManager(), "WorkoutDialog");
+                }
+            });
+        }
     }
 
     @Override
@@ -94,8 +109,18 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             bindService(timerIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
             registerTimerReceiver();
         }
-
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present
+        getMenuInflater().inflate(R.menu.menu_exercises, menu);
+        //TODO: activate this in fragment when there are too many items
+        menu.findItem(R.id.add_exercise).setVisible(true);
+        return true;
+    }
+
+
 
     @Override
     protected void onStop() {
@@ -232,15 +257,17 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     }
 
 
-    /************************ HELPER METHODS FOR SNACKBAR TIMER *********************************/
+    /************************ Helper methods for snackbar timer start *********************************/
     //Receives the current timer from the timer service broadcast and updates the UI
     public boolean updateTimerUI(){
         if(!durationUpdated && mTimerService.isDurationReached() && mySnackBar != null){
+            //settings snackbar to a different color when timer has reached its duration
             Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) mySnackBar.getView();
             layout.setBackgroundColor(Color.BLUE);
             snackbarText.setText(mTimerService.getMessage());
             durationUpdated = true;
         }
+        //Updating the timer in the snackbar
         this.currentTime = mTimerService.getTimer();
         int secs = (int) (currentTime / 1000);
         int minutes = secs / 60;
@@ -307,4 +334,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         }
         return false;
     }
+
+    /*********************** Helper methods for snackbar timer end ***************************/
 }

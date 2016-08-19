@@ -20,6 +20,22 @@ public class Workout implements Serializable {
         this.max_reps = max_reps;
         this.sets = sets;
     }
+    public Workout(Workout workout){
+        this.session_id = workout.session_id;
+        this.workout_id  = workout.workout_id;
+        this.workout_num = workout.workout_num;
+        this.name = workout.name;
+        this.weight = workout.weight;
+        this.max_sets = workout.max_sets;
+        this.max_reps = workout.max_reps;
+        this.sets = workout.sets;
+
+    }
+
+    public Workout(String buttonName){
+        this.name = buttonName;
+    }
+
 
     public String getName(){
         return this.name;

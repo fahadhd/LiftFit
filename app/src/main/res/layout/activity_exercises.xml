@@ -8,12 +8,5 @@
 
     <include layout="@layout/content_exercises" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_exercise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:src="@drawable/fab"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
@@ -24,12 +25,14 @@ import java.util.ArrayList;
 //Populates the list_view of the exercises fragment.
 public class ExerciseAdapter extends BaseAdapter{
     Context context;
-    ArrayList<Workout> workouts;
+    ArrayList<Workout> workouts = new ArrayList<>();
     TrackerDAO dao;
 
-    public ExerciseAdapter(Context context, ArrayList<Workout> workouts, TrackerDAO dao){
+    public static final String WORKOUT_BTN = "workout_button";
+
+    public ExerciseAdapter(Context context, ArrayList<Workout> data, TrackerDAO dao){
         this.context = context;
-        this.workouts = workouts;
+        this.workouts = data;
         this.dao = dao;
     }
 
@@ -49,8 +52,9 @@ public class ExerciseAdapter extends BaseAdapter{
     }
 
     @Override
+    //Set to false if you want to remove listview divider
     public boolean isEnabled(int position) {
-        return false;
+        return true;
     }
 
 
@@ -59,25 +63,23 @@ public class ExerciseAdapter extends BaseAdapter{
         View row = convertView;
         WorkoutViewHolder viewHolder;
 
-        if(row == null){
+        if (row == null) {
             LayoutInflater inflater = (LayoutInflater) context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.exercises_list_item, parent,false);
+            row = inflater.inflate(R.layout.exercises_list_item, parent, false);
             viewHolder = new WorkoutViewHolder(row);
             row.setTag(viewHolder);
-        }
-        else{
-            viewHolder = (WorkoutViewHolder)row.getTag();
+        } else {
+            viewHolder = (WorkoutViewHolder) row.getTag();
         }
         Workout workout = workouts.get(position);
 
         viewHolder.workoutInfo.setText(spanWorkoutInfo(workout));
-        activateButtons(viewHolder,workout);
-
-
+        activateButtons(viewHolder, workout);
 
 
         //TODO: App is a little slow when running this code, optimize later possibly put in thread.
+        //In charge of putting congrats/next time text after workout is done
 //        boolean sets_started = Utility.allSetsStarted(workout);
 //        boolean sets_finished = (sets_started && Utility.allSetsFinished(workout));
 //        if(sets_started && !sets_finished ){
@@ -86,6 +88,7 @@ public class ExerciseAdapter extends BaseAdapter{
 //        else if(sets_finished){
 //            //viewHolder.completed_dialog.setText("Congrats +5 lb next time!");
 //        }
+
 
         return row;
     }

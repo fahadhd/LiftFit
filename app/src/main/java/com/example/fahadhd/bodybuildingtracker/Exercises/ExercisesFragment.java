@@ -2,14 +2,21 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
@@ -18,7 +25,9 @@ import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -31,6 +40,10 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     ArrayList<Session> sessions;
     ArrayList<Workout> workouts = new ArrayList<>();
     ListView exerciseListView;
+    Menu exerciseMenu;
+    FloatingActionButton fabExercise;
+    View buttonView;
+    boolean showFab;
 
 
     @Override
@@ -46,8 +59,9 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                              Bundle savedInstanceState) {
 
         View rootView =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
+        this.buttonView =  inflater.inflate(R.layout.exercise_list_add_btn, container, false);
         adapter = new ExerciseAdapter(getActivity(),workouts,dao);
-
+        fabExercise = (FloatingActionButton) rootView.findViewById(R.id.add_exercise);
 
         Intent sessionIntent = getActivity().getIntent();
 
@@ -65,22 +79,49 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
             //Add new session to cached data-+3*9
             sessions.add(0,currentSession);
             position = 0;
-            getActivity().setTitle("Current Workout");
+            getActivity().setTitle("Today's Workout");
         }
         sessionID = currentSession.getSessionId();
 
-
         exerciseListView = (ListView)rootView.findViewById(R.id.exercises_list_main);
         exerciseListView.setAdapter(adapter);
+        exerciseListView.addFooterView(buttonView);
+
+
 
         return rootView;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(fabExercise != null && adapter.getCount() > 0) {
+            fabExercise.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void setExistingWorkout(Session session){
-        String title = session.getDate() + "   Session  #"+session.getSessionId();
+        String title;
+        SimpleDateFormat fmt = new SimpleDateFormat("MMM dd");
+        GregorianCalendar calendar = new GregorianCalendar();
+        fmt.setCalendar(calendar);
+        String todayDate = fmt.format(calendar.getTime());
+
+        if(session.getDate().equals(todayDate)){
+            title = "Today's Workout";
+        }
+        else {
+            title = session.getDate() + "   Session  #" + session.getSessionId();
+        }
+
         getActivity().setTitle(title);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        this.exerciseMenu = menu;
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
     public void refreshSessionData(){
         Session updatedSession = dao.getSession(sessionID);
@@ -97,9 +138,16 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<List<Workout>> loader, List<Workout> data) {
+        this.showFab = true;
         if(workouts.size() == 0) workouts.addAll(data);
         else{
             workouts.add(data.get(data.size()-1));
+        }
+        if(workouts.size() > 4 && fabExercise != null){
+            MenuItem addExercise = exerciseMenu.findItem(R.id.add_exercise);
+            addExercise.setVisible(true);
+            exerciseListView.removeFooterView(buttonView);
+            this.showFab = true;
         }
         adapter.notifyDataSetChanged();
     }
