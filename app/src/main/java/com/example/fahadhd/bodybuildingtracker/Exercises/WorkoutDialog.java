@@ -114,35 +114,33 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     }
 
     public void setupNewWorkout(View v){
-        if(v.getId() == R.id.workout_name){
-            workout_name.setCursorVisible(true);
-            workout_name.setError(null);
+        switch (v.getId()) {
+            case R.id.workout_name :
+                workout_name.setCursorVisible(true);
+                workout_name.setError(null);
+                break;
+            case R.id.lift_weight :lift_weight.setCursorVisible(true); break;
+            case R.id.dialog_ok :
+                String name = workout_name.getText().toString();
+                String weightString = lift_weight.getText().toString();
+                int weight;
+                if (name.equals("")) {
+                    workout_name.setError("Please Type An Exercise");
+                }
+                else {
+                    weight = (weightString.equals("")) ? 185 : Integer.parseInt(weightString);
+                    communicator.getWorkoutInfo(name, weight, setChoice, repChoice);
+                    dismiss();
+                }
+                break;
+            case R.id.dialog_cancel: dismiss(); break;
         }
-        if(v.getId() == R.id.lift_weight){
-            lift_weight.setCursorVisible(true);
-        }
-        if(v.getId() == R.id.dialog_ok){
-            String name = workout_name.getText().toString();
-            String weightString = lift_weight.getText().toString();
-            int weight;
-            if(name.equals("")) {
-                workout_name.setError("Please Type An Exercise");
-            }
-            else{
-                weight = (weightString.equals("")) ? 185: Integer.parseInt(weightString);
-                communicator.getWorkoutInfo(name,weight,setChoice,repChoice);
-                dismiss();
-
-            }
-
-        }
-        if(v.getId() == R.id.dialog_cancel){
-            dismiss();
-        }
-
     }
 
     public void setUpExistingWorkout(View v){
+        switch (v.getId()){
+            case R.id.dialog_cancel : dismiss();
+        }
 
     }
 
