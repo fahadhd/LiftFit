@@ -1,6 +1,7 @@
 package com.example.fahadhd.bodybuildingtracker.exercises;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -34,7 +35,7 @@ import java.util.List;
 public class ExercisesFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Workout>>{
     TrackerDAO dao;
     ExerciseAdapter adapter;
-    Session currentSession;
+    public static Session currentSession;
     long sessionID;
     int position;
     ArrayList<Session> sessions;
@@ -43,7 +44,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     Menu exerciseMenu;
     FloatingActionButton fabExercise;
     View buttonView;
-    boolean showFab;
 
 
     @Override
@@ -61,7 +61,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         View rootView =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
         this.buttonView =  inflater.inflate(R.layout.exercise_list_add_btn, container, false);
         adapter = new ExerciseAdapter(getActivity(),workouts,dao);
-        fabExercise = (FloatingActionButton) rootView.findViewById(R.id.add_exercise);
 
         Intent sessionIntent = getActivity().getIntent();
 
@@ -76,8 +75,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         else if (sessionIntent != null && sessionIntent.hasExtra(MainActivity.ADD_TASK)){
             currentSession = (Session) sessionIntent.getSerializableExtra
                     (MainActivity.ADD_TASK);
-            //Add new session to cached data-+3*9
-            sessions.add(0,currentSession);
             position = 0;
             getActivity().setTitle("Today's Workout");
         }
@@ -86,8 +83,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         exerciseListView = (ListView)rootView.findViewById(R.id.exercises_list_main);
         exerciseListView.setAdapter(adapter);
         exerciseListView.addFooterView(buttonView);
-
-
 
         return rootView;
     }
@@ -124,8 +119,8 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     public void refreshSessionData(){
-        Session updatedSession = dao.getSession(sessionID);
-        sessions.set(position,updatedSession);
+       // Session updatedSession = dao.getSession(sessionID);
+        sessions.set(position,currentSession);
     }
 
 
@@ -138,16 +133,9 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<List<Workout>> loader, List<Workout> data) {
-        this.showFab = true;
         if(workouts.size() == 0) workouts.addAll(data);
         else{
             workouts.add(data.get(data.size()-1));
-        }
-        if(workouts.size() > 4 && fabExercise != null){
-            MenuItem addExercise = exerciseMenu.findItem(R.id.add_exercise);
-            addExercise.setVisible(true);
-            exerciseListView.removeFooterView(buttonView);
-            this.showFab = true;
         }
         adapter.notifyDataSetChanged();
     }
@@ -157,5 +145,4 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         workouts.clear();
     }
     /************************************************************/
-
 }

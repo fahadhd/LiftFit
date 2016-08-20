@@ -48,8 +48,8 @@ public class TrackerDAO {
 
     }
     //Add a workout to a current session
-    public long addWorkout(long sesKey, int workoutNum, String name,
-                           int weight, int maxSets, int maxReps ){
+    public Workout addWorkout(long sesKey, int workoutNum, String name,
+                              int weight, int maxSets, int maxReps ){
         ContentValues values  = new ContentValues();
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_SES_KEY, sesKey);
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_WORKOUT_NUM, workoutNum);
@@ -58,19 +58,24 @@ public class TrackerDAO {
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_SETS,maxSets);
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_REPS, maxReps);
 
-        return db.insert(TrackerDbHelper.WorkoutEntry.TABLE_NAME,null,values);
+        long workoutId =  db.insert(TrackerDbHelper.WorkoutEntry.TABLE_NAME,null,values);
+        return new Workout(sesKey, workoutId, workoutNum,name,weight,maxSets,maxReps,new ArrayList<Set>());
+
     }
     //Add all sets to a current workout
-    public void addSets(long workoutKey,int maxSets){
+    public ArrayList<Set> addSets(long workoutKey,int maxSets){
+        ArrayList<Set> sets = new ArrayList<>();
         db.beginTransaction();
         for(int i = 1; i <= maxSets; i++) {
             ContentValues values  = new ContentValues();
             values.put(TrackerDbHelper.SetEntry.COLUMN_WORK_KEY, workoutKey);
             values.put(TrackerDbHelper.SetEntry.COLUMN_SET_NUM, i);
-            db.insert(TrackerDbHelper.SetEntry.TABLE_NAME,null,values);
+            long setId = db.insert(TrackerDbHelper.SetEntry.TABLE_NAME,null,values);
+            sets.add(new Set(setId,workoutKey,i,0));
         }
         db.setTransactionSuccessful();
         db.endTransaction();
+        return sets;
     }
 
     /**************************QUERIES TO THE DATABASE********************************/
@@ -253,6 +258,4 @@ public class TrackerDAO {
         db.update(TrackerDbHelper.SetEntry.TABLE_NAME,values,where,null);
         return newRep;
     }
-
-
 }

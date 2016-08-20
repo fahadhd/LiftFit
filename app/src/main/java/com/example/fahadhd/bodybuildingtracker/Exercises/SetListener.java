@@ -1,10 +1,12 @@
-package com.example.fahadhd.bodybuildingtracker.exercises;
 
+package com.example.fahadhd.bodybuildingtracker.exercises;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
@@ -12,7 +14,7 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 public class SetListener implements View.OnClickListener {
     TextView workoutButton;
     long setWorkoutKey;
-    int setNum, currRep, maxReps, maxSets;
+    int setNum, storedRep,shownRep, maxReps, maxSets;
     TrackerDAO dao;
     Workout curr_workout;
     Set currSet;
@@ -26,7 +28,7 @@ public class SetListener implements View.OnClickListener {
         this.workoutButton = setButton;
         this.setWorkoutKey = currSet.getWorkoutID();
         this.setNum = currSet.getOrderNum();
-        this.currRep = currSet.getCurrRep();
+        this.shownRep = this.storedRep = currSet.getCurrRep();
         this.maxReps = curr_workout.getMaxReps();
         this.maxSets = curr_workout.getMaxSets();
         this.dao = dao;
@@ -40,8 +42,8 @@ public class SetListener implements View.OnClickListener {
 
 
         //Displays the correct rep number of a set.
-        if (currRep > 0) {
-            workoutButton.setText(Integer.toString(currRep));
+        if (storedRep > 0) {
+            workoutButton.setText(Integer.toString(storedRep));
         }
     }
 
@@ -49,16 +51,17 @@ public class SetListener implements View.OnClickListener {
     //Displays the correct text and timers when a set is pressed.
     public void onClick(View v) {
         //Updating the current rep and workout object.
-        currRep = dao.updateRep(setWorkoutKey, setNum, currRep, maxReps);
-        curr_workout = dao.getWorkout(curr_workout.getWorkoutID());
+        new UpdateSet().execute(shownRep);
+        shownRep = (shownRep <= 0) ?  maxReps: shownRep-1;
+        updateSession();
 
         //Display the default button when a set's rep number reaches 0.
-        if (currRep == 0) {
+        if (shownRep == 0) {
             workoutButton.setText(null);
             exerciseActivity.stopTimerService();
             //viewHolder.completed_dialog.setText(null);
         } else {
-            workoutButton.setText(Integer.toString(currRep));
+            workoutButton.setText(Integer.toString(shownRep));
             boolean sets_started = Utility.allSetsStarted(curr_workout);
             boolean allFinished = (sets_started && Utility.allSetsFinished(curr_workout));
             this.initializeSnackbar(sets_started, allFinished);
@@ -72,10 +75,10 @@ public class SetListener implements View.OnClickListener {
         if(!sets_started){
             //Since all sets aren't done, hide the congrats/failure message.
             //viewHolder.completed_dialog.setText(null);
-            if(currRep == maxReps) {
+            if(shownRep == maxReps) {
                 exerciseActivity.startTimerService("Nice job! Rest up for the next one.");
             }
-            if(currRep == maxReps-1) {
+            if(shownRep == maxReps-1) {
                 exerciseActivity.startTimerService("Rest a bit longer for the next one!");
             }
         }
@@ -88,6 +91,21 @@ public class SetListener implements View.OnClickListener {
             // viewHolder.completed_dialog.setText(R.string.congrats);
             exerciseActivity.stopTimerService();
         }
+    }
+
+    public class UpdateSet extends AsyncTask<Integer,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+            dao.updateRep(setWorkoutKey, setNum, params[0], maxReps);
+           // curr_workout = dao.getWorkout(curr_workout.getWorkoutID());
+            return null;
+        }
+    }
+
+    public void updateSession(){
+       ExercisesFragment.currentSession.getWorkouts().get(curr_workout.getOrderNum()-1).
+               getSets().get(currSet.getOrderNum()-1).updateRep(shownRep);
     }
 
 }

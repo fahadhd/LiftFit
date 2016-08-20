@@ -21,6 +21,7 @@
     <TextView
         android:id="@+id/workout_button_one"
         android:contentDescription="@string/workout_button_one"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -33,6 +34,7 @@
 
     <TextView
         android:id="@+id/workout_button_two"
+        android:visibility="gone"
         android:contentDescription="@string/workout_button_two"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,6 +47,7 @@
         />
     <TextView
         android:id="@+id/workout_button_three"
+        android:visibility="gone"
         android:contentDescription="@string/workout_button_three"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,6 +60,7 @@
         />
     <TextView
         android:id="@+id/workout_button_four"
+        android:visibility="gone"
         android:contentDescription="@string/workout_button_four"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,6 +73,7 @@
         />
     <TextView
         android:id="@+id/workout_button_five"
+        android:visibility="gone"
         android:contentDescription="@string/workout_button_five"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,6 +86,7 @@
         />
     <TextView
         android:id="@+id/workout_button_six"
+        android:visibility="gone"
         android:contentDescription="@string/workout_button_six"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -93,6 +99,7 @@
         />
     <TextView
         android:id="@+id/workout_button_seven"
+        android:visibility="gone"
         android:contentDescription="@string/workout_button_seven"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,6 +112,7 @@
         />
     <TextView
         android:id="@+id/workout_button_eight"
+        android:visibility="gone"
         android:contentDescription="@string/workout_button_eight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -85,16 +85,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
                 }
             });
         }
-        FloatingActionButton fabExercise = (FloatingActionButton) findViewById(R.id.add_exercise);
-        if (fabExercise != null) {
-            fabExercise.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    WorkoutDialog dialog = new WorkoutDialog();
-                    dialog.show(getFragmentManager(), "WorkoutDialog");
-                }
-            });
-        }
+
     }
 
     @Override
@@ -115,8 +106,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present
         getMenuInflater().inflate(R.menu.menu_exercises, menu);
-        //TODO: activate this in fragment when there are too many items
-        menu.findItem(R.id.add_exercise).setVisible(true);
         return true;
     }
 
@@ -165,8 +154,10 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         }
 
         public void addWorkoutTask(String name, int weight, int max_sets, int max_reps) {
-            long workoutID = dao.addWorkout(sessionID, workouts.size() + 1, name, weight, max_sets, max_reps);
-            dao.addSets(workoutID, max_sets);
+            Workout workout = dao.addWorkout(sessionID, workouts.size() + 1, name, weight, max_sets, max_reps);
+            ArrayList<Set> sets = dao.addSets(workout.getWorkoutID(), max_sets);
+            workout.sets = sets;
+            exercisesFragment.currentSession.getWorkouts().add(workout);
         }
     }
 
@@ -275,7 +266,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         return true;
     }
     public void startTimerService(String message){
-        if(isServiceOn){
+        if(isServiceOn && mTimerService != null){
             mTimerService.resetTimer(message);
             durationUpdated = false;
             if(mySnackBar != null){

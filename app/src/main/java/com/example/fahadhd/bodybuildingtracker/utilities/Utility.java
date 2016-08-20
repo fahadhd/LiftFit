@@ -48,25 +48,6 @@ public class Utility {
             }
         });
     }
-
-    public static Session addSession(TrackerDAO dao, MainActivity activity){
-        SimpleDateFormat fmt = new SimpleDateFormat("MMM dd");
-        GregorianCalendar calendar = new GregorianCalendar();
-        fmt.setCalendar(calendar);
-        String dateFormatted = fmt.format(calendar.getTime());
-        SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        int user_weight = Integer.parseInt(shared_pref.getString(activity.getString
-                (R.string.pref_user_weight_key),activity.getString
-                (R.string.pref_default_user_weight)));
-
-
-        long id =  dao.addSession(dateFormatted,user_weight);
-        return  new Session(dateFormatted,user_weight,id,null);
-    }
-
-
-
     //Returns true if all the sets were started in the current workout.
     public static boolean allSetsStarted(Workout workout){
         for(Set set: workout.getSets()){

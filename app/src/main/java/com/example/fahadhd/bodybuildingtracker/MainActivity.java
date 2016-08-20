@@ -1,7 +1,10 @@
 package com.example.fahadhd.bodybuildingtracker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,14 +13,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.fahadhd.bodybuildingtracker.exercises.ExerciseActivity;
+import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
+import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.sessions.SessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 /*Front view of app with a floating action button to add a exercise at the top*/
 public class MainActivity extends AppCompatActivity {
 
    SessionsFragment sessionsFragment;
+    ArrayList<Session> sessions;
     //Database action object to query sqlite database tracker.db
     TrackerDAO dao;
 
@@ -34,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         TrackerApplication application  = (TrackerApplication)this.getApplication();
         dao = application.getDatabase();
+        sessions = application.getSessions();
 
 
         sessionsFragment =  ((SessionsFragment)getSupportFragmentManager()
@@ -44,16 +55,32 @@ public class MainActivity extends AppCompatActivity {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //Adds a session to cached data
+                Session newSession = addSession();
                 Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class).
-                        putExtra(ADD_TASK, Utility.addSession(dao,MainActivity.this));
+                        putExtra(ADD_TASK, newSession);
+                //Adds a new session in a background thread
+                new AddSession().execute(newSession);
                 startActivity(exercise);
             }
         });
 
     }
 
+    public Session addSession(){
+        SimpleDateFormat fmt = new SimpleDateFormat("MMM dd");
+        GregorianCalendar calendar = new GregorianCalendar();
+        fmt.setCalendar(calendar);
+        String dateFormatted = fmt.format(calendar.getTime());
+        SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(this);
 
+        int user_weight = Integer.parseInt(shared_pref.getString(getString
+                (R.string.pref_user_weight_key),getString
+                (R.string.pref_default_user_weight)));
+        Session session = new Session(dateFormatted,user_weight,sessions.size()+1,new ArrayList<Workout>());
+        sessions.add(0,session);
+        return session;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,6 +103,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public class AddSession extends AsyncTask<Session,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Session... params) {
+            Session session = params[0];
+            dao.addSession(session.getDate(),session.getWeight());
+            return null;
+        }
     }
 
 
