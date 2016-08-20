@@ -24,14 +24,14 @@ import java.util.ArrayList;
 
 //Populates the list_view of the exercises fragment.
 public class ExerciseAdapter extends BaseAdapter{
-    Context context;
+    ExerciseActivity activity;
     ArrayList<Workout> workouts = new ArrayList<>();
     TrackerDAO dao;
 
     public static final String WORKOUT_BTN = "workout_button";
 
-    public ExerciseAdapter(Context context, ArrayList<Workout> data, TrackerDAO dao){
-        this.context = context;
+    public ExerciseAdapter(ExerciseActivity activity, ArrayList<Workout> data, TrackerDAO dao){
+        this.activity = activity;
         this.workouts = data;
         this.dao = dao;
     }
@@ -64,7 +64,7 @@ public class ExerciseAdapter extends BaseAdapter{
         WorkoutViewHolder viewHolder;
 
         if (row == null) {
-            LayoutInflater inflater = (LayoutInflater) context.
+            LayoutInflater inflater = (LayoutInflater) activity.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.exercises_list_item, parent, false);
             viewHolder = new WorkoutViewHolder(row);
@@ -92,7 +92,7 @@ public class ExerciseAdapter extends BaseAdapter{
 
         return row;
     }
-    public void activateButtons(WorkoutViewHolder viewHolder, Workout workout){
+    public void activateButtons(WorkoutViewHolder viewHolder, final Workout workout){
         int maxSets = workout.getMaxSets();
         ArrayList<Set> setList = workout.getSets();
         TextView currButton;
@@ -113,8 +113,15 @@ public class ExerciseAdapter extends BaseAdapter{
             }
             currButton.setVisibility(View.VISIBLE);
             currButton.setOnClickListener(new
-                    SetListener(currButton,dao,workout,currSet,viewHolder,context));
+                    SetListener(currButton,dao,workout,currSet,viewHolder,activity));
         }
+        viewHolder.editWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WorkoutDialog dialog = WorkoutDialog.newInstance(workout);
+                dialog.show(activity.getFragmentManager(), "WorkoutDialog");
+            }
+        });
     }
 
 
@@ -127,11 +134,11 @@ public class ExerciseAdapter extends BaseAdapter{
         SpannableStringBuilder spanBuilder = new SpannableStringBuilder(buffer);
         //spanBuilder.setSpan(new ForegroundColorSpan(Color.BLACK),start,end,0);
         /******************Workout Weight********************/
-        String unit = Utility.getUnit(context);
+        String unit = Utility.getUnit(activity);
         Double weightUnit = (unit.equals("LB")) ? workout.getWeight(): workout.getWeight()*0.45359237;
         buffer = '\n'+" "+Integer.toString(weightUnit.intValue());
         spanBuilder.append(buffer);
-        int weightColor = ContextCompat.getColor(context,R.color.orange_a400);
+        int weightColor = ContextCompat.getColor(activity,R.color.orange_a400);
         start = end;
         end = spanBuilder.length();
         spanBuilder.setSpan(new ForegroundColorSpan(weightColor),start,end,0);

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,32 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     EditText workout_name, lift_weight;
     Button cancel, confirm;
     Spinner sets,reps;
+    public static final String TAG = WorkoutDialog.class.getSimpleName();
+    public static final String WORKOUT_KEY = "current-workout";
     Communicator communicator;
+    boolean editableWorkout = false;
+    Workout currWorkout;
     public static int setChoice, repChoice;
+
+    public static WorkoutDialog newInstance(Workout currWorkout) {
+        WorkoutDialog newDialog = new WorkoutDialog();
+
+        Bundle args = new Bundle();
+        args.putSerializable(WORKOUT_KEY,currWorkout);
+        newDialog.setArguments(args);
+
+        return newDialog;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if(bundle != null && bundle.containsKey(WORKOUT_KEY)) {
+            currWorkout = (Workout) bundle.getSerializable(WORKOUT_KEY);
+            editableWorkout = (currWorkout != null);
+        }
+    }
 
     @Override
     public void onStart() {
@@ -62,15 +87,15 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
         cancel.setOnClickListener(this);
         confirm.setOnClickListener(this);
 
+        if (editableWorkout) {
+            addExistingWorkoutData();
+            Log.v(TAG, "workout exists!");
+        }
+
         setUpSpinners();
-
-
-
 
         Utility.manageEditTextCursor(workout_name, getActivity());
         Utility.manageEditTextCursor(lift_weight,getActivity());
-
-
 
         //setCancelable(false);
         return rootView;
@@ -80,6 +105,15 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        if(editableWorkout){
+            setUpExistingWorkout(v);
+        }
+        else {
+            setupNewWorkout(v);
+        }
+    }
+
+    public void setupNewWorkout(View v){
         if(v.getId() == R.id.workout_name){
             workout_name.setCursorVisible(true);
             workout_name.setError(null);
@@ -108,6 +142,18 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
 
     }
 
+    public void setUpExistingWorkout(View v){
+
+    }
+
+    //Sets the views to the corresponding workout data
+    public void addExistingWorkoutData(){
+        workout_name.setText(currWorkout.getName());
+        lift_weight.setText(Integer.toString(currWorkout.getWeight()));
+        setChoice = currWorkout.getMaxSets();
+        repChoice = currWorkout.getMaxReps();
+    }
+
     public void setUpSpinners(){
         String[] items = new String[]{"1", "2", "3","4","5","6","7","8"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
@@ -116,10 +162,12 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
         reps.setAdapter(adapter);
 
         //The following configures the default choice to be 5 sets by 5 reps.
-        sets.setSelection(4);
-        setChoice = 5;
-        reps.setSelection(4);
-        repChoice = 5;
+
+        setChoice = (editableWorkout) ? currWorkout.getMaxSets() : 5;
+        repChoice = (editableWorkout) ? currWorkout.getMaxReps() : 5;
+
+        sets.setSelection(setChoice-1);
+        reps.setSelection(repChoice-1);
 
         sets.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -145,12 +193,11 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
 
             }
         });
-
-
     }
+
     //Used to send information of a new workout to exercise activity
     interface Communicator{
-        public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps);
+        void getWorkoutInfo(String name, int weight, int max_sets, int max_reps);
     }
 
 }

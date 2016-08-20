@@ -75,9 +75,9 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         }
 
         /**Button in charge of adding workouts to the list_view. First displays a dialog for input**/
-        ImageButton addExercise = (ImageButton) findViewById(R.id.btn_add_workout);
-        if (addExercise != null) {
-            addExercise.setOnClickListener(new View.OnClickListener() {
+        ImageButton addWorkout = (ImageButton) findViewById(R.id.btn_add_workout);
+        if (addWorkout != null) {
+            addWorkout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     WorkoutDialog dialog = new WorkoutDialog();
@@ -85,7 +85,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
                 }
             });
         }
-
     }
 
     @Override

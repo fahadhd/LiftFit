@@ -60,7 +60,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
         View rootView =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
         this.buttonView =  inflater.inflate(R.layout.exercise_list_add_btn, container, false);
-        adapter = new ExerciseAdapter(getActivity(),workouts,dao);
+        adapter = new ExerciseAdapter((ExerciseActivity) getActivity(),workouts,dao);
 
         Intent sessionIntent = getActivity().getIntent();
 
