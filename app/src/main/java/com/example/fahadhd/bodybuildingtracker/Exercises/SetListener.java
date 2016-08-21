@@ -6,12 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
+import java.util.ArrayList;
+
 //Button listener for sets. Each workout can have up to 8 set buttons.
 public class SetListener implements View.OnClickListener {
+    ExerciseActivity activity;
+    ArrayList<Session> sessions;
     TextView workoutButton;
     long setWorkoutKey;
     int setNum, storedRep,shownRep, maxReps, maxSets;
@@ -19,25 +24,24 @@ public class SetListener implements View.OnClickListener {
     Workout curr_workout;
     Set currSet;
     WorkoutViewHolder viewHolder;
-    Context mContext;
     LayoutInflater mInflater;
-    ExerciseActivity exerciseActivity;
 
-    public SetListener(TextView setButton, TrackerDAO dao, Workout curr_workout, Set currSet,
-                       WorkoutViewHolder viewHolder, Context context) {
+    public SetListener(TextView setButton, Workout curr_workout, Set currSet,
+                       WorkoutViewHolder viewHolder, ExerciseActivity activity) {
+        TrackerApplication application  = (TrackerApplication)activity.getApplication();
+        this.activity = activity;
+        this.dao = application.getDatabase();
+        this.sessions = application.getSessions();
         this.workoutButton = setButton;
         this.setWorkoutKey = currSet.getWorkoutID();
         this.setNum = currSet.getOrderNum();
         this.shownRep = this.storedRep = currSet.getCurrRep();
         this.maxReps = curr_workout.getMaxReps();
         this.maxSets = curr_workout.getMaxSets();
-        this.dao = dao;
         this.curr_workout = curr_workout;
         this.currSet = currSet;
         this.viewHolder = viewHolder;
-        this.mContext = context;
-        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.exerciseActivity = (ExerciseActivity) mContext;
+        this.mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
 
@@ -58,7 +62,7 @@ public class SetListener implements View.OnClickListener {
         //Display the default button when a set's rep number reaches 0.
         if (shownRep == 0) {
             workoutButton.setText(null);
-            exerciseActivity.stopTimerService();
+            activity.stopTimerService();
             //viewHolder.completed_dialog.setText(null);
         } else {
             workoutButton.setText(Integer.toString(shownRep));
@@ -76,20 +80,20 @@ public class SetListener implements View.OnClickListener {
             //Since all sets aren't done, hide the congrats/failure message.
             //viewHolder.completed_dialog.setText(null);
             if(shownRep == maxReps) {
-                exerciseActivity.startTimerService("Nice job! Rest up for the next one.");
+                activity.startTimerService("Nice job! Rest up for the next one.");
             }
             if(shownRep == maxReps-1) {
-                exerciseActivity.startTimerService("Rest a bit longer for the next one!");
+                activity.startTimerService("Rest a bit longer for the next one!");
             }
         }
 
         if(sets_started && !allFinished){
             // viewHolder.completed_dialog.setText(R.string.failed);
-            exerciseActivity.stopTimerService();
+            activity.stopTimerService();
         }
         else if(allFinished){
             // viewHolder.completed_dialog.setText(R.string.congrats);
-            exerciseActivity.stopTimerService();
+            activity.stopTimerService();
         }
     }
 
@@ -98,14 +102,15 @@ public class SetListener implements View.OnClickListener {
         @Override
         protected Void doInBackground(Integer... params) {
             dao.updateRep(setWorkoutKey, setNum, params[0], maxReps);
-           // curr_workout = dao.getWorkout(curr_workout.getWorkoutID());
+            // curr_workout = dao.getWorkout(curr_workout.getWorkoutID());
             return null;
         }
     }
 
     public void updateSession(){
-       ExercisesFragment.currentSession.getWorkouts().get(curr_workout.getOrderNum()-1).
-               getSets().get(currSet.getOrderNum()-1).updateRep(shownRep);
+        int position = sessions.size() - (int)curr_workout.getSessionID();
+        sessions.get(position).getWorkouts().get(curr_workout.getOrderNum()-1).
+                getSets().get(currSet.getOrderNum()-1).updateRep(shownRep);
     }
 
 }

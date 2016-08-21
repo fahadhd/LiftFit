@@ -95,6 +95,10 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         }
     }
 
+    public static Session getCurrentSession(){
+        return  currentSession;
+    }
+
     public void setExistingWorkout(Session session){
         String title;
         SimpleDateFormat fmt = new SimpleDateFormat("MMM dd");
@@ -117,6 +121,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         this.exerciseMenu = menu;
         super.onCreateOptionsMenu(menu, inflater);
     }
+
 
     public void refreshSessionData(){
        // Session updatedSession = dao.getSession(sessionID);

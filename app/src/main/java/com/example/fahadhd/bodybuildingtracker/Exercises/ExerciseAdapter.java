@@ -28,8 +28,6 @@ public class ExerciseAdapter extends BaseAdapter{
     ArrayList<Workout> workouts = new ArrayList<>();
     TrackerDAO dao;
 
-    public static final String WORKOUT_BTN = "workout_button";
-
     public ExerciseAdapter(ExerciseActivity activity, ArrayList<Workout> data, TrackerDAO dao){
         this.activity = activity;
         this.workouts = data;
@@ -93,11 +91,10 @@ public class ExerciseAdapter extends BaseAdapter{
         return row;
     }
     public void activateButtons(WorkoutViewHolder viewHolder, final Workout workout){
-        int maxSets = workout.getMaxSets();
         ArrayList<Set> setList = workout.getSets();
         TextView currButton;
         Set currSet;
-        for(int i = 0; i < maxSets; i++){
+        for(int i = 0; i < setList.size(); i++){
             currSet = setList.get(i);
 
             switch (i){
@@ -113,7 +110,7 @@ public class ExerciseAdapter extends BaseAdapter{
             }
             currButton.setVisibility(View.VISIBLE);
             currButton.setOnClickListener(new
-                    SetListener(currButton,dao,workout,currSet,viewHolder,activity));
+                    SetListener(currButton,workout,currSet,viewHolder,activity));
         }
         viewHolder.editWorkout.setOnClickListener(new View.OnClickListener() {
             @Override

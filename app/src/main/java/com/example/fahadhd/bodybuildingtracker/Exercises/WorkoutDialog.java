@@ -4,12 +4,15 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -138,10 +141,30 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     }
 
     public void setUpExistingWorkout(View v){
+        if(currWorkout == null) {
+            dismiss();
+            return;
+        }
         switch (v.getId()){
+            case R.id.workout_name :
+                workout_name.setCursorVisible(true);
+                workout_name.setError(null);
+                break;
+            case R.id.lift_weight :lift_weight.setCursorVisible(true); break;
+            case R.id.dialog_ok :
+                String name = workout_name.getText().toString();
+                int setSelected = Integer.parseInt((String) sets.getSelectedItem());
+                int repSelected = Integer.parseInt((String)reps.getSelectedItem());
+                String weightString = lift_weight.getText().toString();
+                int weight = (weightString.equals("")) ? 185 : Integer.parseInt(weightString);
+                if (name.equals("")) {
+                    workout_name.setError("Please Type An Exercise");
+                }
+                communicator.updateWorkoutInfo(currWorkout,name,weight,setSelected,repSelected);
+                dismiss();
+                break;
             case R.id.dialog_cancel : dismiss();
         }
-
     }
 
     //Sets the views to the corresponding workout data
@@ -171,20 +194,16 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setChoice = position+1;
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
         reps.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 repChoice = position+1;
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -196,6 +215,7 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     //Used to send information of a new workout to exercise activity
     interface Communicator{
         void getWorkoutInfo(String name, int weight, int max_sets, int max_reps);
+        void updateWorkoutInfo(Workout workout, String name, int weight, int max_sets, int max_reps);
     }
 
 }

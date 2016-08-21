@@ -45,6 +45,10 @@ public class Workout implements Serializable {
         return workout_id;
     }
 
+    public long getSessionID() {
+        return session_id;
+    }
+
     public int getOrderNum(){
         return this.workout_num;
     }
@@ -60,5 +64,17 @@ public class Workout implements Serializable {
 
     public ArrayList<Set> getSets() {
         return sets;
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Workout))return false;
+        Workout workout = (Workout)other;
+
+        return (workout.getWorkoutID() == this.getWorkoutID() && workout.getName().equals(this.getName())
+                && workout.getWeight() == this.getWeight() && workout.getMaxSets() == this.getMaxSets() &&
+                workout.getMaxReps() == this.getMaxReps());
     }
 }

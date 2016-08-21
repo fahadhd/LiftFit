@@ -245,10 +245,10 @@ public class TrackerDAO {
     }
     /**************************UPDATES TO THE DATABASE********************************/
     //Update a current rep in a set. Returns the new current rep of a set.
-    public int updateRep(long workoutKey, int setNum, int currRep, int maxRep){
-        String workoutKeyName = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY;
+    public int updateRep(long workoutID, int setNum, int currRep, int maxRep){
+        String workoutIDColumn = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY;
         String setNumName = TrackerDbHelper.SetEntry.COLUMN_SET_NUM;
-        String where = workoutKeyName+" = "+workoutKey + " AND " + setNumName+" = " +setNum;
+        String where = workoutIDColumn+" = "+workoutID + " AND " + setNumName+" = " +setNum;
 
         //If the current rep is less than the max rep increment it by one else set it to 0.
         int newRep = (currRep <= 0) ?  maxRep: currRep-1  ;
@@ -258,4 +258,28 @@ public class TrackerDAO {
         db.update(TrackerDbHelper.SetEntry.TABLE_NAME,values,where,null);
         return newRep;
     }
+    //Updates workout (if it needs to be) in the database and returns a new and updated workout object
+    public void updateWorkout(Workout oldWorkout, Workout updatedWorkout){
+        String workoutIDColumn = TrackerDbHelper.WorkoutEntry._ID;
+        String where = workoutIDColumn+" = "+oldWorkout.getWorkoutID();
+        String name= updatedWorkout.getName();
+        int weight = updatedWorkout.getWeight();
+        int maxSet  = updatedWorkout.getMaxSets();
+        int maxRep = updatedWorkout.getMaxReps();
+        ContentValues values = new ContentValues();
+        if(!name.equals(oldWorkout.getName())) values.put(TrackerDbHelper.WorkoutEntry.COLUMN_NAME,name);
+        if(weight != oldWorkout.getWeight()) values.put(TrackerDbHelper.WorkoutEntry.COLUMN_WEIGHT,weight);
+        if(maxSet != oldWorkout.getMaxSets()) values.put(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_SETS,maxSet);
+        if(maxRep != oldWorkout.getMaxReps()) values.put(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_REPS,maxRep);
+        deleteSets(oldWorkout.getWorkoutID());
+        db.update(TrackerDbHelper.WorkoutEntry.TABLE_NAME,values,where,null);
+    }
+
+    /*************** Queries to delete ****************/
+
+    public void deleteSets(long workoutID){
+        String where = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY + " = "+ workoutID;
+        db.delete(TrackerDbHelper.SetEntry.TABLE_NAME,where,null);
+    }
+
 }

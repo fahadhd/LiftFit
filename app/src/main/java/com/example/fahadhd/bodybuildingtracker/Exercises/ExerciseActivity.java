@@ -33,6 +33,7 @@ import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.utilities.Constants;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     public static final String TAG = MainActivity.class.getSimpleName();
     TrackerDAO dao;
     public static long sessionID;
+    ArrayList<Session> sessions;
     ArrayList<Workout> workouts;
     String name;
     TrackerApplication application;
@@ -61,6 +63,8 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         setContentView(R.layout.activity_exercises);
 
         application  = (TrackerApplication)this.getApplication();
+        dao = application.getDatabase();
+        sessions = application.getSessions();
         exercisesFragment = (ExercisesFragment) getSupportFragmentManager().
                 findFragmentById(R.id.exercises_fragment);
         sessionID = exercisesFragment.sessionID;
@@ -121,11 +125,22 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 
     @Override
     public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
-        dao = exercisesFragment.dao;
         workouts = exercisesFragment.workouts;
         this.name = name;
         new AddWorkoutTask().execute(weight, max_sets, max_reps);
     }
+
+    @Override
+    public void updateWorkoutInfo(Workout workout, String name, int weight, int maxSet, int maxRep) {
+        Workout updatedWorkout =new Workout(workout.getSessionID(),workout.getWorkoutID(),workout.getOrderNum(),
+                name,weight,maxSet,maxRep,new ArrayList<Set>());
+        if(!workout.equals(updatedWorkout)){
+//        Log.v(TAG, "position:"+exercisesFragment.position + "workouts "+sessions.get(exercisesFragment.position).getWorkouts().size()+""
+//        +"order number is "+ workout.getOrderNum());
+            new UpdateWorkout().execute(workout, updatedWorkout);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -138,7 +153,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     }
 
 
-    /*************** Adds workout data in background thread via async task*****************/
+    /*************** Adds workout data in background thread *****************/
     public class AddWorkoutTask extends AsyncTask<Integer, Void, Void> {
 
         @Override
@@ -156,7 +171,27 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             Workout workout = dao.addWorkout(sessionID, workouts.size() + 1, name, weight, max_sets, max_reps);
             ArrayList<Set> sets = dao.addSets(workout.getWorkoutID(), max_sets);
             workout.sets = sets;
-            exercisesFragment.currentSession.getWorkouts().add(workout);
+            sessions.get(exercisesFragment.position).getWorkouts().add(workout);
+        }
+    }
+
+
+    /***************** Updates a workout in background thread *************/
+
+    public class UpdateWorkout extends AsyncTask<Workout,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Workout... params) {
+            dao.db.beginTransaction();
+            Workout oldWorkout = params[0];
+            Workout updatedWorkout = params[1];
+            dao.updateWorkout(oldWorkout,updatedWorkout);
+            updatedWorkout.sets = dao.addSets(updatedWorkout.getWorkoutID(),updatedWorkout.getMaxSets());
+            dao.db.setTransactionSuccessful();
+            dao.db.endTransaction();
+            sessions.get(exercisesFragment.position).getWorkouts().set(oldWorkout.getOrderNum() - 1, updatedWorkout);
+            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
+            return null;
         }
     }
 
