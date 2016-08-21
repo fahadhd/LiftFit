@@ -145,7 +145,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-                exercisesFragment.refreshSessionData();
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 return true;
         }

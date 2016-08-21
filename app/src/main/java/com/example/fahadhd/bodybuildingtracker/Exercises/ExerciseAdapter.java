@@ -94,6 +94,21 @@ public class ExerciseAdapter extends BaseAdapter{
         ArrayList<Set> setList = workout.getSets();
         TextView currButton;
         Set currSet;
+        for(int i = 7; i >= 0; i -- ){
+            switch (i){
+                case 0: currButton = viewHolder.buttonOne; break;
+                case 1: currButton = viewHolder.buttonTwo; break;
+                case 2: currButton = viewHolder.buttonThree; break;
+                case 3: currButton = viewHolder.buttonFour; break;
+                case 4: currButton = viewHolder.buttonFive; break;
+                case 5: currButton = viewHolder.buttonSix; break;
+                case 6: currButton = viewHolder.buttonSeven; break;
+                case 7:currButton = viewHolder.buttonEight; break;
+                default: currButton = viewHolder.buttonOne;
+            }
+            currButton.setVisibility(View.GONE);
+            currButton.setText(null);
+        }
         for(int i = 0; i < setList.size(); i++){
             currSet = setList.get(i);
 

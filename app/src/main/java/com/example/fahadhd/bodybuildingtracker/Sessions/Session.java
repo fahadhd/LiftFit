@@ -5,12 +5,13 @@ import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Session implements Serializable {
     String date;
     int user_weight;
     long sessionId;
-    ArrayList<Workout> workouts;
+   public ArrayList<Workout> workouts;
 
     public Session(String date, int user_weight, long sessionId, ArrayList<Workout> workouts){
         this.date = date;
@@ -36,5 +37,9 @@ public class Session implements Serializable {
 
     public String toString(){
         return "Session: "+sessionId+" | Date: "+date+ " | User_Weight "+user_weight;
+    }
+
+    public void updateWorkouts(List<Workout> data){
+        this.workouts = new ArrayList<>(data);
     }
 }

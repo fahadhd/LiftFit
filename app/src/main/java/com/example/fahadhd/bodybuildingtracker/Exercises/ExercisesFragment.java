@@ -35,7 +35,7 @@ import java.util.List;
 public class ExercisesFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Workout>>{
     TrackerDAO dao;
     ExerciseAdapter adapter;
-    public static Session currentSession;
+    Session currentSession;
     long sessionID;
     int position;
     ArrayList<Session> sessions;
@@ -95,9 +95,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         }
     }
 
-    public static Session getCurrentSession(){
-        return  currentSession;
-    }
 
     public void setExistingWorkout(Session session){
         String title;
@@ -123,11 +120,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
 
-    public void refreshSessionData(){
-       // Session updatedSession = dao.getSession(sessionID);
-        sessions.set(position,currentSession);
-    }
-
 
     /*************** ASYNC LOADER FOR ADAPTER********************/
     //Loads all workouts for current session in workouts list.
@@ -138,16 +130,15 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<List<Workout>> loader, List<Workout> data) {
-        if(workouts.size() == 0) workouts.addAll(data);
-        else{
-            workouts.add(data.get(data.size()-1));
-        }
+        workouts.clear();
+        workouts.addAll(data);
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader<List<Workout>> loader) {
         workouts.clear();
+
     }
     /************************************************************/
 }
