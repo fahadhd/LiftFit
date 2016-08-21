@@ -44,7 +44,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     TrackerDAO dao;
     public static long sessionID;
     ArrayList<Session> sessions;
-    ArrayList<Workout> workouts;
+    //ArrayList<Workout> workouts;
     String name;
     TrackerApplication application;
     /***********Snackbar variables**************/
@@ -125,7 +125,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 
     @Override
     public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
-        workouts = exercisesFragment.workouts;
         this.name = name;
         new AddWorkoutTask().execute(weight, max_sets, max_reps);
     }
@@ -139,6 +138,11 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 //        +"order number is "+ workout.getOrderNum());
             new UpdateWorkout().execute(workout, updatedWorkout);
         }
+    }
+
+    @Override
+    public void deleteWorkoutInfo(Workout workout) {
+
     }
 
     @Override
@@ -167,6 +171,8 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         }
 
         public void addWorkoutTask(String name, int weight, int max_sets, int max_reps) {
+            int position = exercisesFragment.position;
+            ArrayList<Workout> workouts = sessions.get(position).workouts;
             Workout workout = dao.addWorkout(sessionID, workouts.size() + 1, name, weight, max_sets, max_reps);
             ArrayList<Set> sets = dao.addSets(workout.getWorkoutID(), max_sets);
             workout.sets = sets;

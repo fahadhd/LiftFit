@@ -216,6 +216,7 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     interface Communicator{
         void getWorkoutInfo(String name, int weight, int max_sets, int max_reps);
         void updateWorkoutInfo(Workout workout, String name, int weight, int max_sets, int max_reps);
+        void deleteWorkoutInfo(Workout workout);
     }
 
 }

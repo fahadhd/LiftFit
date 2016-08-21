@@ -39,7 +39,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     long sessionID;
     int position;
     ArrayList<Session> sessions;
-    ArrayList<Workout> workouts = new ArrayList<>();
     ListView exerciseListView;
     Menu exerciseMenu;
     FloatingActionButton fabExercise;
@@ -60,7 +59,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
         View rootView =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
         this.buttonView =  inflater.inflate(R.layout.exercise_list_add_btn, container, false);
-        adapter = new ExerciseAdapter((ExerciseActivity) getActivity(),workouts,dao);
+        adapter = new ExerciseAdapter((ExerciseActivity) getActivity(),sessions.get(position).workouts,dao);
 
         Intent sessionIntent = getActivity().getIntent();
 
@@ -130,14 +129,14 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<List<Workout>> loader, List<Workout> data) {
-        workouts.clear();
-        workouts.addAll(data);
+        sessions.get(position).workouts.clear();
+        sessions.get(position).workouts.addAll(data);
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader<List<Workout>> loader) {
-        workouts.clear();
+       sessions.get(position).workouts.clear();
 
     }
     /************************************************************/
