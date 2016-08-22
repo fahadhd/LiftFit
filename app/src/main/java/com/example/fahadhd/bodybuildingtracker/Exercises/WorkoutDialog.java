@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 //Dialog to add a workout to a current session. Sends resulting data to ExerciseActivity.
 
 public class WorkoutDialog extends DialogFragment implements View.OnClickListener{
@@ -179,7 +181,7 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     public void addExistingWorkoutData(){
         delete.setVisibility(View.VISIBLE);
         confirm.setText("Update");
-        workout_name.setText(currWorkout.getName());
+        workout_name.setText(WordUtils.capitalizeFully(currWorkout.getName()));
         lift_weight.setText(Integer.toString(currWorkout.getWeight()));
         setChoice = currWorkout.getMaxSets();
         repChoice = currWorkout.getMaxReps();
