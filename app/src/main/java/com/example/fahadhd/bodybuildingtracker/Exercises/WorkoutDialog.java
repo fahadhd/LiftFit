@@ -165,7 +165,7 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
                 communicator.updateWorkoutInfo(currWorkout,name,weight,setSelected,repSelected);
                 dismiss();
                 break;
-            case R.id.dialog_cancel : dismiss();
+            case R.id.dialog_cancel : dismiss(); break;
             case R.id.dialog_delete:
                 if(currWorkout != null)
                     communicator.deleteWorkoutInfo(currWorkout);

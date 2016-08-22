@@ -109,8 +109,12 @@ public class SetListener implements View.OnClickListener {
 
     public void updateSession(){
         int position = sessions.size() - (int)curr_workout.getSessionID();
-        sessions.get(position).getWorkouts().get(curr_workout.getOrderNum()-1).
-                getSets().get(currSet.getOrderNum()-1).updateRep(shownRep);
+        ArrayList<Workout> workouts = sessions.get(position).getWorkouts();
+        for(int i = 0; i < workouts.size(); i++){
+            if(workouts.get(i).getWorkoutID() == curr_workout.getWorkoutID()){
+                workouts.get(i).getSets().get(currSet.getOrderNum()-1).updateRep(shownRep);
+            }
+        }
     }
 
 }

@@ -59,7 +59,7 @@ public class TrackerDAO {
         values.put(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_REPS, maxReps);
 
         long workoutId =  db.insert(TrackerDbHelper.WorkoutEntry.TABLE_NAME,null,values);
-        return new Workout(sesKey, workoutId, workoutNum,name,weight,maxSets,maxReps,new ArrayList<Set>());
+        return new Workout(sesKey, workoutId,name,weight,maxSets,maxReps,new ArrayList<Set>());
 
     }
     //Add all sets to a current workout
@@ -163,7 +163,7 @@ public class TrackerDAO {
             int maxReps = cursor.getInt(max_reps_column);
 
             ArrayList<Set> sets = getSets(workoutId);
-            Workout workout = new Workout(sessionID,workoutId,orderNum,name,
+            Workout workout = new Workout(sessionID,workoutId,name,
                     weight,maxSets,maxReps,sets);
 
             workouts.add(workout);
@@ -204,7 +204,7 @@ public class TrackerDAO {
             int maxReps = cursor.getInt(max_reps_column);
 
             ArrayList<Set> sets = getSets(workoutId);
-            Workout newWorkout = new Workout(workoutID,workoutId,orderNum,name,
+            Workout newWorkout = new Workout(workoutID,workoutId,name,
                     weight,maxSets,maxReps,sets);
             cursor.close();
             return  newWorkout;
