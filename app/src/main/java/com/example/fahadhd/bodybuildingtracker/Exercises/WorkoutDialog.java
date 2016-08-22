@@ -26,7 +26,7 @@ import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 
 public class WorkoutDialog extends DialogFragment implements View.OnClickListener{
     EditText workout_name, lift_weight;
-    Button cancel, confirm;
+    Button cancel, confirm, delete;
     Spinner sets,reps;
     public static final String TAG = WorkoutDialog.class.getSimpleName();
     public static final String WORKOUT_KEY = "current-workout";
@@ -84,11 +84,13 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
         reps = (Spinner)rootView.findViewById(R.id.reps_choice);
         cancel = (Button)rootView.findViewById(R.id.dialog_cancel);
         confirm = (Button)rootView.findViewById(R.id.dialog_ok);
+        delete = (Button)rootView.findViewById(R.id.dialog_delete);
 
         workout_name.setOnClickListener(this);
         lift_weight.setOnClickListener(this);
         cancel.setOnClickListener(this);
         confirm.setOnClickListener(this);
+        delete.setOnClickListener(this);
 
         if (editableWorkout) {
             addExistingWorkoutData();
@@ -164,11 +166,19 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
                 dismiss();
                 break;
             case R.id.dialog_cancel : dismiss();
+            case R.id.dialog_delete:
+                if(currWorkout != null)
+                    communicator.deleteWorkoutInfo(currWorkout);
+                dismiss();
+                break;
+
         }
     }
 
     //Sets the views to the corresponding workout data
     public void addExistingWorkoutData(){
+        delete.setVisibility(View.VISIBLE);
+        confirm.setText("Update");
         workout_name.setText(currWorkout.getName());
         lift_weight.setText(Integer.toString(currWorkout.getWeight()));
         setChoice = currWorkout.getMaxSets();

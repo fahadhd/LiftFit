@@ -142,7 +142,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 
     @Override
     public void deleteWorkoutInfo(Workout workout) {
-
+        new DeleteWorkout().execute(workout);
     }
 
     @Override
@@ -194,7 +194,24 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             updatedWorkout.sets = dao.addSets(updatedWorkout.getWorkoutID(),updatedWorkout.getMaxSets());
             dao.db.setTransactionSuccessful();
             dao.db.endTransaction();
+            //TODO: dont use ordernum
             sessions.get(exercisesFragment.position).getWorkouts().set(oldWorkout.getOrderNum() - 1, updatedWorkout);
+            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
+            return null;
+        }
+    }
+
+    public class DeleteWorkout extends AsyncTask<Workout,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Workout... params) {
+            dao.deleteWorkout(params[0].getWorkoutID());
+            ArrayList<Workout> workouts = sessions.get(exercisesFragment.position).getWorkouts();
+            for(int i = 0; i <= workouts.size(); i++){
+                if(workouts.get(i).getWorkoutID() == params[0].getWorkoutID()){
+                    workouts.remove(i);
+                }
+            }
             ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
             return null;
         }

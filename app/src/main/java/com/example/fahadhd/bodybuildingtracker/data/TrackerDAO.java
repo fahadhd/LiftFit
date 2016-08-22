@@ -282,4 +282,10 @@ public class TrackerDAO {
         db.delete(TrackerDbHelper.SetEntry.TABLE_NAME,where,null);
     }
 
+    public void deleteWorkout(long workoutID){
+        String where = TrackerDbHelper.WorkoutEntry._ID + " = "+ workoutID;
+        db.delete(TrackerDbHelper.WorkoutEntry.TABLE_NAME,where,null);
+        deleteSets(workoutID);
+    }
+
 }
