@@ -5,7 +5,7 @@
     android:id="@+id/workout_button">
     <ImageButton
         android:id="@+id/btn_add_workout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/add_workout_button_selector"/>
 </RelativeLayout>

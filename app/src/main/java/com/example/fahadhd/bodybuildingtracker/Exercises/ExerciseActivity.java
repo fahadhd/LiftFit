@@ -9,12 +9,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -47,6 +49,10 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     //ArrayList<Workout> workouts;
     String name;
     TrackerApplication application;
+    /***********Toolbar Variables****************/
+
+    /******************************************/
+
     /***********Snackbar variables**************/
     TimerService mTimerService;
     Intent timerIntent;
@@ -61,6 +67,14 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.exercise_toolbar);
+
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         application  = (TrackerApplication)this.getApplication();
         dao = application.getDatabase();
@@ -124,6 +138,21 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                return true;
+        }
+        return (super.onOptionsItemSelected(menuItem));
+    }
+
+
+    public void customizeToolbar(Toolbar toolbar){
+
+    }
+
+    @Override
     public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
         this.name = name;
         new AddWorkoutTask().execute(weight, max_sets, max_reps);
@@ -134,8 +163,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         Workout updatedWorkout =new Workout(workout.getSessionID(),workout.getWorkoutID(),
                 name,weight,maxSet,maxRep,new ArrayList<Set>());
         if(!workout.equals(updatedWorkout)){
-//        Log.v(TAG, "position:"+exercisesFragment.position + "workouts "+sessions.get(exercisesFragment.position).getWorkouts().size()+""
-//        +"order number is "+ workout.getOrderNum());
             new UpdateWorkout().execute(workout, updatedWorkout);
         }
     }
@@ -145,16 +172,10 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         new DeleteWorkout().execute(workout);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                return true;
-        }
-        return (super.onOptionsItemSelected(menuItem));
-    }
-
+    /********* Background threads for adding, updating, and deleting workouts *************/
+    //TODO: these async tasks can be merged into one and that loop can be made into a helper method
+    //also instead of looping most of the time the workoutid is the same as its index in the array
+    //so check that first to speed things up.
 
     /*************** Adds workout data in background thread *****************/
     public class AddWorkoutTask extends AsyncTask<Integer, Void, Void> {
@@ -182,7 +203,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 
 
     /***************** Updates a workout in background thread *************/
-
     public class UpdateWorkout extends AsyncTask<Workout,Void,Void>{
 
         @Override
@@ -205,9 +225,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             return null;
         }
     }
-    //TODO: these async tasks can be merged into one and that loop can be made into a helper method
-    //also instead of looping most of the time the workoutid is the same as its index in the array
-    //so check that first to speed things up.
+    /***************** Deletes a workout in background thread *************/
     public class DeleteWorkout extends AsyncTask<Workout,Void,Void>{
 
         @Override
@@ -223,7 +241,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             return null;
         }
     }
-
 
     /****************************** Timer Snackbar ****************************************/
 

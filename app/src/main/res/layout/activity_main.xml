@@ -11,16 +11,17 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Main.Actionbar">
+        android:theme="@style/Main.Actionbar"
+        >
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             app:popupTheme="@style/AppTheme.PopupOverlay">
-
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/session_button"
@@ -29,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity = "right|bottom"
         android:layout_margin="20dp"
-     />
+        />
 
 
 

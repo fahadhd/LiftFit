@@ -8,7 +8,7 @@ import android.util.Log;
 
 
 public class TrackerDbHelper extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "tracker.db";
 
     public static final String TAG = TrackerDbHelper.class.getSimpleName();
@@ -53,11 +53,21 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 " FOREIGN KEY (" + SetEntry.COLUMN_WORK_KEY + ") REFERENCES " +
                 WorkoutEntry.TABLE_NAME + " (" + WorkoutEntry._ID + "));";
 
+        //Each workout has a set number of sets and the current number of reps
+        final String SQL_CREATE_TEMPLATES_TABLE = "CREATE TABLE " + TemplateEntry.TABLE_NAME + " (" +
+                TemplateEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                TemplateEntry.COLUMN_WORK_KEY + " INTEGER NOT NULL, " +
+                TemplateEntry.COLUMN_TEMPLATE_NAME + " TEXT NOT NULL, " +
+                // Set up the workout column as a foreign key to workout table.
+                " FOREIGN KEY (" + TemplateEntry.COLUMN_WORK_KEY + ") REFERENCES " +
+                WorkoutEntry.TABLE_NAME + " (" + WorkoutEntry._ID + "));";
+
         //TODO: Turn on Cascading delete when implementing delete actions
         db.execSQL("PRAGMA foreign_keys = ON;");
         db.execSQL(SQL_CREATE_SESSIONS_TABLE);
         db.execSQL(SQL_CREATE_WORKOUTS_TABLE);
         db.execSQL(SQL_CREATE_SETS_TABLE);
+        db.execSQL(SQL_CREATE_TEMPLATES_TABLE);
     }
 
     //TODO: Change method to retain data when a new version comes out.
@@ -124,6 +134,15 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
 
         public static final String COLUMN_SET_NUM = "set_num";
 
+    }
+
+    /* Inner class that defines the table contents of a user templates */
+    public static final class TemplateEntry implements BaseColumns {
+        public static final String TABLE_NAME = "templates";
+        //Foreign key reference to a specific workout to keep track of its sets/reps.
+        public static final String COLUMN_WORK_KEY = "workout_id";
+        //Determines what template the row is referring to
+        public static final String COLUMN_TEMPLATE_NAME = "template_name";
     }
 
 }

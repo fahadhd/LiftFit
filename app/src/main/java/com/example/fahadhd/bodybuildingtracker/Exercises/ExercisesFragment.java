@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
@@ -25,6 +27,8 @@ import com.example.fahadhd.bodybuildingtracker.sessions.SessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +47,8 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     Menu exerciseMenu;
     FloatingActionButton fabExercise;
     View buttonView;
+    TextView toolbarTitle;
+    Toolbar toolbar;
 
 
     @Override
@@ -56,8 +62,10 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView =  inflater.inflate(R.layout.exercises_list_fragment, container, false);
+        toolbar = (Toolbar) rootView.findViewById(R.id.exercise_toolbar);
+        toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+
         this.buttonView =  inflater.inflate(R.layout.exercise_list_add_btn, container, false);
         adapter = new ExerciseAdapter((ExerciseActivity) getActivity(),sessions.get(position).workouts,dao);
 
@@ -108,8 +116,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         else {
             title = session.getDate() + "   Session  #" + session.getSessionId();
         }
-
-        getActivity().setTitle(title);
+        if(toolbarTitle != null) toolbarTitle.setText(title);
     }
 
     @Override
@@ -140,4 +147,14 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     }
     /************************************************************/
+
+    public void scrollMyListViewToBottom() {
+        exerciseListView.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                exerciseListView.smoothScrollToPosition(adapter.getCount() - 1);
+            }
+        });
+    }
 }
