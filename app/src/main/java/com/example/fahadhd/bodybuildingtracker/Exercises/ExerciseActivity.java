@@ -155,6 +155,8 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     @Override
     public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
         this.name = name;
+        //TODO: Store new workout in cached data and use that to instantly update view while
+        //concurrently performing background task
         new AddWorkoutTask().execute(weight, max_sets, max_reps);
     }
 
@@ -194,7 +196,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         public void addWorkoutTask(String name, int weight, int max_sets, int max_reps) {
             int position = exercisesFragment.position;
             ArrayList<Workout> workouts = sessions.get(position).workouts;
-            Workout workout = dao.addWorkout(sessionID, workouts.size() + 1, name, weight, max_sets, max_reps);
+            Workout workout = dao.addWorkout(sessionID, name, weight, max_sets, max_reps);
             ArrayList<Set> sets = dao.addSets(workout.getWorkoutID(), max_sets);
             workout.sets = sets;
             sessions.get(exercisesFragment.position).getWorkouts().add(workout);

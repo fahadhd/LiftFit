@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import com.example.fahadhd.bodybuildingtracker.exercises.Template;
+
 
 public class TrackerDbHelper extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 3;
@@ -33,7 +35,6 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 WorkoutEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
                 WorkoutEntry.COLUMN_SES_KEY + " INTEGER NOT NULL, " +
-                WorkoutEntry.COLUMN_WORKOUT_NUM + " INTEGER NOT NULL, " +
                 WorkoutEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                 WorkoutEntry.COLUMN_WEIGHT + " INTEGER NOT NULL," +
                 WorkoutEntry.COLUMN_MAX_SETS + " INTEGER NOT NULL, " +
@@ -54,13 +55,15 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 WorkoutEntry.TABLE_NAME + " (" + WorkoutEntry._ID + "));";
 
         //Each workout has a set number of sets and the current number of reps
+        // Create a table to hold each session of exercise.
         final String SQL_CREATE_TEMPLATES_TABLE = "CREATE TABLE " + TemplateEntry.TABLE_NAME + " (" +
                 TemplateEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                TemplateEntry.COLUMN_WORK_KEY + " INTEGER NOT NULL, " +
                 TemplateEntry.COLUMN_TEMPLATE_NAME + " TEXT NOT NULL, " +
-                // Set up the workout column as a foreign key to workout table.
-                " FOREIGN KEY (" + TemplateEntry.COLUMN_WORK_KEY + ") REFERENCES " +
-                WorkoutEntry.TABLE_NAME + " (" + WorkoutEntry._ID + "));";
+                TemplateEntry.COLUMN_WORKOUT_NAME + " TEXT NOT NULL, " +
+                TemplateEntry.COLUMN_WEIGHT + " INTEGER NOT NULL," +
+                TemplateEntry.COLUMN_MAX_SETS + " INTEGER NOT NULL, " +
+                TemplateEntry.COLUMN_MAX_REPS + " INTEGER NOT NULL" +
+                " );";
 
         //TODO: Turn on Cascading delete when implementing delete actions
         db.execSQL("PRAGMA foreign_keys = ON;");
@@ -79,6 +82,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SessionEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WorkoutEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SetEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TemplateEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 
@@ -102,9 +106,6 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
 
         //Foreign key reference to sessions to keep track of each sessions workouts
         public static final String COLUMN_SES_KEY = "session_id";
-
-        //The order of the workouts in each sessions - stored as an int.
-        public static final String COLUMN_WORKOUT_NUM = "workout_num";
 
         //The name of the routine of the exercise - stored as a string
         public static final String COLUMN_NAME = "name";
@@ -139,10 +140,22 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
     /* Inner class that defines the table contents of a user templates */
     public static final class TemplateEntry implements BaseColumns {
         public static final String TABLE_NAME = "templates";
-        //Foreign key reference to a specific workout to keep track of its sets/reps.
-        public static final String COLUMN_WORK_KEY = "workout_id";
+
+        //The name of the routine of the exercise - stored as a string
+        public static final String COLUMN_WORKOUT_NAME = "name";
+
+        //Current weight of a routine - stored as an int
+        public static final String COLUMN_WEIGHT = "weight";
+
+        //Maximum number of sets a workout can do - stored as a int.
+        public static final String COLUMN_MAX_SETS = "max_sets";
+
+        //Maximum number of reps a workout can do - stored as a int.
+        public static final String COLUMN_MAX_REPS = "max_reps";
+
         //Determines what template the row is referring to
         public static final String COLUMN_TEMPLATE_NAME = "template_name";
+
     }
 
 }

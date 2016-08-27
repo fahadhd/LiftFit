@@ -33,12 +33,14 @@
                     />
                 <ImageButton
                     android:id="@+id/template_a"
+                    android:contentDescription="template A"
                     android:layout_width="125dp"
                     android:layout_height="250dp"
                     android:layout_marginTop="55dp"
                     android:background="@drawable/ic_template_a"/>
                 <ImageButton
                     android:id="@+id/template_b"
+                    android:contentDescription="template B"
                     android:layout_width="125dp"
                     android:layout_height="250dp"
                     android:layout_marginTop="55dp"
@@ -47,6 +49,7 @@
                     android:background="@drawable/ic_template_b"/>
                 <ImageButton
                     android:id="@+id/save_workout"
+                    android:contentDescription="Save Template"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="55dp"

@@ -4,6 +4,7 @@ import android.app.Application;
 
 
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+import com.example.fahadhd.bodybuildingtracker.data.TrackerDbHelper;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 
 
@@ -17,7 +18,7 @@ public class TrackerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //this.deleteDatabase(TrackerDbHelper.DATABASE_NAME);
+        this.deleteDatabase(TrackerDbHelper.DATABASE_NAME);
         dao = new TrackerDAO(getApplicationContext());
         sessions = new ArrayList<>();
     }
