@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import com.example.fahadhd.bodybuildingtracker.exercises.Set;
-import com.example.fahadhd.bodybuildingtracker.exercises.Template;
 import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 
@@ -79,6 +78,7 @@ public class TrackerDAO {
     }
 
     public void saveWorkoutToTemplate(String templateName, Workout workout ){
+        if(templateName.isEmpty()) return;
         ContentValues values = new ContentValues();
         values.put(TrackerDbHelper.TemplateEntry.COLUMN_TEMPLATE_NAME, templateName);
         values.put(TrackerDbHelper.TemplateEntry.COLUMN_WORKOUT_NAME, workout.getName());
@@ -189,6 +189,7 @@ public class TrackerDAO {
 
     //Loads a template in a current session
     public ArrayList<Workout> loadTemplate(String templateName, long sessionID){
+        if(templateName.isEmpty()) return null;
         String[] columns = {
                 TrackerDbHelper.TemplateEntry.COLUMN_WORKOUT_NAME,
                 TrackerDbHelper.TemplateEntry.COLUMN_WEIGHT,
@@ -252,15 +253,21 @@ public class TrackerDAO {
 
     /*************** Queries to delete ****************/
 
-    public void deleteSets(long workoutID){
-        String where = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY + " = "+ workoutID;
-        db.delete(TrackerDbHelper.SetEntry.TABLE_NAME,where,null);
+    //deletes all workouts in a session
+    public void deleteAllWorkouts(long sessionID){
+        String where = TrackerDbHelper.WorkoutEntry.COLUMN_SES_KEY + " = "+ sessionID;
+        db.delete(TrackerDbHelper.WorkoutEntry.TABLE_NAME,where,null);
     }
+
 
     public void deleteWorkout(long workoutID){
         String where = TrackerDbHelper.WorkoutEntry._ID + " = "+ workoutID;
         db.delete(TrackerDbHelper.WorkoutEntry.TABLE_NAME,where,null);
-        deleteSets(workoutID);
+    }
+
+    public void deleteSets(long workoutID){
+        String where = TrackerDbHelper.SetEntry.COLUMN_WORK_KEY + " = "+ workoutID;
+        db.delete(TrackerDbHelper.SetEntry.TABLE_NAME,where,null);
     }
 
     public void deleteTemplate(String templateName){

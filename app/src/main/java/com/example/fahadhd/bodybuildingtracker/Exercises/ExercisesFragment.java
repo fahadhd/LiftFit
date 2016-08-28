@@ -3,8 +3,6 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -14,18 +12,15 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
@@ -34,8 +29,6 @@ import com.example.fahadhd.bodybuildingtracker.sessions.SessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,7 +73,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         setupTemplates(rootView);
 
         this.buttonView = inflater.inflate(R.layout.exercise_list_add_btn, container, false);
-        adapter = new ExerciseAdapter((ExerciseActivity) getActivity(), sessions.get(position).workouts, dao);
 
         Intent sessionIntent = getActivity().getIntent();
 
@@ -99,6 +91,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         }
         sessionID = currentSession.getSessionId();
 
+        adapter = new ExerciseAdapter((ExerciseActivity) getActivity(), sessions.get(position).workouts, dao);
         exerciseListView = (ListView) rootView.findViewById(R.id.exercises_list_main);
         exerciseListView.setAdapter(adapter);
         exerciseListView.addFooterView(buttonView);
@@ -151,6 +144,16 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                 dialog.show(getFragmentManager(), "TemplateDialog");
             }
         });
+        template_B.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String templateName = getString(R.string.template_B);
+                boolean isTemplateEmpty = sharedPref.getBoolean(templateName,true);
+                TemplateDialog dialog = TemplateDialog.newInstance(isTemplateEmpty,templateName);
+                dialog.setTargetFragment(ExercisesFragment.this,TemplateDialog.DIALOG_REQUEST_CODE);
+                dialog.show(getFragmentManager(), "TemplateDialog");
+            }
+        });
     }
 
 
@@ -178,44 +181,71 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     /************************************************************/
 
-    /*********************** Template Handling ******************************************/
+    /*********************** Templat Handling ******************************************/
 
     //Receives data back from the dialog fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        final SharedPreferences.Editor editor = sharedPref.edit();
-
+        SharedPreferences.Editor editor = sharedPref.edit();
         if (requestCode == TemplateDialog.DIALOG_REQUEST_CODE) {
-            if(data.hasExtra(TemplateDialog.TEMPLATE_EMPTY)
-                    && data.getBooleanExtra(TemplateDialog.TEMPLATE_EMPTY,false)
-                    && data.hasExtra(TemplateDialog.TEMPLATE_NAME)){
-                String templateName = data.getStringExtra(TemplateDialog.TEMPLATE_NAME);
+            String templateName = (data.hasExtra(TemplateDialog.TEMPLATE_NAME)) ?
+                    data.getStringExtra(TemplateDialog.TEMPLATE_NAME) : "";
+
+            if(data.hasExtra(TemplateDialog.SAVE_TEMPLATE)){
                 if(sessions.get(position).workouts.size() > 0 ) {
                     //template is no longer empty
                     editor.putBoolean(templateName, false);
                     editor.apply();
-                    new SaveTemplateTask().execute(templateName);
+                    new TemplateTask().execute(templateName,TemplateDialog.SAVE_TEMPLATE);
                 }
             }
-            //TODO: Load data from template and display it here. Also figure out a way
-            //to show a template is active probably change sessions in database to hold template
-            //name. Also handle cases where app is destroyed.
+            else if(data.hasExtra(TemplateDialog.LOAD_TEMPLATE)){
+                new TemplateTask().execute(templateName,TemplateDialog.LOAD_TEMPLATE);
+            }
+            else if(data.hasExtra(TemplateDialog.CLEAR_TEMPLATE)){
+                editor.putBoolean(templateName,true);
+                editor.apply();
+                new TemplateTask().execute(templateName,TemplateDialog.CLEAR_TEMPLATE);
+            }
         }
     }
 
-    public class SaveTemplateTask extends AsyncTask<String,Void,Void>{
+    public class TemplateTask extends AsyncTask<String,Void,Void>{
+
         @Override
         protected Void doInBackground(String... params) {
-            Log.v(TAG,"saving template");
             String templateName = params[0];
-            dao.db.beginTransaction();
-            dao.deleteTemplate(templateName);
-            for(Workout workout: sessions.get(position).workouts){
-                dao.saveWorkoutToTemplate(templateName,workout);
+            String action = params[1];
+            switch (action) {
+                case TemplateDialog.SAVE_TEMPLATE:
+                    Log.v(TAG, "saving template");
+                    dao.db.beginTransaction();
+                    dao.deleteTemplate(templateName);
+                    for (Workout workout : sessions.get(position).workouts) {
+                        dao.saveWorkoutToTemplate(templateName, workout);
+                    }
+                    dao.db.setTransactionSuccessful();
+                    dao.db.endTransaction();
+                    break;
+                case TemplateDialog.LOAD_TEMPLATE :
+                    Log.v(TAG, "Loading template");
+                    dao.db.beginTransaction();
+                    if(sessions.get(position).workouts.size() > 0)
+                        dao.deleteAllWorkouts(sessionID);
+                    ArrayList<Workout> templateWorkouts = dao.loadTemplate(templateName, sessionID);
+                    dao.db.setTransactionSuccessful();
+                    dao.db.endTransaction();
+                    if (templateWorkouts != null) {
+                        getActivity().getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null,
+                                ExercisesFragment.this);
+                    }
+                    break;
+                case TemplateDialog.CLEAR_TEMPLATE :
+                    Log.v(TAG, "Clearing template");
+                    dao.deleteTemplate(templateName);
+                    break;
             }
-            dao.db.setTransactionSuccessful();
-            dao.db.endTransaction();
             return null;
         }
     }
+
 }

@@ -19,19 +19,21 @@ import com.example.fahadhd.bodybuildingtracker.R;
 public class TemplateDialog extends DialogFragment implements View.OnClickListener{
     TextView message;
     public static final String TEMPLATE_NAME = "template name";
-    public static final String TEMPLATE_EMPTY = "template empty";
+    public static final String TEMPLATE_EMPTY_KEY = "is template empty";
+    public static final String SAVE_TEMPLATE = "template empty";
     public static final String LOAD_TEMPLATE = "load template";
+    public static final String CLEAR_TEMPLATE = "clear template";
     public static final int DIALOG_REQUEST_CODE = 23;
     boolean isTemplateEmpty = false;
     String templateName;
-    Button cancel, confirm;
+    Button templateCancel, templateConfirm, templateClear;
 
 
     public static TemplateDialog newInstance(boolean templateEmpty, String templateName) {
         TemplateDialog newDialog = new TemplateDialog();
 
         Bundle args = new Bundle();
-        args.putBoolean(TEMPLATE_EMPTY,templateEmpty);
+        args.putBoolean(TEMPLATE_EMPTY_KEY,templateEmpty);
         args.putString(TEMPLATE_NAME,templateName);
         newDialog.setArguments(args);
 
@@ -45,8 +47,8 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
         if(bundle != null && bundle.containsKey(TEMPLATE_NAME)){
             templateName  = bundle.getString(TEMPLATE_NAME);
         }
-        if(bundle != null && bundle.containsKey(TEMPLATE_EMPTY)){
-            isTemplateEmpty = bundle.getBoolean(TEMPLATE_EMPTY);
+        if(bundle != null && bundle.containsKey(TEMPLATE_EMPTY_KEY)){
+            isTemplateEmpty = bundle.getBoolean(TEMPLATE_EMPTY_KEY);
         }
     }
 
@@ -73,11 +75,13 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
         getDialog().setTitle("Template "+ templateName);
 
         message = (TextView) rootView.findViewById(R.id.template_message);
-        confirm = (Button) rootView.findViewById(R.id.template_confirm);
-        cancel = (Button) rootView.findViewById(R.id.template_cancel);
+        templateConfirm = (Button) rootView.findViewById(R.id.template_confirm);
+        templateCancel = (Button) rootView.findViewById(R.id.template_cancel);
+        templateClear = (Button) rootView.findViewById(R.id.template_clear);
 
-        confirm.setOnClickListener(this);
-        cancel.setOnClickListener(this);
+        templateConfirm.setOnClickListener(this);
+        templateCancel.setOnClickListener(this);
+        templateClear.setOnClickListener(this);
 
 
         if(isTemplateEmpty){
@@ -85,6 +89,7 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
                     "session as a template?");
         }
         else{
+            templateClear.setVisibility(View.VISIBLE);
             message.setText("Load template "+ templateName +"?");
         }
 
@@ -104,7 +109,7 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
         switch (v.getId()){
             case R.id.template_confirm:
                 Intent intent = new Intent();
-                intent.putExtra(TEMPLATE_EMPTY,true);
+                intent.putExtra(SAVE_TEMPLATE,true);
                 intent.putExtra(TEMPLATE_NAME,templateName);
                 getTargetFragment().onActivityResult(
                         getTargetRequestCode(), DIALOG_REQUEST_CODE, intent);
@@ -113,24 +118,26 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
     }
 
     public void setupUpExistingTemplate(View v){
+
         switch (v.getId()){
             //Communicating back to fragment to update workouts to templates
             case R.id.template_confirm:
-                Intent intent = new Intent();
+                Intent loadIntent = new Intent();
+                loadIntent.putExtra(LOAD_TEMPLATE,true);
+                loadIntent.putExtra(TEMPLATE_NAME,templateName);
                 getTargetFragment().onActivityResult(
-                        getTargetRequestCode(), DIALOG_REQUEST_CODE, intent);
+                        getTargetRequestCode(), DIALOG_REQUEST_CODE, loadIntent);
                 dismiss();
+                break;
+            case R.id.template_clear:
+                Intent clearIntent = new Intent();
+                clearIntent.putExtra(CLEAR_TEMPLATE,true);
+                clearIntent.putExtra(TEMPLATE_NAME,templateName);
+                getTargetFragment().onActivityResult(
+                        getTargetRequestCode(), DIALOG_REQUEST_CODE, clearIntent);
+                dismiss();
+                break;
         }
 
     }
-
-
-
-    //Used to send information of a new workout to exercise activity
-    interface Communicator{
-        void getWorkoutInfo(String name, int weight, int max_sets, int max_reps);
-        void updateWorkoutInfo(Workout workout, String name, int weight, int max_sets, int max_reps);
-        void deleteWorkoutInfo(Workout workout);
-    }
-
 }

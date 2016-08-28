@@ -18,7 +18,7 @@ public class TrackerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //this.deleteDatabase(TrackerDbHelper.DATABASE_NAME);
+       //this.deleteDatabase(TrackerDbHelper.DATABASE_NAME);
         dao = new TrackerDAO(getApplicationContext());
         sessions = new ArrayList<>();
     }

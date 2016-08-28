@@ -6,11 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import com.example.fahadhd.bodybuildingtracker.exercises.Template;
-
 
 public class TrackerDbHelper extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "tracker.db";
 
     public static final String TAG = TrackerDbHelper.class.getSimpleName();
@@ -52,7 +50,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 SetEntry.COLUMN_SET_NUM + " INTEGER NOT NULL, " +
                 // Set up the workout column as a foreign key to workout table.
                 " FOREIGN KEY (" + SetEntry.COLUMN_WORK_KEY + ") REFERENCES " +
-                WorkoutEntry.TABLE_NAME + " (" + WorkoutEntry._ID + "));";
+                WorkoutEntry.TABLE_NAME + " (" + WorkoutEntry._ID + ") ON DELETE CASCADE);";
 
         //Each workout has a set number of sets and the current number of reps
         // Create a table to hold each session of exercise.
@@ -65,12 +63,17 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 TemplateEntry.COLUMN_MAX_REPS + " INTEGER NOT NULL" +
                 " );";
 
-        //TODO: Turn on Cascading delete when implementing delete actions
-        db.execSQL("PRAGMA foreign_keys = ON;");
         db.execSQL(SQL_CREATE_SESSIONS_TABLE);
         db.execSQL(SQL_CREATE_WORKOUTS_TABLE);
         db.execSQL(SQL_CREATE_SETS_TABLE);
         db.execSQL(SQL_CREATE_TEMPLATES_TABLE);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        //TODO: Turn on Cascading delete when implementing delete actions
+        db.execSQL("PRAGMA foreign_keys = ON;");
+        super.onOpen(db);
     }
 
     //TODO: Change method to retain data when a new version comes out.
@@ -83,6 +86,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WorkoutEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SetEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TemplateEntry.TABLE_NAME);
+        //// TODO: 8/28/2016 clear all templates in shared preferences
         onCreate(sqLiteDatabase);
     }
 

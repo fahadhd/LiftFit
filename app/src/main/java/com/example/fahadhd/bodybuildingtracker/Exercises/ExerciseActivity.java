@@ -188,17 +188,14 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             int max_sets = params[1];
             int max_reps = params[2];
             addWorkoutTask(name, weight, max_sets, max_reps);
-            //Restart loader so it updates the new data to the list.
-            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
             return null;
         }
 
         public void addWorkoutTask(String name, int weight, int max_sets, int max_reps) {
-            int position = exercisesFragment.position;
-            ArrayList<Workout> workouts = sessions.get(position).workouts;
             Workout workout = dao.addWorkout(sessionID, name, weight, max_sets, max_reps);
-            ArrayList<Set> sets = dao.addSets(workout.getWorkoutID(), max_sets);
-            workout.sets = sets;
+            workout.sets = dao.addSets(workout.getWorkoutID(), max_sets);
+            //Restart loader so it updates the new data to the list.
+            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
             sessions.get(exercisesFragment.position).getWorkouts().add(workout);
         }
     }
@@ -217,13 +214,12 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             updatedWorkout.sets = dao.addSets(updatedWorkout.getWorkoutID(),updatedWorkout.getMaxSets());
             dao.db.setTransactionSuccessful();
             dao.db.endTransaction();
-
+            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
             for(int i = 0; i< workouts.size(); i++){
                 if(workouts.get(i).getWorkoutID() == updatedWorkout.getWorkoutID()){
                     workouts.set(i,updatedWorkout);
                 }
             }
-            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
             return null;
         }
     }
@@ -233,13 +229,14 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         @Override
         protected Void doInBackground(Workout... params) {
             dao.deleteWorkout(params[0].getWorkoutID());
+            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
+            //Updating cached data
             ArrayList<Workout> workouts = sessions.get(exercisesFragment.position).getWorkouts();
             for(int i = 0; i < workouts.size(); i++){
                 if(workouts.get(i).getWorkoutID() == params[0].getWorkoutID()){
                     workouts.remove(i);
                 }
             }
-            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
             return null;
         }
     }
