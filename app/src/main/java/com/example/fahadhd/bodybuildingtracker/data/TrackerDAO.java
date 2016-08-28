@@ -190,14 +190,13 @@ public class TrackerDAO {
     //Loads a template in a current session
     public ArrayList<Workout> loadTemplate(String templateName, long sessionID){
         String[] columns = {
-                TrackerDbHelper.TemplateEntry._ID,
                 TrackerDbHelper.TemplateEntry.COLUMN_WORKOUT_NAME,
                 TrackerDbHelper.TemplateEntry.COLUMN_WEIGHT,
                 TrackerDbHelper.TemplateEntry.COLUMN_MAX_SETS,
                 TrackerDbHelper.TemplateEntry.COLUMN_MAX_REPS};
-        String where = TrackerDbHelper.TemplateEntry.COLUMN_TEMPLATE_NAME + " = "+ templateName;
+        String where = TrackerDbHelper.TemplateEntry.COLUMN_TEMPLATE_NAME + " = ?";
         Cursor cursor = db.query(TrackerDbHelper.TemplateEntry.TABLE_NAME,columns,where,
-                null,null,null,null);
+                new String[]{templateName},null,null,null);
         ArrayList<Workout> workouts = new ArrayList<>();
         while(cursor.moveToNext()){
             int name_column = cursor.getColumnIndex(TrackerDbHelper.WorkoutEntry.COLUMN_NAME);
@@ -209,9 +208,11 @@ public class TrackerDAO {
             int weight = cursor.getInt(weight_column);
             int maxSets = cursor.getInt(max_sets_column);
             int maxReps = cursor.getInt(max_reps_column);
-            workouts.add(addWorkout(sessionID,name,weight,maxSets,maxReps));
-
+            Workout newWorkout = addWorkout(sessionID,name,weight,maxSets,maxReps);
+            addSets(newWorkout.getWorkoutID(),maxSets);
+            workouts.add(newWorkout);
         }
+        cursor.close();
         return workouts;
     }
 
@@ -263,8 +264,8 @@ public class TrackerDAO {
     }
 
     public void deleteTemplate(String templateName){
-        String where = TrackerDbHelper.TemplateEntry.COLUMN_TEMPLATE_NAME + " = "+ templateName;
-        db.delete(TrackerDbHelper.TemplateEntry.TABLE_NAME,where,null);
+        String where = TrackerDbHelper.TemplateEntry.COLUMN_TEMPLATE_NAME + " = ?";
+        db.delete(TrackerDbHelper.TemplateEntry.TABLE_NAME,where,new String[]{templateName});
     }
 
 }

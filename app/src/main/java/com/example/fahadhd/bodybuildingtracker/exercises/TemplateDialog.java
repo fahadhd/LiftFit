@@ -22,7 +22,7 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
     public static final String TEMPLATE_EMPTY = "template empty";
     public static final String LOAD_TEMPLATE = "load template";
     public static final int DIALOG_REQUEST_CODE = 23;
-    boolean templateEmpty = false;
+    boolean isTemplateEmpty = false;
     String templateName;
     Button cancel, confirm;
 
@@ -46,7 +46,7 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
             templateName  = bundle.getString(TEMPLATE_NAME);
         }
         if(bundle != null && bundle.containsKey(TEMPLATE_EMPTY)){
-            templateEmpty = bundle.getBoolean(TEMPLATE_EMPTY);
+            isTemplateEmpty = bundle.getBoolean(TEMPLATE_EMPTY);
         }
     }
 
@@ -80,8 +80,7 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
         cancel.setOnClickListener(this);
 
 
-
-        if(templateEmpty){
+        if(isTemplateEmpty){
             message.setText("Template "+ templateName +" is empty. Would you like to save this " +
                     "session as a template?");
         }
@@ -95,7 +94,7 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.template_cancel) dismiss();
-        if(templateEmpty) setupEmptyTemplate(v);
+        if(isTemplateEmpty) setupEmptyTemplate(v);
         else setupUpExistingTemplate(v);
     }
 
@@ -104,7 +103,12 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
     public void setupEmptyTemplate(View v){
         switch (v.getId()){
             case R.id.template_confirm:
-
+                Intent intent = new Intent();
+                intent.putExtra(TEMPLATE_EMPTY,true);
+                intent.putExtra(TEMPLATE_NAME,templateName);
+                getTargetFragment().onActivityResult(
+                        getTargetRequestCode(), DIALOG_REQUEST_CODE, intent);
+                dismiss();
         }
     }
 
