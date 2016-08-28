@@ -44,8 +44,6 @@ public class TrackerDAO {
         values.put(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT, weight);
 
         return db.insert(TrackerDbHelper.SessionEntry.TABLE_NAME,null,values);
-
-
     }
     //Add a workout to a current session
     public Workout addWorkout(long sesKey, String name,
@@ -93,25 +91,28 @@ public class TrackerDAO {
     public ArrayList<Session> getSessions(){
         ArrayList<Session> sessions = new ArrayList<>();
         String[] columns = {TrackerDbHelper.SessionEntry._ID,TrackerDbHelper.SessionEntry.COLUMN_DATE,
-                TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT};
+                TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT,TrackerDbHelper.SessionEntry.COLUMN_TEMPLATE_NAME};
         Cursor cursor = db.
                 query(TrackerDbHelper.SessionEntry.TABLE_NAME,columns,null,null,null,null,null);
 
         while(cursor.moveToNext()){
+            int sessionNum = cursor.getColumnIndex(TrackerDbHelper.SessionEntry._ID);
             int dateIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_DATE);
             int weightIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT);
-            int sessionNum = cursor.getColumnIndex(TrackerDbHelper.SessionEntry._ID);
+            int templateNameInex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_TEMPLATE_NAME);
 
             String date = cursor.getString(dateIndex);
             int weight = cursor.getInt(weightIndex);
             long sessionId = cursor.getLong(sessionNum);
-            sessions.add(0,new Session(date,weight,sessionId,getWorkouts(sessionId,true)));
+            String templateName = cursor.getString(templateNameInex);
+            sessions.add(0,new Session(date,weight,sessionId,getWorkouts(sessionId,true),templateName));
         }
         cursor.close();
 
 
         return sessions;
     }
+
 
     //Returns all workouts of a session. Returns only the first three workouts if getPreviews is true.
     //TODO: Make sure you can only add up to 8 workouts per session.
@@ -249,6 +250,13 @@ public class TrackerDAO {
         if(maxRep != oldWorkout.getMaxReps()) values.put(TrackerDbHelper.WorkoutEntry.COLUMN_MAX_REPS,maxRep);
         deleteSets(oldWorkout.getWorkoutID());
         db.update(TrackerDbHelper.WorkoutEntry.TABLE_NAME,values,where,null);
+    }
+
+    public void updateTemplateToSession(String templateName, long sessionID){
+        ContentValues values = new ContentValues();
+        String where = TrackerDbHelper.SessionEntry._ID + " = "+sessionID;
+        values.put(TrackerDbHelper.SessionEntry.COLUMN_TEMPLATE_NAME,templateName);
+        db.update(TrackerDbHelper.SessionEntry.TABLE_NAME,values,where,null);
     }
 
     /*************** Queries to delete ****************/

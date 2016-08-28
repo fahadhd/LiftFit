@@ -8,7 +8,7 @@ import android.util.Log;
 
 
 public class TrackerDbHelper extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "tracker.db";
 
     public static final String TAG = TrackerDbHelper.class.getSimpleName();
@@ -25,7 +25,8 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
         final String SQL_CREATE_SESSIONS_TABLE = "CREATE TABLE " + SessionEntry.TABLE_NAME + " (" +
                 SessionEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 SessionEntry.COLUMN_DATE + " TEXT NOT NULL, " +
-                SessionEntry.COLUMN_USER_WEIGHT + " INTEGER NOT NULL" +
+                SessionEntry.COLUMN_USER_WEIGHT + " INTEGER NOT NULL, " +
+                SessionEntry.COLUMN_TEMPLATE_NAME + " TEXT NOT NULL DEFAULT 'None'" +
                 " );";
 
         //Each sessions can have 1-5 workouts which are stored in the workouts_table
@@ -101,6 +102,9 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
 
         //Current users weight in lbs stored as an integer
         public static final String COLUMN_USER_WEIGHT = "user_weight";
+
+        //Current template a session is using. Empty string means no template is used
+        public static final String COLUMN_TEMPLATE_NAME= "template_name";
     }
 
     /* Inner class that defines the table contents of each workout a session includes */

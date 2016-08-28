@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
@@ -70,9 +71,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         View rootView = inflater.inflate(R.layout.exercises_list_fragment, container, false);
         toolbar = (Toolbar) rootView.findViewById(R.id.exercise_toolbar);
         toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        setupTemplates(rootView);
-
-        this.buttonView = inflater.inflate(R.layout.exercise_list_add_btn, container, false);
+        buttonView = inflater.inflate(R.layout.exercise_list_add_btn, container, false);
 
         Intent sessionIntent = getActivity().getIntent();
 
@@ -90,6 +89,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
             getActivity().setTitle("Today's Workout");
         }
         sessionID = currentSession.getSessionId();
+        setupTemplates(rootView);
 
         adapter = new ExerciseAdapter((ExerciseActivity) getActivity(), sessions.get(position).workouts, dao);
         exerciseListView = (ListView) rootView.findViewById(R.id.exercises_list_main);
@@ -130,6 +130,9 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     public void setupTemplates(View rootView) {
+
+            Log.v(TAG,"Template is "+sessions.get(position).getTemplateName());
+
         template_A = (ImageButton) rootView.findViewById(R.id.template_a);
         template_B = (ImageButton) rootView.findViewById(R.id.template_b);
 
@@ -219,21 +222,32 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                 case TemplateDialog.SAVE_TEMPLATE:
                     Log.v(TAG, "saving template");
                     dao.db.beginTransaction();
+                    sessions.get(position).updateTemplateName(templateName);
+                    dao.updateTemplateToSession(templateName,sessionID);
                     dao.deleteTemplate(templateName);
+
                     for (Workout workout : sessions.get(position).workouts) {
                         dao.saveWorkoutToTemplate(templateName, workout);
                     }
+
                     dao.db.setTransactionSuccessful();
                     dao.db.endTransaction();
                     break;
                 case TemplateDialog.LOAD_TEMPLATE :
                     Log.v(TAG, "Loading template");
+
                     dao.db.beginTransaction();
+                    sessions.get(position).updateTemplateName(templateName);
+                    dao.updateTemplateToSession(templateName,sessionID);
+
                     if(sessions.get(position).workouts.size() > 0)
                         dao.deleteAllWorkouts(sessionID);
+
                     ArrayList<Workout> templateWorkouts = dao.loadTemplate(templateName, sessionID);
+
                     dao.db.setTransactionSuccessful();
                     dao.db.endTransaction();
+
                     if (templateWorkouts != null) {
                         getActivity().getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null,
                                 ExercisesFragment.this);
@@ -241,6 +255,10 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                     break;
                 case TemplateDialog.CLEAR_TEMPLATE :
                     Log.v(TAG, "Clearing template");
+                    if(sessions.get(position).getTemplateName().equals(templateName)) {
+                        dao.updateTemplateToSession("None", sessionID);
+                        sessions.get(position).updateTemplateName("None");
+                    }
                     dao.deleteTemplate(templateName);
                     break;
             }

@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
         int user_weight = Integer.parseInt(shared_pref.getString(getString
                 (R.string.pref_user_weight_key),getString
                 (R.string.pref_default_user_weight)));
-        Session session = new Session(dateFormatted,user_weight,sessions.size()+1,new ArrayList<Workout>());
+        //// TODO: 8/28/2016 can add template automatically here depending on shared pref instead of 'none'
+        Session session = new Session(dateFormatted,user_weight,sessions.size()+1,new ArrayList<Workout>(),"None");
         sessions.add(0,session);
         return session;
     }
