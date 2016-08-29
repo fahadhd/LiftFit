@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lift_weight_title"
-        android:layout_marginLeft="45dp"
+        android:layout_marginLeft="33dp"
         android:textSize="20sp"
         android:hint="185"
         android:inputType="number"
@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/sets_title"
         android:layout_alignBaseline="@+id/lift_weight"
-        android:layout_marginLeft="140dp"
+        android:layout_marginLeft="135dp"
         />
     <Spinner
         android:layout_width="wrap_content"

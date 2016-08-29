@@ -46,8 +46,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     TrackerDAO dao;
     public static long sessionID;
     ArrayList<Session> sessions;
-    //ArrayList<Workout> workouts;
-    String name;
     TrackerApplication application;
     /***********Toolbar Variables****************/
 
@@ -148,98 +146,94 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     }
 
 
-    public void customizeToolbar(Toolbar toolbar){
+    /************************ Workout Tasks Add, Update, and Delete ********************/
 
-    }
-
+    //Receives workout info from dialog fragment and adds it into the database
     @Override
-    public void getWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
-        this.name = name;
+    public void addWorkoutInfo(String name, int weight, int max_sets, int max_reps) {
         //TODO: Store new workout in cached data and use that to instantly update view while
         //concurrently performing background task
-        new AddWorkoutTask().execute(weight, max_sets, max_reps);
+        deactivateTemplates();
+        Workout workoutInfo = new Workout(sessionID,name,weight,max_sets,max_reps,Constants.WORKOUTTASK.ADD_WORKOUT);
+        new WorkoutTask().execute(workoutInfo);
     }
 
     @Override
     public void updateWorkoutInfo(Workout workout, String name, int weight, int maxSet, int maxRep) {
         Workout updatedWorkout =new Workout(workout.getSessionID(),workout.getWorkoutID(),
                 name,weight,maxSet,maxRep,new ArrayList<Set>());
+
+        deactivateTemplates();
+
         if(!workout.equals(updatedWorkout)){
-            new UpdateWorkout().execute(workout, updatedWorkout);
+            workout.updateTask(Constants.WORKOUTTASK.UPDATE_WORKOUT);
+            new WorkoutTask().execute(workout, updatedWorkout);
         }
     }
-
     @Override
     public void deleteWorkoutInfo(Workout workout) {
-        new DeleteWorkout().execute(workout);
+        deactivateTemplates();
+        workout.updateTask(Constants.WORKOUTTASK.DELETE_WORKOUT);
+        new WorkoutTask().execute(workout);
     }
 
-    /********* Background threads for adding, updating, and deleting workouts *************/
-    //TODO: these async tasks can be merged into one and that loop can be made into a helper method
-    //also instead of looping most of the time the workoutid is the same as its index in the array
+    public void deactivateTemplates(){
+        sessions.get(exercisesFragment.position).updateTemplateName("None");
+        exercisesFragment.deactivateTemplates();
+    }
+
+    //TODO: Instead of looping most of the time the workoutid is the same as its index in the array
     //so check that first to speed things up.
-
-    /*************** Adds workout data in background thread *****************/
-    public class AddWorkoutTask extends AsyncTask<Integer, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Integer... params) {
-            int weight = params[0];
-            int max_sets = params[1];
-            int max_reps = params[2];
-            addWorkoutTask(name, weight, max_sets, max_reps);
-            return null;
-        }
-
-        public void addWorkoutTask(String name, int weight, int max_sets, int max_reps) {
-            Workout workout = dao.addWorkout(sessionID, name, weight, max_sets, max_reps);
-            workout.sets = dao.addSets(workout.getWorkoutID(), max_sets);
-            //Restart loader so it updates the new data to the list.
-            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
-            sessions.get(exercisesFragment.position).getWorkouts().add(workout);
-        }
-    }
-
-
-    /***************** Updates a workout in background thread *************/
-    public class UpdateWorkout extends AsyncTask<Workout,Void,Void>{
+    public class WorkoutTask extends AsyncTask<Workout,Void,Void>{
 
         @Override
         protected Void doInBackground(Workout... params) {
+            Workout workout = params[0];
             ArrayList<Workout> workouts = sessions.get(exercisesFragment.position).getWorkouts();
-            dao.db.beginTransaction();
-            Workout oldWorkout = params[0];
-            Workout updatedWorkout = params[1];
-            dao.updateWorkout(oldWorkout,updatedWorkout);
-            updatedWorkout.sets = dao.addSets(updatedWorkout.getWorkoutID(),updatedWorkout.getMaxSets());
-            dao.db.setTransactionSuccessful();
-            dao.db.endTransaction();
-            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
-            for(int i = 0; i< workouts.size(); i++){
-                if(workouts.get(i).getWorkoutID() == updatedWorkout.getWorkoutID()){
-                    workouts.set(i,updatedWorkout);
-                }
-            }
-            return null;
-        }
-    }
-    /***************** Deletes a workout in background thread *************/
-    public class DeleteWorkout extends AsyncTask<Workout,Void,Void>{
+            switch (workout.getTask()){
 
-        @Override
-        protected Void doInBackground(Workout... params) {
-            dao.deleteWorkout(params[0].getWorkoutID());
-            ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
-            //Updating cached data
-            ArrayList<Workout> workouts = sessions.get(exercisesFragment.position).getWorkouts();
-            for(int i = 0; i < workouts.size(); i++){
-                if(workouts.get(i).getWorkoutID() == params[0].getWorkoutID()){
-                    workouts.remove(i);
-                }
+                case Constants.WORKOUTTASK.ADD_WORKOUT:
+                    Workout newWorkout = dao.addWorkout(sessionID, workout.getName(), workout.getWeight(), workout.getMaxSets(), workout.getMaxReps());
+                    workout.sets = dao.addSets(newWorkout.getWorkoutID(), newWorkout.getMaxSets());
+                    ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
+                    break;
+
+                case Constants.WORKOUTTASK.UPDATE_WORKOUT:
+                    Workout oldWorkout = params[0];
+                    Workout updatedWorkout = params[1];
+                    dao.db.beginTransaction();
+                    dao.updateWorkout(oldWorkout,updatedWorkout);
+                    updatedWorkout.sets = dao.addSets(updatedWorkout.getWorkoutID(),updatedWorkout.getMaxSets());
+                    dao.db.setTransactionSuccessful();
+                    dao.db.endTransaction();
+
+                    //Updating cached data and restarting loader
+                    ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
+                    for(int i = 0; i< workouts.size(); i++){
+                        if(workouts.get(i).getWorkoutID() == updatedWorkout.getWorkoutID()){
+                            workouts.set(i,updatedWorkout);
+                        }
+                    }
+                    break;
+
+                case Constants.WORKOUTTASK.DELETE_WORKOUT:
+                    dao.deleteWorkout(params[0].getWorkoutID());
+                    //Updating cached data and restarting loader
+                    ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
+                    for(int i = 0; i < workouts.size(); i++){
+                        if(workouts.get(i).getWorkoutID() == params[0].getWorkoutID()){
+                            workouts.remove(i);
+                        }
+                    }
+                    dao.updateTemplateToSession("None",exercisesFragment.sessionID);
+                    break;
             }
+            dao.updateTemplateToSession("None",exercisesFragment.sessionID);
             return null;
         }
     }
+
+
 
     /****************************** Timer Snackbar ****************************************/
 

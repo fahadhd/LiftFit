@@ -21,4 +21,10 @@ public class Constants {
     public interface  GENERAL{
         public static final String SESSION_ID = "com.fahadhd.foregroundservice.general.sessionID";
     }
+
+    public interface WORKOUTTASK{
+        public static final String ADD_WORKOUT = "com.fahadhd.workouttask.addworkout";
+        public static final String UPDATE_WORKOUT = "com.fahadhd.workouttask.updateworkout";
+        public static final String DELETE_WORKOUT = "ccom.fahadhd.workouttask.deleteworkout";
+    }
 }

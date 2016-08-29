@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -48,9 +49,8 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     ListView exerciseListView;
     Menu exerciseMenu;
     FloatingActionButton fabExercise;
-    ImageButton template_A, template_B;
     View buttonView;
-    TextView toolbarTitle;
+    TextView toolbarTitle,template_A,template_B;
     Toolbar toolbar;
     SharedPreferences sharedPref;
 
@@ -131,11 +131,12 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     public void setupTemplates(View rootView) {
 
-            Log.v(TAG,"Template is "+sessions.get(position).getTemplateName());
+        Log.v(TAG,"Template is "+sessions.get(position).getTemplateName());
 
-        template_A = (ImageButton) rootView.findViewById(R.id.template_a);
-        template_B = (ImageButton) rootView.findViewById(R.id.template_b);
+        template_A = (TextView) rootView.findViewById(R.id.template_a);
+        template_B = (TextView) rootView.findViewById(R.id.template_b);
 
+        setTemplateActive();
 
         template_A.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,7 +185,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     /************************************************************/
 
-    /*********************** Templat Handling ******************************************/
+    /*********************** Template Handling ******************************************/
 
     //Receives data back from the dialog fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -198,15 +199,20 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                     //template is no longer empty
                     editor.putBoolean(templateName, false);
                     editor.apply();
+                    sessions.get(position).updateTemplateName(templateName);
+                    setTemplateActive();
                     new TemplateTask().execute(templateName,TemplateDialog.SAVE_TEMPLATE);
                 }
             }
             else if(data.hasExtra(TemplateDialog.LOAD_TEMPLATE)){
+                sessions.get(position).updateTemplateName(templateName);
+                setTemplateActive();
                 new TemplateTask().execute(templateName,TemplateDialog.LOAD_TEMPLATE);
             }
             else if(data.hasExtra(TemplateDialog.CLEAR_TEMPLATE)){
                 editor.putBoolean(templateName,true);
                 editor.apply();
+                deactivateTemplates();
                 new TemplateTask().execute(templateName,TemplateDialog.CLEAR_TEMPLATE);
             }
         }
@@ -222,22 +228,20 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                 case TemplateDialog.SAVE_TEMPLATE:
                     Log.v(TAG, "saving template");
                     dao.db.beginTransaction();
-                    sessions.get(position).updateTemplateName(templateName);
                     dao.updateTemplateToSession(templateName,sessionID);
                     dao.deleteTemplate(templateName);
 
-                    for (Workout workout : sessions.get(position).workouts) {
+                    for (Workout workout : sessions.get(position).workouts)
                         dao.saveWorkoutToTemplate(templateName, workout);
-                    }
 
                     dao.db.setTransactionSuccessful();
                     dao.db.endTransaction();
                     break;
+
                 case TemplateDialog.LOAD_TEMPLATE :
                     Log.v(TAG, "Loading template");
 
                     dao.db.beginTransaction();
-                    sessions.get(position).updateTemplateName(templateName);
                     dao.updateTemplateToSession(templateName,sessionID);
 
                     if(sessions.get(position).workouts.size() > 0)
@@ -253,17 +257,35 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                                 ExercisesFragment.this);
                     }
                     break;
+
                 case TemplateDialog.CLEAR_TEMPLATE :
                     Log.v(TAG, "Clearing template");
                     if(sessions.get(position).getTemplateName().equals(templateName)) {
                         dao.updateTemplateToSession("None", sessionID);
-                        sessions.get(position).updateTemplateName("None");
                     }
                     dao.deleteTemplate(templateName);
                     break;
             }
+
             return null;
         }
+    }
+
+    public void setTemplateActive() {
+        if (sessions.get(position).getTemplateName().equals(getString(R.string.template_A))){
+            template_A.setBackgroundResource(R.drawable.template_active_selector);
+            template_B.setBackgroundResource(R.drawable.template_inactive_selector);
+        }
+        if(sessions.get(position).getTemplateName().equals(getString(R.string.template_B))) {
+            template_B.setBackgroundResource(R.drawable.template_active_selector);
+            template_A.setBackgroundResource(R.drawable.template_inactive_selector);
+        }
+    }
+
+    public void deactivateTemplates(){
+        sessions.get(position).updateTemplateName("None");
+        template_A.setBackgroundResource(R.drawable.template_inactive_selector);
+        template_B.setBackgroundResource(R.drawable.template_inactive_selector);
     }
 
 }

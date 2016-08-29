@@ -4,15 +4,12 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -136,7 +133,7 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
                 }
                 else {
                     weight = (weightString.equals("")) ? 185 : Integer.parseInt(weightString);
-                    communicator.getWorkoutInfo(name, weight, setChoice, repChoice);
+                    communicator.addWorkoutInfo(name, weight, setChoice, repChoice);
                     dismiss();
                 }
                 break;
@@ -226,7 +223,7 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
 
     //Used to send information of a new workout to exercise activity
     interface Communicator{
-        void getWorkoutInfo(String name, int weight, int max_sets, int max_reps);
+        void addWorkoutInfo(String name, int weight, int max_sets, int max_reps);
         void updateWorkoutInfo(Workout workout, String name, int weight, int max_sets, int max_reps);
         void deleteWorkoutInfo(Workout workout);
     }
