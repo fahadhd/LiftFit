@@ -9,7 +9,9 @@
         android:id="@+id/workout_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Input Exercise Name Here          "
+        android:hint="Input Exercise Name Here"
+
+        android:maxLength="16"
         android:textSize="18sp"
         android:gravity="center"
         android:inputType="textCapWords"

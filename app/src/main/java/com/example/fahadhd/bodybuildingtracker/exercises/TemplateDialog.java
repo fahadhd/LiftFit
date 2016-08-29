@@ -10,20 +10,16 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.R;
+import com.example.fahadhd.bodybuildingtracker.utilities.Constants;
 
 
 public class TemplateDialog extends DialogFragment implements View.OnClickListener{
     TextView message;
-    public static final String TEMPLATE_NAME = "template name";
-    public static final String TEMPLATE_EMPTY_KEY = "is template empty";
-    public static final String SAVE_TEMPLATE = "template empty";
-    public static final String LOAD_TEMPLATE = "load template";
-    public static final String CLEAR_TEMPLATE = "clear template";
-    public static final int DIALOG_REQUEST_CODE = 23;
     boolean isTemplateEmpty = false;
     String templateName;
     Button templateCancel, templateConfirm, templateClear;
@@ -33,8 +29,8 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
         TemplateDialog newDialog = new TemplateDialog();
 
         Bundle args = new Bundle();
-        args.putBoolean(TEMPLATE_EMPTY_KEY,templateEmpty);
-        args.putString(TEMPLATE_NAME,templateName);
+        args.putBoolean(Constants.TEMPLATE_TASK.TEMPLATE_EMPTY_KEY,templateEmpty);
+        args.putString(Constants.TEMPLATE_TASK.TEMPLATE_NAME,templateName);
         newDialog.setArguments(args);
 
         return newDialog;
@@ -44,11 +40,11 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        if(bundle != null && bundle.containsKey(TEMPLATE_NAME)){
-            templateName  = bundle.getString(TEMPLATE_NAME);
+        if(bundle != null && bundle.containsKey(Constants.TEMPLATE_TASK.TEMPLATE_NAME)){
+            templateName  = bundle.getString(Constants.TEMPLATE_TASK.TEMPLATE_NAME);
         }
-        if(bundle != null && bundle.containsKey(TEMPLATE_EMPTY_KEY)){
-            isTemplateEmpty = bundle.getBoolean(TEMPLATE_EMPTY_KEY);
+        if(bundle != null && bundle.containsKey(Constants.TEMPLATE_TASK.TEMPLATE_EMPTY_KEY)){
+            isTemplateEmpty = bundle.getBoolean(Constants.TEMPLATE_TASK.TEMPLATE_EMPTY_KEY);
         }
     }
 
@@ -72,7 +68,7 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.template_dialog_fragment, container);
-        getDialog().setTitle("Template "+ templateName);
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         message = (TextView) rootView.findViewById(R.id.template_message);
         templateConfirm = (Button) rootView.findViewById(R.id.template_confirm);
@@ -109,10 +105,10 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
         switch (v.getId()){
             case R.id.template_confirm:
                 Intent intent = new Intent();
-                intent.putExtra(SAVE_TEMPLATE,true);
-                intent.putExtra(TEMPLATE_NAME,templateName);
+                intent.putExtra(Constants.TEMPLATE_TASK.SAVE_TEMPLATE,true);
+                intent.putExtra(Constants.TEMPLATE_TASK.TEMPLATE_NAME,templateName);
                 getTargetFragment().onActivityResult(
-                        getTargetRequestCode(), DIALOG_REQUEST_CODE, intent);
+                        getTargetRequestCode(), ExercisesFragment.DIALOG_REQUEST_CODE, intent);
                 dismiss();
         }
     }
@@ -123,18 +119,18 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
             //Communicating back to fragment to update workouts to templates
             case R.id.template_confirm:
                 Intent loadIntent = new Intent();
-                loadIntent.putExtra(LOAD_TEMPLATE,true);
-                loadIntent.putExtra(TEMPLATE_NAME,templateName);
+                loadIntent.putExtra(Constants.TEMPLATE_TASK.LOAD_TEMPLATE,true);
+                loadIntent.putExtra(Constants.TEMPLATE_TASK.TEMPLATE_NAME,templateName);
                 getTargetFragment().onActivityResult(
-                        getTargetRequestCode(), DIALOG_REQUEST_CODE, loadIntent);
+                        getTargetRequestCode(), ExercisesFragment.DIALOG_REQUEST_CODE, loadIntent);
                 dismiss();
                 break;
             case R.id.template_clear:
                 Intent clearIntent = new Intent();
-                clearIntent.putExtra(CLEAR_TEMPLATE,true);
-                clearIntent.putExtra(TEMPLATE_NAME,templateName);
+                clearIntent.putExtra(Constants.TEMPLATE_TASK.CLEAR_TEMPLATE,true);
+                clearIntent.putExtra(Constants.TEMPLATE_TASK.TEMPLATE_NAME,templateName);
                 getTargetFragment().onActivityResult(
-                        getTargetRequestCode(), DIALOG_REQUEST_CODE, clearIntent);
+                        getTargetRequestCode(), ExercisesFragment.DIALOG_REQUEST_CODE, clearIntent);
                 dismiss();
                 break;
         }

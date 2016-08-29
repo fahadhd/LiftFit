@@ -259,6 +259,7 @@ public class TrackerDAO {
         db.update(TrackerDbHelper.SessionEntry.TABLE_NAME,values,where,null);
     }
 
+
     /*************** Queries to delete ****************/
 
     //deletes all workouts in a session
@@ -281,6 +282,11 @@ public class TrackerDAO {
     public void deleteTemplate(String templateName){
         String where = TrackerDbHelper.TemplateEntry.COLUMN_TEMPLATE_NAME + " = ?";
         db.delete(TrackerDbHelper.TemplateEntry.TABLE_NAME,where,new String[]{templateName});
+
+        where = TrackerDbHelper.SessionEntry.COLUMN_TEMPLATE_NAME + " = ?";
+        ContentValues values = new ContentValues();
+        values.put(TrackerDbHelper.SessionEntry.COLUMN_TEMPLATE_NAME,"None");
+        db.update(TrackerDbHelper.SessionEntry.TABLE_NAME,values,where,new String[]{templateName});
     }
 
 }

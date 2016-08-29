@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
@@ -130,6 +129,7 @@ public class ExerciseAdapter extends BaseAdapter{
         viewHolder.editWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //// TODO: 8/29/2016 Communicate dialog with fragment instead of activity
                 WorkoutDialog dialog = WorkoutDialog.newInstance(workout);
                 dialog.show(activity.getFragmentManager(), "WorkoutDialog");
             }

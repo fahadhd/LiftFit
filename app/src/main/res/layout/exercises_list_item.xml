@@ -29,7 +29,7 @@
         android:gravity="center"
         android:layout_alignLeft="@+id/workout_info"
         android:layout_marginTop="18dp"
-        android:layout_marginLeft="77dp"
+        android:layout_marginLeft="74dp"
         android:background="@drawable/workout_button_selector"
         android:textColor="@color/black"
         />

@@ -43,9 +43,7 @@ public class SessionAdapter extends BaseAdapter {
     }
 
     public class ViewHolder {
-        TextView date;
-        TextView user_weight;
-        TextView sessionID;
+        TextView date, user_weight,sessionID,templateName;
 
         /********* Workout Previews ************/
         TextView previewOne, previewTwo,previewThree;
@@ -56,6 +54,7 @@ public class SessionAdapter extends BaseAdapter {
             this.date = (TextView) view.findViewById(R.id.date);
             this.user_weight = (TextView) view.findViewById(R.id.user_weight);
             this.sessionID = (TextView) view.findViewById(R.id.sessionID);
+            this.templateName = (TextView) view.findViewById(R.id.session_template);
 
             this.previewOne = (TextView) view.findViewById(R.id.preview_one);
             this.previewTwo = (TextView) view.findViewById(R.id.preview_two);
@@ -98,6 +97,9 @@ public class SessionAdapter extends BaseAdapter {
         setInfoText("Session",Long.toString(session.getSessionId()),viewHolder);
         setInfoText("Weight",Integer.toString(user_weight),viewHolder);
 
+        String templateName = (session.getTemplateName().equals("None")) ? "N/A" : session.getTemplateName();
+        setInfoText("Template",templateName,viewHolder);
+
         setPreviewText(session.getWorkouts(),viewHolder);
         return row;
 
@@ -106,12 +108,13 @@ public class SessionAdapter extends BaseAdapter {
     public void setInfoText(String title, String description, ViewHolder viewHolder){
         switch (title) {
             case "Date": viewHolder.date.setText(Html.fromHtml("<small><font color=\"black\">" + title + "</font></small>" + "<br />" +
-                    "<b>" + description + "</b>"));
+                    "<small><b>" + description + "</b></small>"));
             case "Session": viewHolder.sessionID.setText(Html.fromHtml("<small><font color=\"black\">" + title + "</font></small>" + "<br />" +
                     "<b>" + description + "</b>"));
             case "Weight": viewHolder.user_weight.setText(Html.fromHtml("<small><font color=\"black\">" + title + "</font></small>" + "<br />" +
                     "<b>" + description + "</b>"));
-
+            case "Template": viewHolder.templateName.setText(Html.fromHtml("<small><font color=\"black\">" + title + "</font></small>" + "<br />" +
+                    "<b>" + description + "</b>"));
         }
 
     }

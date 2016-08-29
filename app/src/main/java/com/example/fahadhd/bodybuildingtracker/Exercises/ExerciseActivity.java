@@ -9,14 +9,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.PersistableBundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
@@ -154,8 +148,8 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         //TODO: Store new workout in cached data and use that to instantly update view while
         //concurrently performing background task
         deactivateTemplates();
-        Workout workoutInfo = new Workout(sessionID,name,weight,max_sets,max_reps,Constants.WORKOUTTASK.ADD_WORKOUT);
-        new WorkoutTask().execute(workoutInfo);
+        Workout workoutInfo = new Workout(sessionID,name,weight,max_sets,max_reps, Constants.WORKOUT_TASK.ADD_WORKOUT);
+        exercisesFragment.startWorkoutTask(workoutInfo);
     }
 
     @Override
@@ -163,74 +157,21 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         Workout updatedWorkout =new Workout(workout.getSessionID(),workout.getWorkoutID(),
                 name,weight,maxSet,maxRep,new ArrayList<Set>());
 
-        deactivateTemplates();
-
         if(!workout.equals(updatedWorkout)){
-            workout.updateTask(Constants.WORKOUTTASK.UPDATE_WORKOUT);
-            new WorkoutTask().execute(workout, updatedWorkout);
+            workout.updateTask(Constants.WORKOUT_TASK.UPDATE_WORKOUT);
+            exercisesFragment.startWorkoutTask(workout, updatedWorkout);
         }
     }
     @Override
     public void deleteWorkoutInfo(Workout workout) {
         deactivateTemplates();
-        workout.updateTask(Constants.WORKOUTTASK.DELETE_WORKOUT);
-        new WorkoutTask().execute(workout);
+        workout.updateTask(Constants.WORKOUT_TASK.DELETE_WORKOUT);
+        exercisesFragment.startWorkoutTask(workout);
     }
 
     public void deactivateTemplates(){
         sessions.get(exercisesFragment.position).updateTemplateName("None");
         exercisesFragment.deactivateTemplates();
-    }
-
-    //TODO: Instead of looping most of the time the workoutid is the same as its index in the array
-    //so check that first to speed things up.
-    public class WorkoutTask extends AsyncTask<Workout,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Workout... params) {
-            Workout workout = params[0];
-            ArrayList<Workout> workouts = sessions.get(exercisesFragment.position).getWorkouts();
-            switch (workout.getTask()){
-
-                case Constants.WORKOUTTASK.ADD_WORKOUT:
-                    Workout newWorkout = dao.addWorkout(sessionID, workout.getName(), workout.getWeight(), workout.getMaxSets(), workout.getMaxReps());
-                    workout.sets = dao.addSets(newWorkout.getWorkoutID(), newWorkout.getMaxSets());
-                    ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
-                    break;
-
-                case Constants.WORKOUTTASK.UPDATE_WORKOUT:
-                    Workout oldWorkout = params[0];
-                    Workout updatedWorkout = params[1];
-                    dao.db.beginTransaction();
-                    dao.updateWorkout(oldWorkout,updatedWorkout);
-                    updatedWorkout.sets = dao.addSets(updatedWorkout.getWorkoutID(),updatedWorkout.getMaxSets());
-                    dao.db.setTransactionSuccessful();
-                    dao.db.endTransaction();
-
-                    //Updating cached data and restarting loader
-                    ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
-                    for(int i = 0; i< workouts.size(); i++){
-                        if(workouts.get(i).getWorkoutID() == updatedWorkout.getWorkoutID()){
-                            workouts.set(i,updatedWorkout);
-                        }
-                    }
-                    break;
-
-                case Constants.WORKOUTTASK.DELETE_WORKOUT:
-                    dao.deleteWorkout(params[0].getWorkoutID());
-                    //Updating cached data and restarting loader
-                    ExerciseActivity.this.getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, exercisesFragment);
-                    for(int i = 0; i < workouts.size(); i++){
-                        if(workouts.get(i).getWorkoutID() == params[0].getWorkoutID()){
-                            workouts.remove(i);
-                        }
-                    }
-                    dao.updateTemplateToSession("None",exercisesFragment.sessionID);
-                    break;
-            }
-            dao.updateTemplateToSession("None",exercisesFragment.sessionID);
-            return null;
-        }
     }
 
 
