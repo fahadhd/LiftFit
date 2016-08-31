@@ -4,18 +4,24 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 
@@ -185,11 +191,35 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     }
 
     public void setUpSpinners(){
-        String[] items = new String[]{"1", "2", "3","4","5","6","7","8"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item, items);
-        sets.setAdapter(adapter);
-        reps.setAdapter(adapter);
+        String[] setItems = new String[]{"1", "2", "3","4","5","6","7","8"};
+        String[] repItems = new String[]{"1", "2", "3","4","5","6","7","8","9","10","11","12"
+        ,"13","14","15"};
+        ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, setItems);
+        ArrayAdapter<String> repAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, repItems);
+        sets.setAdapter(setAdapter);
+        reps.setAdapter(repAdapter);
+
+        sets.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                workout_name.clearFocus();
+                lift_weight.clearFocus();
+
+                return false;
+            }
+        });
+
+        reps.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                workout_name.clearFocus();
+                lift_weight.clearFocus();
+
+                return false;
+            }
+        });
 
         //The following configures the default choice to be 5 sets by 5 reps.
 
@@ -207,6 +237,7 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
+
         });
 
         reps.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -220,6 +251,8 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
             }
         });
     }
+
+
 
     //Used to send information of a new workout to exercise activity
     interface Communicator{

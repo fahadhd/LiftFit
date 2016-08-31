@@ -1,10 +1,22 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/workout_dialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:theme="@style/WorkoutDialogCustom"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     android:minHeight="150dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add a new workout"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"/>
     <EditText
         android:id="@+id/workout_name"
         android:layout_width="match_parent"
@@ -20,54 +32,53 @@
         android:paddingTop="20dp"
         />
 
-
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:orientation="horizontal">
     <TextView
         android:id="@+id/lift_weight_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/workout_name"
-        android:layout_marginLeft="30dp"
+        android:layout_weight="1"
         android:gravity="center"
         android:text="Lift Weight"
         android:textColor="@color/white"/>
     <TextView
         android:id="@+id/sets_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="145dp"
-        android:layout_below="@+id/workout_name"
+        android:layout_weight="1"
         android:gravity="center"
         android:text="Sets"
         android:textColor="@color/white"/>
     <TextView
         android:id="@+id/separator"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/sets_title"
-        android:layout_marginLeft="55dp"
-        android:layout_alignBaseline="@+id/lift_weight"
-        android:layout_below="@+id/sets_title"
-        android:textSize="20sp"
+        android:layout_weight="0.2"
+        android:textSize="14sp"
         android:text="X"
         android:textColor="@color/white"/>
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"
-        android:layout_below="@+id/workout_name"
+        android:layout_weight="1"
         android:id="@+id/reps_title"
         android:gravity="center"
         android:text="Reps"
         android:textColor="@color/white"/>
+ </LinearLayout>
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <EditText
         android:id="@+id/lift_weight"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lift_weight_title"
-        android:layout_marginLeft="33dp"
+        android:layout_weight="1"
         android:textSize="20sp"
         android:hint="185"
         android:inputType="number"
@@ -75,21 +86,17 @@
         />
     <Spinner
         android:id="@+id/sets_choice"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sets_title"
-        android:layout_alignBaseline="@+id/lift_weight"
-        android:layout_marginLeft="135dp"
+        android:layout_weight="1"
         />
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/reps_title"
-        android:layout_alignBaseline="@id/lift_weight"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_weight="1"
         android:id="@+id/reps_choice"
         />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -121,4 +128,4 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

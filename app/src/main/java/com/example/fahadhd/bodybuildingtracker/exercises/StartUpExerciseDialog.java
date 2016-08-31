@@ -11,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 
 import com.example.fahadhd.bodybuildingtracker.R;
@@ -43,7 +44,7 @@ public class StartUpExerciseDialog extends DialogFragment implements View.OnClic
             boolean templateChecks[] = bundle.getBooleanArray(Constants.TEMPLATE_TASK.TEMPLATE_EMPTY_KEY);
             if(templateChecks != null) {
                 templateAEmpty = templateChecks[0];
-                templateAEmpty = templateChecks[1];
+                templateBEmpty = templateChecks[1];
             }
         }
     }
@@ -68,6 +69,7 @@ public class StartUpExerciseDialog extends DialogFragment implements View.OnClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.new_exercise_dialog_fragment, container);
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         loadTemplateA = (Button)rootView.findViewById(R.id.load_template_a);
         loadTemplateB = (Button)rootView.findViewById(R.id.load_template_b);
         loadCancel = (Button)rootView.findViewById(R.id.load_cancel);

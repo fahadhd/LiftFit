@@ -27,23 +27,27 @@
         <Button
             android:id="@+id/template_clear"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:layout_weight="1"
             android:textColor="@android:color/holo_red_light"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
             android:text="Clear Template"/>
         <Button
             android:id="@+id/template_cancel"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
             android:text="Cancel"/>
         <Button
             android:id="@+id/template_confirm"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="OK"/>
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="Ok"/>
     </LinearLayout>
 
 </RelativeLayout>

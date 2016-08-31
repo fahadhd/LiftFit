@@ -1,67 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="30dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     app:theme="@style/WorkoutDialogCustom">
+    <TextView
+        android:id="@+id/template_message"
+        android:textColor="@color/white"
+        android:text="Load a template?"
+
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/template_message"
+        android:layout_marginTop="35dp"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/load_template_a"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/template_A"/>
+        <Button
+            android:id="@+id/load_template_b"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/template_B"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/template_message"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/white"
-            android:text="Load a template?"
-
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_width="250dp"
+        android:layout_below="@+id/template_message"
+        android:layout_marginTop="35dp"
+        android:paddingBottom="4dp"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/load_cancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:text="Cancel"/>
+        <Button
+            android:id="@+id/load_new_workout"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/template_message"
-            android:layout_marginTop="35dp"
-            android:orientation="horizontal"
-            >
-            <Button
-                android:id="@+id/load_template_a"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/template_A"/>
-            <Button
-                android:id="@+id/load_template_b"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/template_B"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/template_message"
-            android:layout_marginTop="35dp"
-            android:orientation="horizontal"
-            >
-            <Button
-                android:id="@+id/load_cancel"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Cancel"/>
-            <Button
-                android:id="@+id/load_new_workout"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Start A New Workout"/>
-        </LinearLayout>
+            android:text="Start New Workout"/>
     </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

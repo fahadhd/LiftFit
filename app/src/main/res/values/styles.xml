@@ -46,14 +46,5 @@
         <item name="android:background">@drawable/template_inactive_selector</item>
     </style>
 
-    <style name="TemplateActive">
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:typeface">sans</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:background">@drawable/template_active_selector</item>
-    </style>
-
 
 </resources>

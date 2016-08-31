@@ -64,8 +64,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         dao = application.getDatabase();
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        templateAEmpty = sharedPref.getBoolean(getString(R.string.template_A),true);
-        templateBEmpty = sharedPref.getBoolean(getString(R.string.template_B),true);
 
         sessions = application.getSessions();
     }
@@ -77,6 +75,9 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         toolbar = (Toolbar) rootView.findViewById(R.id.exercise_toolbar);
         toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         buttonView = inflater.inflate(R.layout.exercise_list_add_btn, container, false);
+        templateAEmpty = sharedPref.getBoolean(getString(R.string.template_A),true);
+        templateBEmpty = sharedPref.getBoolean(getString(R.string.template_B),true);
+
         boolean newExercise = false;
         Intent sessionIntent = getActivity().getIntent();
 
@@ -161,6 +162,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
             @Override
             public void onClick(View v) {
                 String templateName = getString(R.string.template_A);
+                templateAEmpty = sharedPref.getBoolean(templateName,true);
                 TemplateDialog dialog = TemplateDialog.newInstance(templateAEmpty,templateName);
                 dialog.setTargetFragment(ExercisesFragment.this,DIALOG_REQUEST_CODE);
                 dialog.show(getFragmentManager(), "TemplateDialog");
@@ -170,6 +172,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
             @Override
             public void onClick(View v) {
                 String templateName = getString(R.string.template_B);
+                templateBEmpty = sharedPref.getBoolean(templateName,true);
                 TemplateDialog dialog = TemplateDialog.newInstance(templateBEmpty,templateName);
                 dialog.setTargetFragment(ExercisesFragment.this,DIALOG_REQUEST_CODE);
                 dialog.show(getFragmentManager(), "TemplateDialog");
@@ -306,8 +309,8 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                 case Constants.TEMPLATE_TASK.SAVE_TEMPLATE:
                     Log.v(TAG, "saving template");
                     dao.db.beginTransaction();
-                    dao.updateTemplateToSession(templateName,sessionID);
                     dao.deleteTemplate(templateName);
+                    dao.updateTemplateToSession(templateName,sessionID);
 
                     for (Workout workout : sessions.get(position).workouts)
                         dao.saveWorkoutToTemplate(templateName, workout);

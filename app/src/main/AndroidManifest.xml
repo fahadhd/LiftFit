@@ -39,8 +39,11 @@
         <activity
             android:name=".SettingsActivity"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity" />
+            android:label="@string/title_activity_settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
+        </activity>
         <service android:name=".exercises.TimerService"/>
     </application>
 

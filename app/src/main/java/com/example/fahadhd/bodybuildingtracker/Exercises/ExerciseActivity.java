@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
+import com.example.fahadhd.bodybuildingtracker.SettingsActivity;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
@@ -134,6 +135,9 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         switch (menuItem.getItemId()) {
             case android.R.id.home:
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                return true;
+            case R.id.action_settings:
+                startActivity(new Intent(this,SettingsActivity.class));
                 return true;
         }
         return (super.onOptionsItemSelected(menuItem));

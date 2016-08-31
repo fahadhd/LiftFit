@@ -86,7 +86,7 @@ public class TemplateDialog extends DialogFragment implements View.OnClickListen
         }
         else{
             templateClear.setVisibility(View.VISIBLE);
-            message.setText("Load template "+ templateName +"?");
+            message.setText("Load Template "+ templateName +"?");
         }
 
         return rootView;

@@ -99,12 +99,12 @@ public class TrackerDAO {
             int sessionNum = cursor.getColumnIndex(TrackerDbHelper.SessionEntry._ID);
             int dateIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_DATE);
             int weightIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT);
-            int templateNameInex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_TEMPLATE_NAME);
+            int templateNameIndex = cursor.getColumnIndex(TrackerDbHelper.SessionEntry.COLUMN_TEMPLATE_NAME);
 
             String date = cursor.getString(dateIndex);
             int weight = cursor.getInt(weightIndex);
             long sessionId = cursor.getLong(sessionNum);
-            String templateName = cursor.getString(templateNameInex);
+            String templateName = cursor.getString(templateNameIndex);
             sessions.add(0,new Session(date,weight,sessionId,getWorkouts(sessionId,true),templateName));
         }
         cursor.close();
