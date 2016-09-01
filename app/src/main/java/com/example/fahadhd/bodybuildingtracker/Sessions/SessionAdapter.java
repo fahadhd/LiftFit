@@ -83,14 +83,9 @@ public class SessionAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) row.getTag();
         }
         /*****************Shared Preferences Info for user weight*****************************/
-        SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(context);
-        String pounds = context.getString(R.string.pref_units_pounds);
-        String unit = shared_pref.getString(context.getString(R.string.pref_unit_list_key),pounds);
         Session session = sessions.get(position);
         int user_weight = session.getWeight();
-        Double kiloWeight = user_weight*0.45359237;
         //Change from pounds to kilograms if that is what user prefers
-        if(!unit.equals(pounds)) user_weight = kiloWeight.intValue();
         /**********************************************/
 
         setInfoText("Date",session.getDate(),viewHolder);

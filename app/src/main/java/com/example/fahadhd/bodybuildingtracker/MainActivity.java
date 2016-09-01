@@ -1,5 +1,6 @@
 package com.example.fahadhd.bodybuildingtracker;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -17,10 +18,11 @@ import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.sessions.SessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
-import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import java.util.GregorianCalendar;
 
 /*Front view of app with a floating action button to add a exercise at the top*/
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         TrackerApplication application  = (TrackerApplication)this.getApplication();
         dao = application.getDatabase();
         sessions = application.getSessions();
+
 
 
         sessionsFragment =  ((SessionsFragment)getSupportFragmentManager()

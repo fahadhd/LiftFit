@@ -1,11 +1,14 @@
 
 package com.example.fahadhd.bodybuildingtracker.exercises;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
@@ -76,6 +79,9 @@ public class SetListener implements View.OnClickListener {
     //Starts timer when set button is pressed.
     //TODO: Change "+5lb next time" to  "+{user preference lb/ki} next time!.
     public void initializeSnackbar(boolean sets_started, boolean allFinished) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        if(!sharedPref.getBoolean(activity.getString(R.string.timer_switch_key),true))
+            return;
         if(!sets_started){
             //Since all sets aren't done, hide the congrats/failure message.
             //viewHolder.completed_dialog.setText(null);

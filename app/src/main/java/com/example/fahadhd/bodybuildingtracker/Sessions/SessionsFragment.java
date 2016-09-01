@@ -69,6 +69,12 @@ public class SessionsFragment extends Fragment{
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
     public class GetSessions extends AsyncTask<Void,Void,ArrayList<Session>> {
         @Override
         protected ArrayList<Session> doInBackground(Void... params) {

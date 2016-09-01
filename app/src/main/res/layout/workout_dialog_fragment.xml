@@ -10,6 +10,7 @@
     android:minHeight="150dp">
 
     <TextView
+        android:id="@+id/workout_dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add a new workout"

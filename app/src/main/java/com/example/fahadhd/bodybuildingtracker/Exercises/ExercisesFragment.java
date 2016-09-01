@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
@@ -127,6 +128,11 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
 
     public void setExistingWorkout(Session session) {
         String title;
@@ -179,6 +185,8 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
             }
         });
     }
+
+
 
     public void startWorkoutTask(Workout workout){
         new WorkoutTask().execute(workout);

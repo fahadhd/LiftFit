@@ -13,7 +13,7 @@
     <string name="session_title">Session</string>
     <!--_______________-->
 
-    <!-- Strings related to Settings -->
+    <!--//////////////////// Strings related to Settings ///////////////////-->
 
     <!-- General settings -->
     <string name="pref_header_general">General</string>
@@ -26,7 +26,7 @@
     <string name="pref_default_user_weight">100</string>
     <string name="pref_user_weight_key">user_weight</string>
 
-
+    <string name="timer_switch_key">time switch key</string>
     <!--Choose unit type - Pounds or kilograms. -->
 
     <string name="pref_title_unit">Weight Unit Type</string>
@@ -73,4 +73,10 @@
     <string name="template_A">A</string>
     <string name="template_B">B</string>
     <string name="last_template">Last Template</string>
+
+    <!--//////////////// TimePreference ///////////////////-->
+    <string name="set">Set</string>
+    <string name="cancel">Cancel</string>
+    <string name="timePrefKey">Timer Preference Key</string>
+    <string name="timePrefTitle">Set Workout Timer Duration</string>
 </resources>

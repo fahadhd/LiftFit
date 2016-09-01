@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
@@ -31,6 +32,7 @@ import org.apache.commons.lang3.text.WordUtils;
 
 public class WorkoutDialog extends DialogFragment implements View.OnClickListener{
     EditText workout_name, lift_weight;
+    TextView title;
     Button cancel, confirm, delete;
     Spinner sets,reps;
     public static final String TAG = WorkoutDialog.class.getSimpleName();
@@ -85,6 +87,7 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
 
         workout_name = (EditText)rootView.findViewById(R.id.workout_name);
         lift_weight = (EditText)rootView.findViewById(R.id.lift_weight);
+        title = (TextView) rootView.findViewById(R.id.workout_dialog_title);
         sets = (Spinner)rootView.findViewById(R.id.sets_choice);
         reps = (Spinner)rootView.findViewById(R.id.reps_choice);
         cancel = (Button)rootView.findViewById(R.id.dialog_cancel);
@@ -183,6 +186,7 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     //Sets the views to the corresponding workout data
     public void addExistingWorkoutData(){
         delete.setVisibility(View.VISIBLE);
+        title.setText("Modify Workout");
         confirm.setText("Update");
         workout_name.setText(WordUtils.capitalizeFully(currWorkout.getName()));
         lift_weight.setText(Integer.toString(currWorkout.getWeight()));

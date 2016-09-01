@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.fahadhd.bodybuildingtracker.MainActivity;
@@ -211,6 +212,13 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             }
         }
     };
+
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data){
+
+        Toast.makeText(this,"can reload here",Toast.LENGTH_LONG).show();
+    }
+
 
     /****************** Service to bind exercise activity with timer service ****************/
     private ServiceConnection mServiceConnection = new ServiceConnection() {
