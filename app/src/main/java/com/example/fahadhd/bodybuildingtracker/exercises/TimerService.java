@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -38,8 +40,11 @@ public class TimerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         currentTimer = elapsedTimeSinceOff = 0L;
-        duration = 6000;
+        int minutes = sharedPref.getInt(getString(R.string.time_pref_units_minutes),3);
+        int seconds = sharedPref.getInt(getString(R.string.time_pref_units_seconds),0);
+        duration = (minutes*60 + seconds)*1000;
         durationReached = false;
         message = "Rest a bit";
         timeSinceLastOn = SystemClock.elapsedRealtime();

@@ -29,10 +29,11 @@
         android:singleLine="true"
         android:title="@string/pref_title_user_weight" />
 
-    <com.example.fahadhd.bodybuildingtracker.TimePreference>
-        android:key = "@string/timePrefKey"
-        android:title="@string/timePrefTitle"
-    </com.example.fahadhd.bodybuildingtracker.TimePreference>
+
+
+    <com.example.fahadhd.bodybuildingtracker.TimerPickerPreference
+        android:title="@string/time_pref_title"
+    />
 
 
 

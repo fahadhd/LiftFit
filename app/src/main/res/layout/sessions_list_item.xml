@@ -77,6 +77,8 @@
         android:layout_marginLeft="45dp"
         android:layout_marginTop="20dp"
         >
+
+
         <TextView
             android:id="@+id/preview_one"
             android:layout_width="0dp"

@@ -182,7 +182,6 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
 
         }
     }
-
     //Sets the views to the corresponding workout data
     public void addExistingWorkoutData(){
         delete.setVisibility(View.VISIBLE);

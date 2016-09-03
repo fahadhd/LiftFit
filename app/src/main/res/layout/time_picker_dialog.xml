@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:theme="@style/WorkoutDialogCustom">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/minute_title"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="45dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:text="@string/minutes_title"/>
+        <TextView
+            android:id="@+id/seconds_title"
+            android:layout_width="0dp"
+            android:layout_weight="0.6"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:text="@string/seconds_title"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/time_pickers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <com.aigestudio.wheelpicker.WheelPicker
+        android:id="@+id/time_picker_minutes"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        app:wheel_curved="true"
+        app:wheel_atmospheric="true"
+        app:wheel_indicator="true"
+        app:wheel_indicator_color="@color/white"
+        app:wheel_indicator_size="1dp"
+        app:wheel_cyclic="true"
+        app:wheel_item_text_color="@color/black"
+        app:wheel_selected_item_text_color="@color/orange_a400"
+        app:wheel_visible_item_count="2"/>
+
+    <com.aigestudio.wheelpicker.WheelPicker
+        android:id="@+id/time_picker_seconds"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        app:wheel_curved="true"
+        app:wheel_atmospheric="true"
+        app:wheel_item_text_color="@color/black"
+        app:wheel_indicator="true"
+        app:wheel_indicator_color="@color/white"
+        app:wheel_indicator_size="1dp"
+        app:wheel_cyclic="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        app:wheel_selected_item_text_color="@color/orange_a400"
+        app:wheel_visible_item_count="2"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>

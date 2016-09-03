@@ -1,6 +1,6 @@
 package com.example.fahadhd.bodybuildingtracker;
 
-import android.app.TimePickerDialog;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -43,12 +43,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+        }
+
 
         TrackerApplication application  = (TrackerApplication)this.getApplication();
         dao = application.getDatabase();
         sessions = application.getSessions();
-
-
 
         sessionsFragment =  ((SessionsFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.sessions_fragment));

@@ -204,7 +204,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
                     if (mySnackBar == null) {
                         mySnackBar = initCustomSnackbar(mTimerService.getMessage());
                     }
-                    mySnackBar.setDuration(600000);
+                    mySnackBar.setDuration(1260000);
                     mySnackBar.show();
                     snackBarOn = true;
                 }
