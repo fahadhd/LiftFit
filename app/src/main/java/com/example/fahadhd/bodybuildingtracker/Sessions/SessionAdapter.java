@@ -2,12 +2,15 @@ package com.example.fahadhd.bodybuildingtracker.sessions;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
@@ -20,11 +23,19 @@ import java.util.ArrayList;
 public class SessionAdapter extends BaseAdapter {
     Context context;
     ArrayList<Session> sessions;
+    Typeface tekton;
+    int recentPosition = -1;
 
     public SessionAdapter(Context mContext, ArrayList<Session> sessions) {
         this.context = mContext;
         this.sessions = sessions;
+        tekton = Typeface.createFromAsset(mContext.getAssets(),"TektonPro-Bold.otf");
     }
+
+    public void setRecentPosition(int recentPosition){
+        this.recentPosition = recentPosition;
+    }
+
 
 
     @Override
@@ -44,6 +55,7 @@ public class SessionAdapter extends BaseAdapter {
 
     public class ViewHolder {
         TextView date, user_weight,sessionID,templateName;
+        ImageView listBar;
 
         /********* Workout Previews ************/
         TextView previewOne, previewTwo,previewThree;
@@ -60,6 +72,8 @@ public class SessionAdapter extends BaseAdapter {
             this.previewTwo = (TextView) view.findViewById(R.id.preview_two);
             this.previewThree = (TextView) view.findViewById(R.id.preview_three);
 
+            this.listBar = (ImageView) view.findViewById(R.id.list_bar);
+
         }
 
     }
@@ -69,6 +83,7 @@ public class SessionAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         ViewHolder viewHolder;
+
 
         //Initializing new row
         if (row == null) {
@@ -82,6 +97,7 @@ public class SessionAdapter extends BaseAdapter {
         else {
             viewHolder = (ViewHolder) row.getTag();
         }
+        viewHolder.listBar.setImageResource(R.drawable.list_bar);
         /*****************Shared Preferences Info for user weight*****************************/
         Session session = sessions.get(position);
         int user_weight = session.getWeight();
@@ -96,6 +112,9 @@ public class SessionAdapter extends BaseAdapter {
         setInfoText("Template",templateName,viewHolder);
 
         setPreviewText(session.getWorkouts(),viewHolder);
+        if(recentPosition == position && position != 0){
+            viewHolder.listBar.setImageResource(R.drawable.list_bar_recent);
+        }
         return row;
 
     }
@@ -123,6 +142,7 @@ public class SessionAdapter extends BaseAdapter {
         if(workout_one != null){
             CharSequence rows = Utility.previewTextHelper(workout_one,context);
             viewHolder.previewOne.setText(rows);
+            viewHolder.previewOne.setTypeface(tekton);
 
         }
         else{
@@ -131,6 +151,7 @@ public class SessionAdapter extends BaseAdapter {
         if(workout_two != null){
             CharSequence rows = Utility.previewTextHelper(workout_two,context);
             viewHolder.previewTwo.setText(rows);
+            viewHolder.previewTwo.setTypeface(tekton);
 
         }
         else{
@@ -139,6 +160,7 @@ public class SessionAdapter extends BaseAdapter {
         if(workout_three != null){
             CharSequence rows = Utility.previewTextHelper(workout_three,context);
             viewHolder.previewThree.setText(rows);
+            viewHolder.previewThree.setTypeface(tekton);
 
         }
         else{

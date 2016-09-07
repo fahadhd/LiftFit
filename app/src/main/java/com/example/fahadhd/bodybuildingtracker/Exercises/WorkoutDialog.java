@@ -136,13 +136,14 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
             case R.id.dialog_ok :
                 String name = workout_name.getText().toString();
                 String weightString = lift_weight.getText().toString();
-                int weight;
+                Double weight;
                 if (name.equals("")) {
                     workout_name.setError("Please Type An Exercise");
                 }
                 else {
-                    weight = (weightString.equals("")) ? 185 : Integer.parseInt(weightString);
-                    communicator.addWorkoutInfo(name, weight, setChoice, repChoice);
+                    weight = (weightString.equals("")) ? 185 : Double.parseDouble(weightString);
+                    if(!Utility.getUnit(getActivity()).equals("LB")) weight = Math.ceil(weight/0.45359237);
+                    communicator.addWorkoutInfo(name, weight.intValue(), setChoice, repChoice);
                     dismiss();
                 }
                 break;
@@ -184,11 +185,15 @@ public class WorkoutDialog extends DialogFragment implements View.OnClickListene
     }
     //Sets the views to the corresponding workout data
     public void addExistingWorkoutData(){
+        Double weight = (double) currWorkout.getWeight();
         delete.setVisibility(View.VISIBLE);
         title.setText("Modify Workout");
         confirm.setText("Update");
         workout_name.setText(WordUtils.capitalizeFully(currWorkout.getName()));
-        lift_weight.setText(Integer.toString(currWorkout.getWeight()));
+
+        if(!Utility.getUnit(getActivity()).equals("LB")) weight = Math.floor(weight*0.45359237);
+
+        lift_weight.setText(Integer.toString(weight.intValue()));
         setChoice = currWorkout.getMaxSets();
         repChoice = currWorkout.getMaxReps();
     }

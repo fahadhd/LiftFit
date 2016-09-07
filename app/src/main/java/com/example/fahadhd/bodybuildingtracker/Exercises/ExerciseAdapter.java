@@ -2,11 +2,13 @@ package com.example.fahadhd.bodybuildingtracker.exercises;
 
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 //Populates the list_view of the exercises fragment.
@@ -26,11 +29,14 @@ public class ExerciseAdapter extends BaseAdapter{
     ExerciseActivity activity;
     ArrayList<Workout> workouts = new ArrayList<>();
     TrackerDAO dao;
+    Typeface tekton;
 
-    public ExerciseAdapter(ExerciseActivity activity, ArrayList<Workout> data, TrackerDAO dao){
+
+    public ExerciseAdapter(ExerciseActivity activity, ArrayList<Workout> data, TrackerDAO dao, Typeface tekton){
         this.activity = activity;
         this.workouts = data;
         this.dao = dao;
+        this.tekton =  tekton;
     }
 
     @Override
@@ -72,6 +78,7 @@ public class ExerciseAdapter extends BaseAdapter{
         Workout workout = workouts.get(position);
 
         viewHolder.workoutInfo.setText(spanWorkoutInfo(workout));
+        viewHolder.workoutInfo.setTypeface(tekton);
         activateButtons(viewHolder, workout);
 
 
@@ -125,6 +132,7 @@ public class ExerciseAdapter extends BaseAdapter{
             currButton.setVisibility(View.VISIBLE);
             currButton.setOnClickListener(new
                     SetListener(currButton,workout,currSet,viewHolder,activity));
+            currButton.setTypeface(tekton);
         }
         viewHolder.editWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,16 +147,17 @@ public class ExerciseAdapter extends BaseAdapter{
 
     //TODO: Put in utility class and use it for session list item as well.
     public SpannableStringBuilder spanWorkoutInfo(Workout workout){
-        int start, end;
+        int start = 0, end;
         String buffer = WordUtils.capitalizeFully(workout.getName().replaceAll("\\s+","\n"));
         end = buffer.length();
         /******************Workout Title********************/
         SpannableStringBuilder spanBuilder = new SpannableStringBuilder(buffer);
+        spanBuilder.setSpan(new RelativeSizeSpan(1.2f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         //spanBuilder.setSpan(new ForegroundColorSpan(Color.BLACK),start,end,0);
         /******************Workout Weight********************/
         String unit = Utility.getUnit(activity);
         Double weightUnit = (unit.equals("LB")) ? workout.getWeight(): workout.getWeight()*0.45359237;
-        buffer = '\n'+" "+Integer.toString(weightUnit.intValue());
+        buffer = "\n\n"+" "+Integer.toString(weightUnit.intValue());
         spanBuilder.append(buffer);
         int weightColor = ContextCompat.getColor(activity,R.color.orange_a400);
         start = end;

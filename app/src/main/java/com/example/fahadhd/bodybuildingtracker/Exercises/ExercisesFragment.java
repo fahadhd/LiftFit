@@ -1,8 +1,11 @@
 package com.example.fahadhd.bodybuildingtracker.exercises;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -41,6 +44,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     public static final String TAG = ExercisesFragment.class.getSimpleName();
     public static final int DIALOG_REQUEST_CODE = 23;
     TrackerDAO dao;
+    Typeface tekton;
     ExerciseAdapter adapter;
     Session currentSession;
     long sessionID;
@@ -64,8 +68,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         TrackerApplication application = (TrackerApplication) getActivity().getApplication();
         dao = application.getDatabase();
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-
         sessions = application.getSessions();
     }
 
@@ -73,8 +75,12 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.exercises_list_fragment, container, false);
+        tekton = Typeface.createFromAsset(getActivity().getAssets(),"TektonPro-Bold.otf");
+
         toolbar = (Toolbar) rootView.findViewById(R.id.exercise_toolbar);
         toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        toolbarTitle.setTypeface(tekton);
+
         buttonView = inflater.inflate(R.layout.exercise_list_add_btn, container, false);
         templateAEmpty = sharedPref.getBoolean(getString(R.string.template_A),true);
         templateBEmpty = sharedPref.getBoolean(getString(R.string.template_B),true);
@@ -99,7 +105,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
         sessionID = currentSession.getSessionId();
         setupTemplates(rootView);
 
-        adapter = new ExerciseAdapter((ExerciseActivity) getActivity(), sessions.get(position).workouts, dao);
+        adapter = new ExerciseAdapter((ExerciseActivity) getActivity(), sessions.get(position).workouts, dao,tekton);
         exerciseListView = (ListView) rootView.findViewById(R.id.exercises_list_main);
         exerciseListView.setAdapter(adapter);
 
@@ -127,6 +133,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
             fabExercise.setVisibility(View.VISIBLE);
         }
     }
+
 
     @Override
     public void onResume() {
