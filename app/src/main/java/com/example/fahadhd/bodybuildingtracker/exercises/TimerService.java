@@ -190,7 +190,7 @@ public class TimerService extends Service {
 //        Bitmap my_icon = BitmapFactory.decodeResource(getResources(),
 //                R.drawable.ic_notification);
         Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_notification);
+                R.drawable.ic_notification_powerlift);
 
         return (new NotificationCompat.Builder(this)
                 .setContentTitle("Timer Running")

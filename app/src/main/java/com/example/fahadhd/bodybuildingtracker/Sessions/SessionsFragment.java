@@ -55,16 +55,17 @@ public class SessionsFragment extends Fragment{
                              Bundle savedInstanceState) {
         adapter = new SessionAdapter(getActivity(),sessions);
         tekton = Typeface.createFromAsset(getActivity().getAssets(),"TektonPro-Bold.otf");
-//        if(sessions.isEmpty()){
-//            View rootView =  inflater.inflate(R.layout.empty_sessions, container, false);
-//            TextView userMsg = (TextView) rootView.findViewById(R.id.user_info);
-//            userMsg.setTypeface(tekton);
-//            return rootView;
-//        }
         Intent exerciseIntent = getActivity().getIntent();
         if(exerciseIntent != null && exerciseIntent.hasExtra(POSITION_KEY)) {
             recentPosition = exerciseIntent.getIntExtra(POSITION_KEY, -1);
             adapter.setRecentPosition(recentPosition);
+        }
+
+        if(dao.isSessionsEmpty()){
+            View rootView =  inflater.inflate(R.layout.empty_sessions, container, false);
+            TextView userMsg = (TextView) rootView.findViewById(R.id.user_info);
+            userMsg.setTypeface(tekton);
+            return rootView;
         }
 
         View rootView = inflater.inflate(R.layout.sessions_list_fragment, container, false);

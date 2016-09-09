@@ -289,4 +289,19 @@ public class TrackerDAO {
         db.update(TrackerDbHelper.SessionEntry.TABLE_NAME,values,where,new String[]{templateName});
     }
 
+
+    /****************************** Check db contents ****************************/
+
+    public boolean isSessionsEmpty(){
+        boolean isEmpty = true;
+        String sessionTable = TrackerDbHelper.SessionEntry.TABLE_NAME;
+        Cursor cur = db.rawQuery("SELECT COUNT(*) FROM "+sessionTable, null);
+        if (cur != null && cur.moveToFirst()) {
+            isEmpty = (cur.getInt (0) == 0);
+        }
+        if(cur != null) cur.close();
+
+        return isEmpty;
+    }
+
 }
