@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:src="@drawable/fab"
         android:layout_height="wrap_content"
-        android:layout_gravity = "right|bottom"
+        android:layout_gravity = "end|bottom"
         android:layout_margin="20dp"
         />
 

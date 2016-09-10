@@ -300,7 +300,6 @@ public class TrackerDAO {
             isEmpty = (cur.getInt (0) == 0);
         }
         if(cur != null) cur.close();
-
         return isEmpty;
     }
 

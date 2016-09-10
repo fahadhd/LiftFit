@@ -88,4 +88,7 @@
     <string name="time_pref_title">Set Workout Timer Duration</string>
     <string name="minutes_title">Minutes</string>
     <string name="seconds_title">Seconds</string>
+
+    <!--//////////////// Content Descriptions ///////////////////-->
+    <string name="add_workout">Add Workout</string>
 </resources>

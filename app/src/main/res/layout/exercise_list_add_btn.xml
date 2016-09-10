@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/workout_button">
     <ImageButton
+        android:contentDescription="@string/add_workout"
         android:id="@+id/btn_add_workout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
