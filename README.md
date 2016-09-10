@@ -21,5 +21,4 @@ This was a solo project created by Fahad Hassan (fahadhd)
 
 ## License
 This software may not be distrbuted or published unless direct conscent is given from the owner Fahad Hassan.
-This software is covered under the GNU AGPL Liscence http://www.gnu.org/licenses/agpl.txt
-
+This software is covered under Google Play Licensing.
