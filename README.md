@@ -13,7 +13,7 @@ Supports 1x1 - 8x20 weightlifting workouts
 I created this app as I noticed their wasn't a solid power lifting app on the google play store that allowed for customizing workouts and saving templates(which was a huge motivator for me). This also got me more exposed to the android studio sdk.
 ## Installation
 
-Hopefully published to the google play store asap.
+To be published to the Google play store September 18, 2016
 
 
 ## Contributors
