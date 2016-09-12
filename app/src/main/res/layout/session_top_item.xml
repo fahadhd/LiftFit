@@ -70,16 +70,20 @@
             android:layout_height="wrap_content"
             android:text="Squats"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="12dp"
             android:gravity="center"
+            android:visibility="invisible"
             />
         <TextView
             android:id="@+id/preview_one_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-          android:layout_marginTop="40dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:textColor="@color/blue_900"
             android:background="@drawable/ic_session_preview_top"
+            android:visibility="invisible"
            />
         <TextView
             android:id="@+id/preview_one_2"
@@ -88,7 +92,10 @@
             android:background="@drawable/ic_session_preview_top"
             android:layout_alignBaseline="@+id/preview_one_1"
             android:layout_toRightOf="@+id/preview_one_1"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:textColor="@color/blue_900"
+            android:visibility="invisible"/>
         <TextView
             android:id="@+id/preview_one_3"
             android:layout_width="wrap_content"
@@ -96,7 +103,10 @@
             android:background="@drawable/ic_session_preview_top"
             android:layout_toRightOf="@+id/preview_one_2"
             android:layout_alignBaseline="@+id/preview_one_1"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:textColor="@color/blue_900"
+            android:visibility="invisible"/>
         <TextView
             android:id="@+id/preview_one_4"
             android:layout_width="wrap_content"
@@ -104,7 +114,10 @@
             android:background="@drawable/ic_session_preview_top"
             android:layout_below="@+id/preview_one_1"
             android:layout_alignLeft="@+id/preview_one_1"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:textColor="@color/blue_900"
+            android:visibility="invisible"/>
         <TextView
             android:id="@+id/preview_one_5"
             android:layout_width="wrap_content"
@@ -112,7 +125,10 @@
             android:background="@drawable/ic_session_preview_top"
             android:layout_alignBaseline="@+id/preview_one_4"
             android:layout_toRightOf="@+id/preview_one_4"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:textColor="@color/blue_900"
+            android:visibility="invisible"/>
         <TextView
             android:id="@+id/preview_one_6"
             android:layout_width="wrap_content"
@@ -120,7 +136,10 @@
             android:background="@drawable/ic_session_preview_top"
             android:layout_alignBaseline="@+id/preview_one_4"
             android:layout_toRightOf="@+id/preview_one_5"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:textColor="@color/blue_900"
+            android:visibility="invisible"/>
         <TextView
             android:id="@+id/preview_one_7"
             android:layout_width="wrap_content"
@@ -128,7 +147,10 @@
             android:background="@drawable/ic_session_preview_top"
             android:layout_below="@+id/preview_one_4"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="15dp"
+            android:gravity="center"
+            android:textColor="@color/blue_900"
+            android:visibility="invisible"/>
         <TextView
             android:id="@+id/preview_one_8"
             android:layout_width="wrap_content"
@@ -136,7 +158,10 @@
             android:background="@drawable/ic_session_preview_top"
             android:layout_alignBaseline="@+id/preview_one_7"
             android:layout_toRightOf="@+id/preview_one_7"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:textColor="@color/blue_900"
+            android:visibility="invisible"/>
         <TextView
             android:id="@+id/preview_one_weight"
             android:layout_width="wrap_content"
@@ -144,7 +169,7 @@
             android:layout_below="@+id/preview_one_7"
             android:layout_alignLeft="@+id/preview_one_7"
             android:layout_marginTop="5dp"
-            android:text="185lb"/>
+            android:visibility="invisible"/>
     </RelativeLayout>
 
         <!--Preview two Workouts-->
@@ -162,16 +187,20 @@
                 android:layout_height="wrap_content"
                 android:text="Squats"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="12dp"
                 android:gravity="center"
+                android:visibility="invisible"
                 />
             <TextView
                 android:id="@+id/preview_two_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
                 android:background="@drawable/ic_session_preview_top"
+                android:visibility="invisible"
                 />
             <TextView
                 android:id="@+id/preview_two_2"
@@ -180,7 +209,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_alignBaseline="@+id/preview_two_1"
                 android:layout_toRightOf="@+id/preview_two_1"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_two_3"
                 android:layout_width="wrap_content"
@@ -188,7 +220,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_toRightOf="@+id/preview_two_2"
                 android:layout_alignBaseline="@+id/preview_two_1"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_two_4"
                 android:layout_width="wrap_content"
@@ -196,7 +231,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_below="@+id/preview_two_1"
                 android:layout_alignLeft="@+id/preview_two_1"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_two_5"
                 android:layout_width="wrap_content"
@@ -204,7 +242,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_alignBaseline="@+id/preview_two_4"
                 android:layout_toRightOf="@+id/preview_two_4"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_two_6"
                 android:layout_width="wrap_content"
@@ -212,7 +253,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_alignBaseline="@+id/preview_two_4"
                 android:layout_toRightOf="@+id/preview_two_5"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_two_7"
                 android:layout_width="wrap_content"
@@ -220,7 +264,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_below="@+id/preview_two_4"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_two_8"
                 android:layout_width="wrap_content"
@@ -228,7 +275,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_alignBaseline="@+id/preview_two_7"
                 android:layout_toRightOf="@+id/preview_two_7"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_two_weight"
                 android:layout_width="wrap_content"
@@ -236,7 +286,7 @@
                 android:layout_below="@+id/preview_two_7"
                 android:layout_alignLeft="@+id/preview_two_7"
                 android:layout_marginTop="5dp"
-                android:text="185lb"/>
+                android:visibility="invisible"/>
         </RelativeLayout>
 
 
@@ -253,18 +303,22 @@
                 android:id="@+id/preview_three_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Overhead\nPress"
+                android:text="Squats"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="12dp"
                 android:gravity="center"
+                android:visibility="invisible"
                 />
             <TextView
                 android:id="@+id/preview_three_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
                 android:background="@drawable/ic_session_preview_top"
+                android:visibility="invisible"
                 />
             <TextView
                 android:id="@+id/preview_three_2"
@@ -273,7 +327,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_alignBaseline="@+id/preview_three_1"
                 android:layout_toRightOf="@+id/preview_three_1"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_three_3"
                 android:layout_width="wrap_content"
@@ -281,7 +338,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_toRightOf="@+id/preview_three_2"
                 android:layout_alignBaseline="@+id/preview_three_1"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_three_4"
                 android:layout_width="wrap_content"
@@ -289,7 +349,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_below="@+id/preview_three_1"
                 android:layout_alignLeft="@+id/preview_three_1"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_three_5"
                 android:layout_width="wrap_content"
@@ -297,7 +360,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_alignBaseline="@+id/preview_three_4"
                 android:layout_toRightOf="@+id/preview_three_4"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_three_6"
                 android:layout_width="wrap_content"
@@ -305,7 +371,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_alignBaseline="@+id/preview_three_4"
                 android:layout_toRightOf="@+id/preview_three_5"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_three_7"
                 android:layout_width="wrap_content"
@@ -313,7 +382,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_below="@+id/preview_three_4"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_three_8"
                 android:layout_width="wrap_content"
@@ -321,7 +393,10 @@
                 android:background="@drawable/ic_session_preview_top"
                 android:layout_alignBaseline="@+id/preview_three_7"
                 android:layout_toRightOf="@+id/preview_three_7"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/blue_900"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/preview_three_weight"
                 android:layout_width="wrap_content"
@@ -329,7 +404,7 @@
                 android:layout_below="@+id/preview_three_7"
                 android:layout_alignLeft="@+id/preview_three_7"
                 android:layout_marginTop="5dp"
-                android:text="185lb"/>
+               android:visibility="invisible"/>
         </RelativeLayout>
 
     </LinearLayout>

@@ -2,7 +2,9 @@ package com.example.fahadhd.bodybuildingtracker.sessions;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.nfc.Tag;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.fahadhd.bodybuildingtracker.exercises.Set;
 import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 
@@ -116,17 +120,16 @@ public class SessionAdapter extends BaseAdapter {
         else {
             viewHolder = (ViewHolder) row.getTag();
         }
+
+        Session session = sessions.get(position);
         if(type == TOP_SESSION_VIEW) {
+            Utility.setTopSessionPreviews(session.getWorkouts(),row,context);
             return row;
         }
         else {
-            viewHolder.listBar.setImageResource(R.drawable.list_bar);
-            /*****************Shared Preferences Info for user weight*****************************/
-            Session session = sessions.get(position);
             int user_weight = session.getWeight();
-            //Change from pounds to kilograms if that is what user prefers
-            /**********************************************/
 
+            viewHolder.listBar.setImageResource(R.drawable.list_bar);
             setInfoText("Date", session.getDate(), viewHolder);
             setInfoText("Session", Long.toString(session.getSessionId()), viewHolder);
             setInfoText("Weight", Integer.toString(user_weight), viewHolder);
@@ -135,6 +138,8 @@ public class SessionAdapter extends BaseAdapter {
             setInfoText("Template", templateName, viewHolder);
 
             setPreviewText(session.getWorkouts(), viewHolder);
+            //Colors the recently exited session with a gray background
+
             if (recentPosition == position && position != 0) {
                 viewHolder.listBar.setImageResource(R.drawable.list_bar_recent);
             }
@@ -142,6 +147,13 @@ public class SessionAdapter extends BaseAdapter {
         }
 
     }
+
+
+
+
+
+
+
     //Text for the polygons for each session
     public void setInfoText(String title, String description, ViewHolder viewHolder){
         switch (title) {
@@ -191,4 +203,10 @@ public class SessionAdapter extends BaseAdapter {
             viewHolder.previewThree.setText("");
         }
     }
+
+    public void setTopSessionInfo(Session session){
+        ArrayList<Workout> previews = session.getWorkouts();
+    }
+
+
 }

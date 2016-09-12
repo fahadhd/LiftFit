@@ -10,7 +10,9 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -129,6 +132,105 @@ public class Utility {
         SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(context);
         String pounds = context.getString(R.string.pref_units_pounds);
         return shared_pref.getString(context.getString(R.string.pref_unit_list_key),pounds);
+    }
+
+
+    //Set workout previews for the top session in sessions view. No need for view holder since
+    //it deals with only one item.
+    public static void setTopSessionPreviews(ArrayList<Workout> workouts, View topView, Context context){
+        if(workouts == null) return;
+        String unit = Utility.getUnit(context);
+        Workout workout_one = (workouts.size() > 0) ? workouts.get(0) : null;
+        Workout workout_two = (workouts.size() > 1) ? workouts.get(1) : null;
+        Workout workout_three = (workouts.size() > 2) ? workouts.get(2) : null;
+
+        if(workout_one != null){
+            ArrayList<Set> sets = workout_one.getSets();
+            TextView preview_title = (TextView) topView.findViewById(R.id.preview_one_title);
+            TextView preview_weight = (TextView) topView.findViewById(R.id.preview_one_weight);
+            int weight = workout_one.getWeight();
+
+            preview_title.setText(workout_one.getName());
+            if(!unit.equals(context.getString(R.string.pref_units_pounds))) weight *=0.45359237;
+            preview_weight.setText(Integer.toString(weight)+unit);
+
+            preview_title.setVisibility(View.VISIBLE);
+            preview_weight.setVisibility(View.VISIBLE);
+
+            for(int i = 0; i < sets.size(); i++){
+                try {
+                    Class res = R.id.class;
+                    Field field = res.getField("preview_one_"+(i+1));
+                    int preview_id= field.getInt(null);
+                    TextView preview = (TextView) topView.findViewById(preview_id);
+                    preview.setText(Integer.toString(sets.get(i).getCurrRep()));
+                    preview.setVisibility(View.VISIBLE);
+
+                }
+                catch (Exception e) {
+                    Log.e(Utility.class.getSimpleName(), "Failure to get preview id.", e);
+                }
+
+            }
+        }
+        if(workout_two != null){
+            ArrayList<Set> sets = workout_two.getSets();
+            TextView preview_title = (TextView) topView.findViewById(R.id.preview_two_title);
+            TextView preview_weight = (TextView) topView.findViewById(R.id.preview_two_weight);
+            int weight = workout_two.getWeight();
+
+            preview_title.setText(workout_two.getName());
+            if(!unit.equals(context.getString(R.string.pref_units_pounds))) weight *=0.45359237;
+            preview_weight.setText(Integer.toString(weight)+unit);
+
+            preview_title.setVisibility(View.VISIBLE);
+            preview_weight.setVisibility(View.VISIBLE);
+
+            for(int i = 0; i < sets.size(); i++){
+                try {
+                    Class res = R.id.class;
+                    Field field = res.getField("preview_two_"+(i+1));
+                    int preview_id= field.getInt(null);
+                    TextView preview = (TextView) topView.findViewById(preview_id);
+                    preview.setText(Integer.toString(sets.get(i).getCurrRep()));
+                    preview.setVisibility(View.VISIBLE);
+
+                }
+                catch (Exception e) {
+                    Log.e(Utility.class.getSimpleName(), "Failure to get preview id.", e);
+                }
+
+            }
+        }
+        if(workout_three != null){
+            ArrayList<Set> sets = workout_three.getSets();
+            TextView preview_title = (TextView) topView.findViewById(R.id.preview_three_title);
+            TextView preview_weight = (TextView) topView.findViewById(R.id.preview_three_weight);
+            int weight = workout_three.getWeight();
+
+            preview_title.setText(workout_three.getName());
+            if(!unit.equals(context.getString(R.string.pref_units_pounds))) weight *=0.45359237;
+            preview_weight.setText(Integer.toString(weight)+unit);
+
+            preview_title.setVisibility(View.VISIBLE);
+            preview_weight.setVisibility(View.VISIBLE);
+
+            for(int i = 0; i < sets.size(); i++){
+                try {
+                    Class res = R.id.class;
+                    Field field = res.getField("preview_three_"+(i+1));
+                    int preview_id= field.getInt(null);
+                    TextView preview = (TextView) topView.findViewById(preview_id);
+                    preview.setText(Integer.toString(sets.get(i).getCurrRep()));
+                    preview.setVisibility(View.VISIBLE);
+
+                }
+                catch (Exception e) {
+                    Log.e(Utility.class.getSimpleName(), "Failure to get preview id.", e);
+                }
+
+            }
+        }
     }
 
 
