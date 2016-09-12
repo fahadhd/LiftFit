@@ -112,7 +112,7 @@ public class ExerciseAdapter extends BaseAdapter{
                 case 7:currButton = viewHolder.buttonEight; break;
                 default: currButton = viewHolder.buttonOne;
             }
-            currButton.setVisibility(View.GONE);
+            currButton.setVisibility(View.INVISIBLE);
             currButton.setText(null);
         }
         for(int i = 0; i < setList.size(); i++){

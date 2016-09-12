@@ -28,7 +28,7 @@
         />
 
     <TextView
-        android:id="@+id/sessionID"
+        android:id="@+id/session_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/octagon"
@@ -49,8 +49,8 @@
         android:background="@drawable/octagon"
         android:paddingBottom="8dp"
         android:layout_marginLeft="76dp"
-        android:layout_alignBaseline="@+id/sessionID"
-        android:layout_alignTop="@id/sessionID"
+        android:layout_alignBaseline="@+id/session_num"
+        android:layout_alignTop="@id/session_num"
         android:textColor="@color/orange_a400"
         android:gravity="center"
         android:textStyle="bold"
