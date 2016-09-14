@@ -1,5 +1,4 @@
 # PowerLift-Tracker
-Dynamically log and track any weight lifting exercise with this customizable app
 
 ## Synopsis
 
