@@ -133,7 +133,7 @@ public class SessionAdapter extends BaseAdapter {
         Session session = sessions.get(position);
         if(type == TOP_SESSION_VIEW) {
             Utility.setTopSessionPreviews(session.getWorkouts(),row,context,tekton);
-            setTopInfoText(row,session);
+            Utility.setTopInfoText(row,session,tekton,context);
             return row;
         }
         else {
@@ -213,60 +213,6 @@ public class SessionAdapter extends BaseAdapter {
         }
     }
 
-    public void setTopInfoText(View topView, Session session){
-        TextView date, sessionNum, userWeight, sessionTemplate;
-        int titleColor = ContextCompat.getColor(context,R.color.orange_a400);
-        int start = 0, end;
-
-        /******* Date View *******/
-        date = (TextView) topView.findViewById(R.id.date);
-        SpannableStringBuilder dateText = new SpannableStringBuilder("Date\n");
-        end = dateText.length();
-        dateText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
-        dateText.append(session.getDate());
-        start = end;
-        end = dateText.length();
-        dateText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
-        date.setText(dateText);
-        date.setTypeface(tekton);
-
-        /******* Session Number View *******/
-        sessionNum = (TextView) topView.findViewById(R.id.session_num);
-        SpannableStringBuilder sesNumText = new SpannableStringBuilder("Session\n");
-        start = 0; end = sesNumText.length();
-        sesNumText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
-        sesNumText.append(Long.toString(session.getSessionId()));
-        start = end;
-        end = sesNumText.length();
-        sesNumText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
-        sessionNum.setText(sesNumText);
-        sessionNum.setTypeface(tekton);
-
-        /******* User Weight View *******/
-        userWeight = (TextView) topView.findViewById(R.id.user_weight);
-        SpannableStringBuilder weightText = new SpannableStringBuilder("My Weight\n");
-        start = 0; end = weightText.length();
-        weightText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
-        int weight = Utility.getUpdatedValue(session.getWeight(),context);
-        weightText.append(Long.toString(weight));
-        start = end;
-        end = weightText.length();
-        weightText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
-        userWeight.setText(weightText);
-        userWeight.setTypeface(tekton);
-
-        /******* Session Template View *******/
-        sessionTemplate = (TextView) topView.findViewById(R.id.session_template);
-        SpannableStringBuilder sesTempText = new SpannableStringBuilder("Template\n");
-        start = 0; end = sesTempText.length();
-        sesTempText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
-        sesTempText.append(session.getTemplateName());
-        start = end;
-        end = sesTempText.length();
-        sesTempText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
-        sessionTemplate.setText(sesTempText);
-        sessionTemplate.setTypeface(tekton);
-    }
 
 
 

@@ -246,6 +246,64 @@ public class Utility {
         }
     }
 
+    public static void setTopInfoText(View topView, Session session, Typeface tekton, Context context){
+        TextView date, sessionNum, userWeight, sessionTemplate;
+        int titleColor = ContextCompat.getColor(context,R.color.orange_a400);
+        int start = 0, end;
+
+        /******* Date View *******/
+        date = (TextView) topView.findViewById(R.id.date);
+        SpannableStringBuilder dateText = new SpannableStringBuilder("Date\n");
+        end = dateText.length();
+        dateText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
+        dateText.append(session.getDate());
+        start = end;
+        end = dateText.length();
+        dateText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
+        date.setText(dateText);
+        date.setTypeface(tekton);
+
+        /******* Session Number View *******/
+        sessionNum = (TextView) topView.findViewById(R.id.session_num);
+        SpannableStringBuilder sesNumText = new SpannableStringBuilder("Session\n");
+        start = 0; end = sesNumText.length();
+        sesNumText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
+        sesNumText.append(Long.toString(session.getSessionId()));
+        start = end;
+        end = sesNumText.length();
+        sesNumText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
+        sessionNum.setText(sesNumText);
+        sessionNum.setTypeface(tekton);
+
+        /******* User Weight View *******/
+        userWeight = (TextView) topView.findViewById(R.id.user_weight);
+        SpannableStringBuilder weightText = new SpannableStringBuilder("My Weight\n");
+        start = 0; end = weightText.length();
+        weightText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
+        int weight = Utility.getUpdatedValue(session.getWeight(),context);
+        weightText.append(Long.toString(weight));
+        start = end;
+        end = weightText.length();
+        weightText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
+        userWeight.setText(weightText);
+        userWeight.setTypeface(tekton);
+
+        /******* Session Template View *******/
+        sessionTemplate = (TextView) topView.findViewById(R.id.session_template);
+        SpannableStringBuilder sesTempText = new SpannableStringBuilder("Template\n");
+        start = 0; end = sesTempText.length();
+        sesTempText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
+        sesTempText.append(session.getTemplateName());
+        start = end;
+        end = sesTempText.length();
+        sesTempText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
+        sessionTemplate.setText(sesTempText);
+        sessionTemplate.setTypeface(tekton);
+    }
+
+    /***************************** Session views end ****************************/
+
+
     //Converts value to kilos if necessary
     public static int getUpdatedValue(int value, Context context){
        Double updatedValue =  (!getUnit(context).equals(context.getString(R.string.pref_units_pounds))) ? value * 0.45359237 : value;

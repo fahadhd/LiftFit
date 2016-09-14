@@ -46,9 +46,4 @@
         <item name="android:background">@drawable/template_inactive_selector</item>
     </style>
 
-
-
-
-
-
 </resources>
