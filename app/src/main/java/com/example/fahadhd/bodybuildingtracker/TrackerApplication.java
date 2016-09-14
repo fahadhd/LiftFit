@@ -1,6 +1,7 @@
 package com.example.fahadhd.bodybuildingtracker;
 
 import android.app.Application;
+import android.content.Intent;
 
 
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
@@ -21,6 +22,7 @@ public class TrackerApplication extends Application {
         //this.deleteDatabase(TrackerDbHelper.DATABASE_NAME);
         dao = new TrackerDAO(getApplicationContext());
         sessions = new ArrayList<>();
+
     }
 
     public TrackerDAO getDatabase(){
