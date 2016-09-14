@@ -3,7 +3,14 @@ package com.example.fahadhd.bodybuildingtracker.sessions;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.nfc.Tag;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +23,8 @@ import com.example.fahadhd.bodybuildingtracker.exercises.Set;
 import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
+
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -123,12 +132,12 @@ public class SessionAdapter extends BaseAdapter {
 
         Session session = sessions.get(position);
         if(type == TOP_SESSION_VIEW) {
-            Utility.setTopSessionPreviews(session.getWorkouts(),row,context);
+            Utility.setTopSessionPreviews(session.getWorkouts(),row,context,tekton);
+            setTopInfoText(row,session);
             return row;
         }
         else {
-            int user_weight = session.getWeight();
-
+            int user_weight = Utility.getUpdatedValue(session.getWeight(),context);
             viewHolder.listBar.setImageResource(R.drawable.list_bar);
             setInfoText("Date", session.getDate(), viewHolder);
             setInfoText("Session", Long.toString(session.getSessionId()), viewHolder);
@@ -204,9 +213,61 @@ public class SessionAdapter extends BaseAdapter {
         }
     }
 
-    public void setTopSessionInfo(Session session){
-        ArrayList<Workout> previews = session.getWorkouts();
+    public void setTopInfoText(View topView, Session session){
+        TextView date, sessionNum, userWeight, sessionTemplate;
+        int titleColor = ContextCompat.getColor(context,R.color.orange_a400);
+        int start = 0, end;
+
+        /******* Date View *******/
+        date = (TextView) topView.findViewById(R.id.date);
+        SpannableStringBuilder dateText = new SpannableStringBuilder("Date\n");
+        end = dateText.length();
+        dateText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
+        dateText.append(session.getDate());
+        start = end;
+        end = dateText.length();
+        dateText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
+        date.setText(dateText);
+        date.setTypeface(tekton);
+
+        /******* Session Number View *******/
+        sessionNum = (TextView) topView.findViewById(R.id.session_num);
+        SpannableStringBuilder sesNumText = new SpannableStringBuilder("Session\n");
+        start = 0; end = sesNumText.length();
+        sesNumText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
+        sesNumText.append(Long.toString(session.getSessionId()));
+        start = end;
+        end = sesNumText.length();
+        sesNumText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
+        sessionNum.setText(sesNumText);
+        sessionNum.setTypeface(tekton);
+
+        /******* User Weight View *******/
+        userWeight = (TextView) topView.findViewById(R.id.user_weight);
+        SpannableStringBuilder weightText = new SpannableStringBuilder("My Weight\n");
+        start = 0; end = weightText.length();
+        weightText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
+        int weight = Utility.getUpdatedValue(session.getWeight(),context);
+        weightText.append(Long.toString(weight));
+        start = end;
+        end = weightText.length();
+        weightText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
+        userWeight.setText(weightText);
+        userWeight.setTypeface(tekton);
+
+        /******* Session Template View *******/
+        sessionTemplate = (TextView) topView.findViewById(R.id.session_template);
+        SpannableStringBuilder sesTempText = new SpannableStringBuilder("Template\n");
+        start = 0; end = sesTempText.length();
+        sesTempText.setSpan(new ForegroundColorSpan(titleColor),start,end,0);
+        sesTempText.append(session.getTemplateName());
+        start = end;
+        end = sesTempText.length();
+        sesTempText.setSpan(new RelativeSizeSpan(1.3f),start,end,0);
+        sessionTemplate.setText(sesTempText);
+        sessionTemplate.setTypeface(tekton);
     }
+
 
 
 }

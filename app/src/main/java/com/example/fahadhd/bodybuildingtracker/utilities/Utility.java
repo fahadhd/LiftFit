@@ -4,6 +4,7 @@ package com.example.fahadhd.bodybuildingtracker.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
@@ -137,7 +138,7 @@ public class Utility {
 
     //Set workout previews for the top session in sessions view. No need for view holder since
     //it deals with only one item.
-    public static void setTopSessionPreviews(ArrayList<Workout> workouts, View topView, Context context){
+    public static void setTopSessionPreviews(ArrayList<Workout> workouts, View topView, Context context, Typeface tekton){
         if(workouts == null) return;
         String unit = Utility.getUnit(context);
         Workout workout_one = (workouts.size() > 0) ? workouts.get(0) : null;
@@ -145,17 +146,20 @@ public class Utility {
         Workout workout_three = (workouts.size() > 2) ? workouts.get(2) : null;
 
         if(workout_one != null){
-            ArrayList<Set> sets = workout_one.getSets();
-            TextView preview_title = (TextView) topView.findViewById(R.id.preview_one_title);
-            TextView preview_weight = (TextView) topView.findViewById(R.id.preview_one_weight);
             int weight = workout_one.getWeight();
+            ArrayList<Set> sets = workout_one.getSets();
 
+            TextView preview_title = (TextView) topView.findViewById(R.id.preview_one_title);
             preview_title.setText(workout_one.getName());
-            if(!unit.equals(context.getString(R.string.pref_units_pounds))) weight *=0.45359237;
-            preview_weight.setText(Integer.toString(weight)+unit);
-
             preview_title.setVisibility(View.VISIBLE);
+            preview_title.setTypeface(tekton);
+
+            TextView preview_weight = (TextView) topView.findViewById(R.id.preview_one_weight);
+            weight  = Utility.getUpdatedValue(weight,context);
+            preview_weight.setText(Integer.toString(weight)+unit);
+            preview_weight.setTypeface(tekton);
             preview_weight.setVisibility(View.VISIBLE);
+            preview_weight.setTypeface(tekton);
 
             for(int i = 0; i < sets.size(); i++){
                 try {
@@ -164,6 +168,7 @@ public class Utility {
                     int preview_id= field.getInt(null);
                     TextView preview = (TextView) topView.findViewById(preview_id);
                     preview.setText(Integer.toString(sets.get(i).getCurrRep()));
+                    preview.setTypeface(tekton);
                     preview.setVisibility(View.VISIBLE);
 
                 }
@@ -174,17 +179,20 @@ public class Utility {
             }
         }
         if(workout_two != null){
-            ArrayList<Set> sets = workout_two.getSets();
-            TextView preview_title = (TextView) topView.findViewById(R.id.preview_two_title);
-            TextView preview_weight = (TextView) topView.findViewById(R.id.preview_two_weight);
             int weight = workout_two.getWeight();
+            ArrayList<Set> sets = workout_two.getSets();
 
+            TextView preview_title = (TextView) topView.findViewById(R.id.preview_two_title);
             preview_title.setText(workout_two.getName());
-            if(!unit.equals(context.getString(R.string.pref_units_pounds))) weight *=0.45359237;
-            preview_weight.setText(Integer.toString(weight)+unit);
-
             preview_title.setVisibility(View.VISIBLE);
+            preview_title.setTypeface(tekton);
+
+            TextView preview_weight = (TextView) topView.findViewById(R.id.preview_two_weight);
+            weight  = Utility.getUpdatedValue(weight,context);
+            preview_weight.setText(Integer.toString(weight)+unit);
+            preview_weight.setTypeface(tekton);
             preview_weight.setVisibility(View.VISIBLE);
+            preview_weight.setTypeface(tekton);
 
             for(int i = 0; i < sets.size(); i++){
                 try {
@@ -193,6 +201,7 @@ public class Utility {
                     int preview_id= field.getInt(null);
                     TextView preview = (TextView) topView.findViewById(preview_id);
                     preview.setText(Integer.toString(sets.get(i).getCurrRep()));
+                    preview.setTypeface(tekton);
                     preview.setVisibility(View.VISIBLE);
 
                 }
@@ -203,17 +212,20 @@ public class Utility {
             }
         }
         if(workout_three != null){
-            ArrayList<Set> sets = workout_three.getSets();
-            TextView preview_title = (TextView) topView.findViewById(R.id.preview_three_title);
-            TextView preview_weight = (TextView) topView.findViewById(R.id.preview_three_weight);
             int weight = workout_three.getWeight();
+            ArrayList<Set> sets = workout_three.getSets();
 
+            TextView preview_title = (TextView) topView.findViewById(R.id.preview_three_title);
             preview_title.setText(workout_three.getName());
-            if(!unit.equals(context.getString(R.string.pref_units_pounds))) weight *=0.45359237;
-            preview_weight.setText(Integer.toString(weight)+unit);
-
             preview_title.setVisibility(View.VISIBLE);
+            preview_title.setTypeface(tekton);
+
+            TextView preview_weight = (TextView) topView.findViewById(R.id.preview_three_weight);
+            weight  = Utility.getUpdatedValue(weight,context);
+            preview_weight.setText(Integer.toString(weight)+unit);
+            preview_weight.setTypeface(tekton);
             preview_weight.setVisibility(View.VISIBLE);
+            preview_weight.setTypeface(tekton);
 
             for(int i = 0; i < sets.size(); i++){
                 try {
@@ -222,6 +234,7 @@ public class Utility {
                     int preview_id= field.getInt(null);
                     TextView preview = (TextView) topView.findViewById(preview_id);
                     preview.setText(Integer.toString(sets.get(i).getCurrRep()));
+                    preview.setTypeface(tekton);
                     preview.setVisibility(View.VISIBLE);
 
                 }
@@ -231,6 +244,12 @@ public class Utility {
 
             }
         }
+    }
+
+    //Converts value to kilos if necessary
+    public static int getUpdatedValue(int value, Context context){
+       Double updatedValue =  (!getUnit(context).equals(context.getString(R.string.pref_units_pounds))) ? value * 0.45359237 : value;
+        return  updatedValue.intValue();
     }
 
 
