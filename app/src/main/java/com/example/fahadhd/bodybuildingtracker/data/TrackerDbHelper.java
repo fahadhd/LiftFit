@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import com.example.fahadhd.bodybuildingtracker.sessions.Session;
+
 
 public class TrackerDbHelper extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
@@ -64,10 +66,20 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 TemplateEntry.COLUMN_MAX_REPS + " INTEGER NOT NULL" +
                 " );";
 
+        final String SQL_CREATE_NOTES_TABLE = "CREATE TABLE " + NoteEntry.TABLE_NAME + " (" +
+                NoteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+
+                NoteEntry.COLUMN_NOTE_CONTENT + " TEXT NOT NULL, " +
+                NoteEntry.COLUMN_SES_KEY + " INTEGER NOT NULL, " +
+                // Set up the workout column as a foreign key to workout table.
+                " FOREIGN KEY (" + NoteEntry.COLUMN_SES_KEY + ") REFERENCES " +
+                SessionEntry.TABLE_NAME + " (" + SessionEntry._ID + ") ON DELETE CASCADE);";
+
         db.execSQL(SQL_CREATE_SESSIONS_TABLE);
         db.execSQL(SQL_CREATE_WORKOUTS_TABLE);
         db.execSQL(SQL_CREATE_SETS_TABLE);
         db.execSQL(SQL_CREATE_TEMPLATES_TABLE);
+        db.execSQL(SQL_CREATE_NOTES_TABLE);
     }
 
     @Override
@@ -166,16 +178,13 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
 
     }
 
-    /* Inner class that defines the table contents of a single set in a workout includes */
-    public static final class NotesEntry implements BaseColumns {
-
+    /* Inner class that defines the table contents the notes for each session */
+    public static final class NoteEntry implements BaseColumns {
         public static final String TABLE_NAME = "notes";
 
         public static final String COLUMN_NOTE_CONTENT = "note_content";
 
         public static final String COLUMN_SES_KEY = "session_id";
-
-
     }
 
 }
