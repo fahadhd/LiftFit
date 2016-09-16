@@ -18,23 +18,24 @@
         android:layout_marginTop="5dp"/>
 
     <!--/////////////WORKOUT BUTTONS//////////////-->
+    <!--/////////////WORKOUT BUTTONS//////////////-->
     <TextView
         android:id="@+id/workout_button_one"
         android:contentDescription="@string/workout_button_one"
-        android:visibility="invisible"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_alignLeft="@+id/workout_info"
+        android:layout_toRightOf="@+id/workout_info"
         android:layout_marginTop="18dp"
-        android:layout_marginLeft="74dp"
+        android:layout_marginLeft="25dp"
         android:background="@drawable/workout_button_selector"
         android:textColor="@color/black"
         />
 
     <TextView
         android:id="@+id/workout_button_two"
-        android:visibility="invisible"
+
         android:contentDescription="@string/workout_button_two"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +48,7 @@
         />
     <TextView
         android:id="@+id/workout_button_three"
-        android:visibility="invisible"
+
         android:contentDescription="@string/workout_button_three"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,7 +61,7 @@
         />
     <TextView
         android:id="@+id/workout_button_four"
-        android:visibility="invisible"
+
         android:contentDescription="@string/workout_button_four"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -73,7 +74,7 @@
         />
     <TextView
         android:id="@+id/workout_button_five"
-        android:visibility="invisible"
+
         android:contentDescription="@string/workout_button_five"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -86,7 +87,7 @@
         />
     <TextView
         android:id="@+id/workout_button_six"
-        android:visibility="invisible"
+
         android:contentDescription="@string/workout_button_six"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,7 +100,7 @@
         />
     <TextView
         android:id="@+id/workout_button_seven"
-        android:visibility="invisible"
+
         android:contentDescription="@string/workout_button_seven"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -112,7 +113,7 @@
         />
     <TextView
         android:id="@+id/workout_button_eight"
-        android:visibility="invisible"
+
         android:contentDescription="@string/workout_button_eight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -125,6 +126,8 @@
         android:background="@drawable/workout_button_selector"
         android:textColor="@color/black"
         />
+
+
 
     <ImageButton
         android:id="@+id/edit_workout"

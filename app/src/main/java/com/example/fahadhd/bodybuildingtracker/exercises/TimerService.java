@@ -83,7 +83,7 @@ public class TimerService extends Service {
         public void run() {
             if(!durationReached && currentTimer >= duration){
                 durationReached = true;
-                message = "Rest time is over!";
+                message = "Time to lift it!";
                 displayTimerUpNotification();
             }
             currentTimer += 1000;

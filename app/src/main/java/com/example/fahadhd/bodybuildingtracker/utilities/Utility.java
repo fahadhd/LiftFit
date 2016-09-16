@@ -150,7 +150,7 @@ public class Utility {
             ArrayList<Set> sets = workout_one.getSets();
 
             TextView preview_title = (TextView) topView.findViewById(R.id.preview_one_title);
-            preview_title.setText(workout_one.getName());
+            preview_title.setText(WordUtils.capitalizeFully(workout_one.getName()));
             preview_title.setVisibility(View.VISIBLE);
             preview_title.setTypeface(tekton);
 
@@ -183,7 +183,7 @@ public class Utility {
             ArrayList<Set> sets = workout_two.getSets();
 
             TextView preview_title = (TextView) topView.findViewById(R.id.preview_two_title);
-            preview_title.setText(workout_two.getName());
+            preview_title.setText(WordUtils.capitalizeFully(workout_two.getName()));
             preview_title.setVisibility(View.VISIBLE);
             preview_title.setTypeface(tekton);
 
@@ -216,7 +216,7 @@ public class Utility {
             ArrayList<Set> sets = workout_three.getSets();
 
             TextView preview_title = (TextView) topView.findViewById(R.id.preview_three_title);
-            preview_title.setText(workout_three.getName());
+            preview_title.setText( WordUtils.capitalizeFully(workout_three.getName()));
             preview_title.setVisibility(View.VISIBLE);
             preview_title.setTypeface(tekton);
 

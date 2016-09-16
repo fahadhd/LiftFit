@@ -252,7 +252,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
         layout.setBackgroundColor(Color.GRAY);
         snackbarText = (TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
-        snackbarText.setTextSize(14f);
+        snackbarText.setTextSize(12f);
         //layout basically works like a list where you can add views at the top and also remove them.
         layout.addView(mySnackView, 0);
         /*********************************************/
@@ -261,7 +261,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         snackbar.setActionTextColor(Color.WHITE);
         Button action = (Button) snackbar.getView().findViewById(android.support.design.R.id.snackbar_action);
         ViewGroup.LayoutParams params= action.getLayoutParams();
-        params.width= 100;
+        params.width= 150;
         action.setLayoutParams(params);
         //////////////////////////////////////////////
 

@@ -166,4 +166,16 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
 
     }
 
+    /* Inner class that defines the table contents of a single set in a workout includes */
+    public static final class NotesEntry implements BaseColumns {
+
+        public static final String TABLE_NAME = "notes";
+
+        public static final String COLUMN_NOTE_CONTENT = "note_content";
+
+        public static final String COLUMN_SES_KEY = "session_id";
+
+
+    }
+
 }
