@@ -125,20 +125,21 @@ public class SessionAdapter extends BaseAdapter {
             viewHolder = new ViewHolder(row);
             if(row != null) row.setTag(viewHolder);
         }
-        //Recycling views
-        else {
+        else{
             viewHolder = (ViewHolder) row.getTag();
         }
 
         Session session = sessions.get(position);
+
         if(type == TOP_SESSION_VIEW) {
             Utility.setTopSessionPreviews(session.getWorkouts(),row,context,tekton);
             Utility.setTopInfoText(row,session,tekton,context);
             return row;
         }
         else {
+
+            viewHolder.listBar.setBackgroundResource(R.drawable.list_bar);
             int user_weight = Utility.getUpdatedValue(session.getWeight(),context);
-            viewHolder.listBar.setImageResource(R.drawable.list_bar);
             setInfoText("Date", session.getDate(), viewHolder);
             setInfoText("Session", Long.toString(session.getSessionId()), viewHolder);
             setInfoText("Weight", Integer.toString(user_weight), viewHolder);
@@ -150,7 +151,7 @@ public class SessionAdapter extends BaseAdapter {
             //Colors the recently exited session with a gray background
 
             if (recentPosition == position && position != 0) {
-                viewHolder.listBar.setImageResource(R.drawable.list_bar_recent);
+               viewHolder.listBar.setBackgroundResource(R.drawable.list_bar_recent);
             }
             return row;
         }

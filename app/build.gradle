@@ -16,6 +16,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
     }
 }
 
@@ -24,8 +27,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.0.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
+
 }

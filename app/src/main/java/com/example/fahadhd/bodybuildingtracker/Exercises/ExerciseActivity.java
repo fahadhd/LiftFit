@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -282,7 +283,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         if(!durationUpdated && mTimerService.isDurationReached() && mySnackBar != null){
             //settings snackbar to a different color when timer has reached its duration
             Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) mySnackBar.getView();
-            layout.setBackgroundColor(Color.BLUE);
+            layout.setBackgroundColor(ContextCompat.getColor(this,R.color.orange_a400));
             snackbarText.setText(mTimerService.getMessage());
             durationUpdated = true;
         }

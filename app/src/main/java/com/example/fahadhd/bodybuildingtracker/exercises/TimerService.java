@@ -64,8 +64,9 @@ public class TimerService extends Service {
             if (intent.getAction().equals(Constants.ACTION.START_FOREGROUND_ACTION)) {
                 if(intent.hasExtra(Constants.GENERAL.SESSION_ID))
                     sessionID = intent.getLongExtra(Constants.GENERAL.SESSION_ID,0);
-                if(intent.hasExtra(Constants.TIMER.TIMER_MSG))
+                if(intent.hasExtra(Constants.TIMER.TIMER_MSG)) {
                     message = intent.getStringExtra(Constants.TIMER.TIMER_MSG);
+                }
                 mBuilder = createTimerNotification();
                 startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, mBuilder.build());
             }
@@ -110,6 +111,7 @@ public class TimerService extends Service {
         Log.v(TAG,"Resetting Timer");
         currentTimer = 0L;
         durationReached = false;
+        duration += duration*0.6;
         this.message = message;
         /********* Resets the notification as well *************/
         final NotificationManager mNotifyMgr =
