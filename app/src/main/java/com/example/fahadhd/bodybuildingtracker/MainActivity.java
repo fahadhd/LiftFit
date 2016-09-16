@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(Session... params) {
             Session session = params[0];
             dao.addSession(session.getDate(),session.getWeight());
+            dao.addNotes("",session.getSessionId());
             return null;
         }
     }

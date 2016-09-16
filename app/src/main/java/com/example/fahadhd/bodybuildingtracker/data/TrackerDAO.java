@@ -75,6 +75,15 @@ public class TrackerDAO {
         return sets;
     }
 
+    public long addNotes(String notes, long sessionID){
+        if(notes == null) return  -1;
+        ContentValues values = new ContentValues();
+        values.put(TrackerDbHelper.NoteEntry.COLUMN_NOTE_CONTENT,notes);
+        values.put(TrackerDbHelper.NoteEntry.COLUMN_SES_KEY,sessionID);
+
+        return db.insert(TrackerDbHelper.NoteEntry.TABLE_NAME,null,values);
+    }
+
     public void saveWorkoutToTemplate(String templateName, Workout workout ){
         if(templateName.isEmpty()) return;
         ContentValues values = new ContentValues();
@@ -218,6 +227,23 @@ public class TrackerDAO {
         return workouts;
     }
 
+    public String getNotes(long sessionID){
+        if(sessionID == -1) return "";
+        String[] columns = {TrackerDbHelper.NoteEntry.COLUMN_NOTE_CONTENT};
+        String where = TrackerDbHelper.NoteEntry.COLUMN_SES_KEY + " = "+sessionID;
+        Cursor cursor = db.query(TrackerDbHelper.NoteEntry.TABLE_NAME,columns,where,null,null,null,null);
+
+        if(cursor.moveToNext()){
+            int noteColumn = cursor.getColumnIndex(TrackerDbHelper.NoteEntry.COLUMN_NOTE_CONTENT);
+
+            String note = cursor.getString(noteColumn);
+            cursor.close();
+            return note;
+        }
+        cursor.close();
+        return null;
+    }
+
 
 
     /**************************UPDATES TO THE DATABASE********************************/
@@ -257,6 +283,16 @@ public class TrackerDAO {
         String where = TrackerDbHelper.SessionEntry._ID + " = "+sessionID;
         values.put(TrackerDbHelper.SessionEntry.COLUMN_TEMPLATE_NAME,templateName);
         db.update(TrackerDbHelper.SessionEntry.TABLE_NAME,values,where,null);
+    }
+
+    public void updateNotes(String notes, long sessionID){
+        if(notes == null) return;
+        String where = TrackerDbHelper.NoteEntry.COLUMN_SES_KEY + " = "+ sessionID;
+        ContentValues values = new ContentValues();
+        values.put(TrackerDbHelper.NoteEntry.COLUMN_NOTE_CONTENT,notes);
+        values.put(TrackerDbHelper.NoteEntry.COLUMN_SES_KEY,sessionID);
+
+        db.update(TrackerDbHelper.NoteEntry.TABLE_NAME,values,where,null);
     }
 
 

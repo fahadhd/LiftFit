@@ -31,6 +31,7 @@ import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.SettingsActivity;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
+import com.example.fahadhd.bodybuildingtracker.UserNotes;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.sessions.SessionsFragment;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog.Communicator {
     ExercisesFragment exercisesFragment;
     public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String SESSION_ID = "session_id";
     TrackerDAO dao;
     public static long sessionID;
     ArrayList<Session> sessions;
@@ -142,6 +144,9 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
                 return true;
             case R.id.action_settings:
                 startActivity(new Intent(this,SettingsActivity.class));
+                return true;
+            case R.id.action_notes:
+                startActivity(new Intent(this,UserNotes.class).putExtra(SESSION_ID,sessionID));
                 return true;
         }
         return (super.onOptionsItemSelected(menuItem));
