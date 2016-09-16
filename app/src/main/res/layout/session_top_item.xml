@@ -79,7 +79,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/user_weight"
-        android:layout_marginLeft="8dp"
         android:orientation="horizontal">
 
         <!--Preview One Workouts-->
@@ -106,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:background="@drawable/ic_session_preview_top"
@@ -231,7 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="12sp"
@@ -357,7 +356,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="12sp"
