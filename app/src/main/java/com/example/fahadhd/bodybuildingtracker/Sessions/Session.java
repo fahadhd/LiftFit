@@ -32,7 +32,7 @@ public class Session implements Serializable {
     public Integer getWeight(){
         return this.user_weight;
     }
-    public Long getSessionId(){
+    public long getSessionId(){
         return this.sessionId;
     }
 

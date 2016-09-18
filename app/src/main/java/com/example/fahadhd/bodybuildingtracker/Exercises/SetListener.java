@@ -114,7 +114,9 @@ public class SetListener implements View.OnClickListener {
     }
 
     public void updateSession(){
-        int position = sessions.size() - (int)curr_workout.getSessionID();
+        int position = getPosition();
+        if(position == -1) return;
+
         ArrayList<Workout> workouts = sessions.get(position).getWorkouts();
         for(int i = 0; i < workouts.size(); i++){
             if(workouts.get(i).getWorkoutID() == curr_workout.getWorkoutID()){
@@ -122,6 +124,16 @@ public class SetListener implements View.OnClickListener {
             }
         }
     }
+
+    public int getPosition(){
+        for(int i = 0; i < sessions.size(); i++) {
+            if(sessions.get(i).getSessionId() == curr_workout.getSessionID()){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
 }
 
