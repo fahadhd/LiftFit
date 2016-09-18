@@ -42,7 +42,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
                 WorkoutEntry.COLUMN_MAX_REPS + " INTEGER NOT NULL, " +
                 // Set up the session_id column as a foreign key to session table.
                 " FOREIGN KEY (" + WorkoutEntry.COLUMN_SES_KEY + ") REFERENCES " +
-                SessionEntry.TABLE_NAME + " (" + SessionEntry._ID + "));";
+                SessionEntry.TABLE_NAME + " (" + SessionEntry._ID + ") ON DELETE CASCADE);";
 
         //Each workout has a set number of sets and the current number of reps
         final String SQL_CREATE_SETS_TABLE = "CREATE TABLE " + SetEntry.TABLE_NAME + " (" +
@@ -84,7 +84,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        //TODO: Turn on Cascading delete when implementing delete actions
+        // Used to enable cascading delete
         db.execSQL("PRAGMA foreign_keys = ON;");
         super.onOpen(db);
     }
@@ -99,7 +99,6 @@ public class TrackerDbHelper extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WorkoutEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SetEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TemplateEntry.TABLE_NAME);
-        //// TODO: 8/28/2016 clear all templates in shared preferences
         onCreate(sqLiteDatabase);
     }
 

@@ -90,7 +90,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
         //Get session information from main activity
         if (sessionIntent != null && sessionIntent.hasExtra(SessionsFragment.INTENT_KEY)) {
-
             currentSession = (Session) sessionIntent.getSerializableExtra
                     (SessionsFragment.INTENT_KEY);
             position = sessionIntent.getIntExtra(SessionsFragment.POSITION_KEY, 0);
@@ -100,7 +99,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                     (MainActivity.ADD_TASK);
             newExercise = true;
             position = 0;
-            getActivity().setTitle("Today's Workout");
+            if (toolbarTitle != null) toolbarTitle.setText("Today's Workout");
         }
         sessionID = currentSession.getSessionId();
         setupTemplates(rootView);

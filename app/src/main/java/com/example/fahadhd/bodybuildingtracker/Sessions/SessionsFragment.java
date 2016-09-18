@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.fahadhd.bodybuildingtracker.MainActivity;
 import com.example.fahadhd.bodybuildingtracker.exercises.ExerciseActivity;
 import com.example.fahadhd.bodybuildingtracker.R;
 import com.example.fahadhd.bodybuildingtracker.TrackerApplication;
@@ -53,7 +54,7 @@ public class SessionsFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        adapter = new SessionAdapter(getActivity(),sessions);
+        adapter = new SessionAdapter((MainActivity) getActivity(),sessions);
         tekton = Typeface.createFromAsset(getActivity().getAssets(),"TektonPro-Bold.otf");
         Intent exerciseIntent = getActivity().getIntent();
         if(exerciseIntent != null && exerciseIntent.hasExtra(POSITION_KEY)) {
@@ -93,10 +94,6 @@ public class SessionsFragment extends Fragment{
     public void onResume() {
         super.onResume();
         adapter.notifyDataSetChanged();
-        if(sessionsListView != null && recentPosition != -1) {
-
-            sessionsListView.smoothScrollToPosition(recentPosition, 800);
-        }
     }
 
     public class GetSessions extends AsyncTask<Void,Void,ArrayList<Session>> {

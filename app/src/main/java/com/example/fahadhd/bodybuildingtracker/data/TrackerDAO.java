@@ -38,12 +38,13 @@ public class TrackerDAO {
 
 
     /**************************INSERTIONS TO THE DATABASE********************************/
-    public long addSession(String date, int weight){
+    public Session addSession(String date, int weight){
         ContentValues values  = new ContentValues();
         values.put(TrackerDbHelper.SessionEntry.COLUMN_DATE,date);
         values.put(TrackerDbHelper.SessionEntry.COLUMN_USER_WEIGHT, weight);
 
-        return db.insert(TrackerDbHelper.SessionEntry.TABLE_NAME,null,values);
+        long sesID = db.insert(TrackerDbHelper.SessionEntry.TABLE_NAME,null,values);
+        return new Session(date,weight,sesID,new ArrayList<Workout>(),"None");
     }
     //Add a workout to a current session
     public Workout addWorkout(long sesKey, String name,
@@ -298,6 +299,10 @@ public class TrackerDAO {
 
     /*************** Queries to delete ****************/
 
+    public void deleteSession(long sessionID){
+        String where = TrackerDbHelper.SessionEntry._ID + " = "+ sessionID;
+        db.delete(TrackerDbHelper.SessionEntry.TABLE_NAME,where,null);
+    }
     //deletes all workouts in a session
     public void deleteAllWorkouts(long sessionID){
         String where = TrackerDbHelper.WorkoutEntry.COLUMN_SES_KEY + " = "+ sessionID;

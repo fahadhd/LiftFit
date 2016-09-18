@@ -32,11 +32,10 @@
                     />
                 <TextView
                     android:id="@+id/template_a"
+                    android:contentDescription="template A"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/toolbar_title"
-                    android:layout_marginRight="65dp"
-
+                    android:layout_alignParentLeft="true"
                     android:text="@string/template_A"
                     style="@style/TemplateInActive"
                     />
@@ -45,11 +44,10 @@
                     android:contentDescription="template B"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/toolbar_title"
                     android:text="@string/template_B"
                     android:layout_marginTop="55dp"
-                    android:layout_marginLeft="55dp"
-                    android:layout_toRightOf="@+id/template_a"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     style="@style/TemplateInActive"/>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>

@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/session_list_item"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/delete_confirm"
+            android:contentDescription="@string/delete_session_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/session_delete"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ImageView
         android:id="@+id/list_bar"
         android:layout_width="match_parent"
@@ -110,9 +127,10 @@
 
             />
     </LinearLayout>
+    </RelativeLayout>
 
 
 
 
 
-</RelativeLayout>
+</com.daimajia.swipe.SwipeLayout>

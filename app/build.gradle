@@ -31,5 +31,5 @@ dependencies {
     compile 'com.android.support:support-v4:23.4.0'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
-
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 }

@@ -10,6 +10,7 @@
 
     <!--//////////////// Top Session View Strings ////////////////-->
     <string name="top_session_title">Latest Session</string>
+    <string name="delete_session">Delete this session?</string>
 
     <!--//////////////////// New User Message ///////////////////-->
     <string name="user_info">Hi there. You can add a workout\n session by tapping the below button.</string>
@@ -84,7 +85,6 @@
 
     <!--//////////////// TimePreference ///////////////////-->
     <string name="set">Set</string>
-    <string name="cancel">Cancel</string>
     <string name="time_pref_units_minutes">Timer Preference Minutes</string>
     <string name="time_pref_units_seconds">Timer Preference Seconds</string>
     <string name="time_pref_title">Set Workout Timer Duration</string>
@@ -93,8 +93,13 @@
 
     <!--//////////////// Content Descriptions ///////////////////-->
     <string name="add_workout">Add Workout</string>
+    <string name="delete_session_desc">Delete Session</string>
 
     <!-- ///////////////////////// Menu Items ///////////////////////////////-->
     <string name="action_settings">Settings</string>
     <string name="action_notes">My Notes</string>
+
+    <!--///////////// General Actions /////////////////-->
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -60,33 +60,13 @@ public class MainActivity extends AppCompatActivity {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Adds a session to cached data
-                Session newSession = addSession();
-                Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class).
-                        putExtra(ADD_TASK, newSession);
                 //Adds a new session in a background thread
-                new AddSession().execute(newSession);
-                startActivity(exercise);
+                new AddSession().execute();
             }
         });
 
     }
 
-    public Session addSession(){
-        SimpleDateFormat fmt = new SimpleDateFormat("MMM dd");
-        GregorianCalendar calendar = new GregorianCalendar();
-        fmt.setCalendar(calendar);
-        String dateFormatted = fmt.format(calendar.getTime());
-        SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(this);
-
-        int user_weight = Integer.parseInt(shared_pref.getString(getString
-                (R.string.pref_user_weight_key),getString
-                (R.string.pref_default_user_weight)));
-        //// TODO: 8/28/2016 can add template automatically here depending on shared pref instead of 'none'
-        Session session = new Session(dateFormatted,user_weight,sessions.size()+1,new ArrayList<Workout>(),"None");
-        sessions.add(0,session);
-        return session;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,13 +91,30 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class AddSession extends AsyncTask<Session,Void,Void>{
+    public class AddSession extends AsyncTask<String,Void,Void>{
 
         @Override
-        protected Void doInBackground(Session... params) {
-            Session session = params[0];
-            dao.addSession(session.getDate(),session.getWeight());
+        protected Void doInBackground(String... params) {
+            SimpleDateFormat fmt = new SimpleDateFormat("MMM dd");
+            GregorianCalendar calendar = new GregorianCalendar();
+            fmt.setCalendar(calendar);
+            String dateFormatted = fmt.format(calendar.getTime());
+            SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
+            int user_weight = Integer.parseInt(shared_pref.getString(getString
+                    (R.string.pref_user_weight_key),getString
+                    (R.string.pref_default_user_weight)));
+
+            Session session = dao.addSession(dateFormatted,user_weight);
+
+            Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class).
+                    putExtra(ADD_TASK, session);
+            startActivity(exercise);
+
             dao.addNotes("",session.getSessionId());
+
+            sessions.add(0,session);
+
             return null;
         }
     }

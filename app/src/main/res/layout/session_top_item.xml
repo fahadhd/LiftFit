@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/session_top_item">
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:id="@+id/delete_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/top_session_delete"/>
+        <TextView
+            android:id="@+id/top_delete_confirm"
+            android:contentDescription="@string/delete_session_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/delete_confirm"
+            android:gravity="center"
+            android:layout_alignBottom="@+id/delete_background"
+            android:layout_marginLeft="65dp"
+            android:text="@string/delete"
+            android:textColor="@color/red_700"
+            />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/list_bar"
@@ -458,5 +489,7 @@
         </RelativeLayout>
 
     </LinearLayout>
+    </RelativeLayout>
 
-</RelativeLayout>
+
+</com.daimajia.swipe.SwipeLayout>
