@@ -97,31 +97,31 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class AddSession extends AsyncTask<String,Void,Void>{
+    public class AddSession extends AsyncTask<String,Void,Session>{
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected Session doInBackground(String... params) {
             SimpleDateFormat fmt = new SimpleDateFormat("MMM dd");
             GregorianCalendar calendar = new GregorianCalendar();
             fmt.setCalendar(calendar);
             String dateFormatted = fmt.format(calendar.getTime());
             SharedPreferences shared_pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-
             int user_weight = Integer.parseInt(shared_pref.getString(getString
                     (R.string.pref_user_weight_key),getString
                     (R.string.pref_default_user_weight)));
 
             Session session = dao.addSession(dateFormatted,user_weight);
+            dao.addNotes("",session.getSessionId());
+            sessions.add(0,session);
 
+            return session;
+        }
+
+        @Override
+        protected void onPostExecute(Session session) {
             Intent exercise = new Intent(MainActivity.this, ExerciseActivity.class).
                     putExtra(ADD_TASK, session);
             startActivity(exercise);
-
-            dao.addNotes("",session.getSessionId());
-
-            sessions.add(0,session);
-
-            return null;
         }
     }
 

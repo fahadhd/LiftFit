@@ -235,8 +235,9 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
                 case Constants.WORKOUT_TASK.ADD_WORKOUT:
                     Workout newWorkout = dao.addWorkout(sessionID, workout.getName(), workout.getWeight(), workout.getMaxSets(), workout.getMaxReps());
-                    workout.sets = dao.addSets(newWorkout.getWorkoutID(), newWorkout.getMaxSets());
-                    getActivity().getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, ExercisesFragment.this);
+                    newWorkout.sets = dao.addSets(newWorkout.getWorkoutID(), newWorkout.getMaxSets());
+                    workouts.add(newWorkout);
+                    //getActivity().getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, ExercisesFragment.this);
                     dao.updateTemplateToSession("None",sessionID);
                     break;
 
@@ -250,7 +251,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                     dao.db.endTransaction();
 
                     //Updating cached data and restarting loader
-                    getActivity().getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, ExercisesFragment.this);
+                   // getActivity().getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, ExercisesFragment.this);
                     for(int i = 0; i< workouts.size(); i++){
                         if(workouts.get(i).getWorkoutID() == updatedWorkout.getWorkoutID()){
                             workouts.set(i,updatedWorkout);
@@ -261,7 +262,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                 case Constants.WORKOUT_TASK.DELETE_WORKOUT:
                     dao.deleteWorkout(params[0].getWorkoutID());
                     //Updating cached data and restarting loader
-                    getActivity().getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, ExercisesFragment.this);
+                    //getActivity().getSupportLoaderManager().restartLoader(R.id.exercise_loader_id, null, ExercisesFragment.this);
                     for(int i = 0; i < workouts.size(); i++){
                         if(workouts.get(i).getWorkoutID() == params[0].getWorkoutID()){
                             workouts.remove(i);
@@ -271,6 +272,11 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
                     break;
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -365,7 +371,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     public void setTemplateActive() {
-        if(template_A == null || template_B == null) return;
+        if(template_A == null || template_B == null || sessions.size() == 0) return;
         if (sessions.get(position).getTemplateName().equals(getString(R.string.template_A))){
             template_A.setBackgroundResource(R.drawable.template_active_selector);
             template_B.setBackgroundResource(R.drawable.template_inactive_selector);
@@ -377,7 +383,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     public void deactivateTemplates(){
-        if(template_A == null || template_B == null) return;
+        if(template_A == null || template_B == null || sessions.size() == 0) return;
         sessions.get(position).updateTemplateName("None");
         template_A.setBackgroundResource(R.drawable.template_inactive_selector);
         template_B.setBackgroundResource(R.drawable.template_inactive_selector);

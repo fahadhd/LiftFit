@@ -160,7 +160,9 @@ public class SessionAdapter extends BaseSwipeAdapter {
             public void onClick(View v) {
                 sessions.remove(0);
                 //if(cachedSessions.size() > 0 ) cachedSessions.remove(0);
-                activity.recreate();
+                closeItem(0);
+                notifyDataSetChanged();
+                //activity.recreate();
                 new DeleteTask().execute(session.getSessionId());
 
             }
@@ -187,7 +189,9 @@ public class SessionAdapter extends BaseSwipeAdapter {
             public void onClick(View v) {
                 sessions.remove(position);
                // if(cachedSessions.size() > position) cachedSessions.remove(position);
-                activity.recreate();
+                //activity.recreate();
+                notifyDataSetChanged();
+                closeItem(position);
                 new DeleteTask().execute(session.getSessionId());
             }
         });
