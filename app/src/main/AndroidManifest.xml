@@ -5,7 +5,7 @@
     <application
         android:name=".TrackerApplication"
         android:allowBackup="false"
-        android:icon="@drawable/ic_powerlift"
+        android:icon="@drawable/ic_liftfit"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">

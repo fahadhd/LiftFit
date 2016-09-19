@@ -5,6 +5,12 @@
         <item name="colorPrimary">@color/blue_grey_500</item>
         <item name="colorPrimaryDark">@color/blue_grey_700</item>
         <item name="colorAccent">@color/orange_a400</item>
+
+        <item name="android:dialogTheme">@style/WorkoutDialogCustom</item>
+        <!-- Apply default style for alert dialogs -->
+        <item name="android:alertDialogTheme">@style/WorkoutDialogCustom</item>
+
+
     </style>
 
     <style name="AppTheme.NoActionBar">

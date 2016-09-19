@@ -28,7 +28,6 @@ public class StartUpExerciseDialog extends DialogFragment implements View.OnClic
 
     public static StartUpExerciseDialog newInstance( boolean templateChecks[] ) {
         StartUpExerciseDialog newDialog = new StartUpExerciseDialog();
-
         Bundle args = new Bundle();
         args.putBooleanArray(Constants.TEMPLATE_TASK.TEMPLATE_EMPTY_KEY,templateChecks);
         newDialog.setArguments(args);
@@ -36,10 +35,12 @@ public class StartUpExerciseDialog extends DialogFragment implements View.OnClic
         return newDialog;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
+
         if(bundle.containsKey(Constants.TEMPLATE_TASK.TEMPLATE_EMPTY_KEY)){
             boolean templateChecks[] = bundle.getBooleanArray(Constants.TEMPLATE_TASK.TEMPLATE_EMPTY_KEY);
             if(templateChecks != null) {

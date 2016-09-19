@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:theme="@style/WorkoutDialogCustom"
+    android:theme="@style/WorkoutDialogCustom"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:minHeight="150dp">
@@ -90,11 +90,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:minHeight="50dp"
+        android:dropDownWidth="50dp"
+        android:dropDownHeight="80dp"
         />
     <Spinner
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:dropDownWidth="50dp"
         android:id="@+id/reps_choice"
         />
     </LinearLayout>

@@ -77,8 +77,6 @@ public class SessionsFragment extends Fragment{
         }
 
 
-
-
         sessionsListView.setAdapter(adapter);
         sessionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,10 +92,11 @@ public class SessionsFragment extends Fragment{
     }
 
     public void restartAdapter(){
-        Log.v("hey","restarting adapter");
-        adapter = new SessionAdapter((MainActivity) getActivity(),sessions);
-        adapter.setRecentPosition(recentPosition);
-        sessionsListView.setAdapter(adapter);
+        if(sessionsListView != null) {
+            adapter = new SessionAdapter((MainActivity) getActivity(), sessions);
+            adapter.setRecentPosition(recentPosition);
+            sessionsListView.setAdapter(adapter);
+        }
     }
 
 
@@ -122,7 +121,7 @@ public class SessionsFragment extends Fragment{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RECENT_POSITION) {
+        if (requestCode == RECENT_POSITION && data != null && data.hasExtra(ExerciseActivity.RECENT_POSITION_KEY)) {
             recentPosition = data.getIntExtra(ExerciseActivity.RECENT_POSITION_KEY, -1);
         }
     }

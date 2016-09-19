@@ -5,7 +5,7 @@
     android:paddingTop="30dp"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    app:theme="@style/WorkoutDialogCustom">
+    android:theme="@style/WorkoutDialogCustom">
     <TextView
         android:id="@+id/template_message"
         android:textColor="@color/white"
@@ -20,6 +20,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/WorkoutDialogCustom"
         android:layout_below="@+id/template_message"
         android:layout_marginTop="35dp"
         android:orientation="horizontal"
@@ -29,13 +30,15 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/template_A"/>
+            android:text="@string/template_A"
+            android:textColor="@color/orange_a400"/>
         <Button
             android:id="@+id/load_template_b"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/template_B"/>
+            android:text="@string/template_B"
+            android:textColor="@color/orange_a400"/>
     </LinearLayout>
 
     <LinearLayout
@@ -44,6 +47,7 @@
         android:layout_below="@+id/template_message"
         android:layout_marginTop="35dp"
         android:paddingBottom="4dp"
+
         android:orientation="horizontal"
         >
         <Button
@@ -51,12 +55,14 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Cancel"/>
+            android:text="Cancel"
+            android:textColor="@color/white"/>
         <Button
             android:id="@+id/load_new_workout"
             android:layout_width="wrap_content"
             android:gravity="center_vertical"
             android:layout_height="wrap_content"
-            android:text="Start New Workout"/>
+            android:text="Start New Workout"
+            android:textColor="@color/white"/>
     </LinearLayout>
 </LinearLayout>

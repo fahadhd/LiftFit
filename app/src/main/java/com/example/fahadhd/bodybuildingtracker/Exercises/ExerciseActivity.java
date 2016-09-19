@@ -166,6 +166,11 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         return (super.onOptionsItemSelected(menuItem));
     }
 
+    @Override
+    public void onBackPressed() {
+        setResult(SessionsFragment.RECENT_POSITION, new Intent().putExtra(RECENT_POSITION_KEY, exercisesFragment.position));
+        super.onBackPressed();
+    }
 
     /************************ Workout Tasks Add, Update, Delete, add get notes ********************/
 
@@ -189,6 +194,9 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             exercisesFragment.startWorkoutTask(workout, updatedWorkout);
         }
     }
+
+
+
     @Override
     public void deleteWorkoutInfo(Workout workout) {
         deactivateTemplates();
