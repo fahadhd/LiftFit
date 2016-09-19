@@ -59,23 +59,24 @@ public class SessionsFragment extends Fragment{
             new GetSessions().execute();
         }
         adapter = new SessionAdapter((MainActivity) getActivity(),sessions);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.sessions_list_fragment, container, false);
         tekton = Typeface.createFromAsset(getActivity().getAssets(),"TektonPro-Bold.otf");
+        sessionsListView = (ListView) rootView.findViewById(R.id.session_list_main);
 
         if(dao.isSessionsEmpty()){
-            View rootView =  inflater.inflate(R.layout.empty_sessions, container, false);
+            rootView =  inflater.inflate(R.layout.empty_sessions, container, false);
             TextView userMsg = (TextView) rootView.findViewById(R.id.user_info);
             userMsg.setTypeface(tekton);
             return rootView;
         }
 
-        View rootView = inflater.inflate(R.layout.sessions_list_fragment, container, false);
 
-        sessionsListView = (ListView) rootView.findViewById(R.id.session_list_main);
 
 
         sessionsListView.setAdapter(adapter);

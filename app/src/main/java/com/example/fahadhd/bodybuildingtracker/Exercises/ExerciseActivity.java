@@ -146,10 +146,13 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-                setResult(SessionsFragment.RECENT_POSITION,new Intent().putExtra(RECENT_POSITION_KEY,exercisesFragment.position));
-                finish();
-//                startActivity(new Intent(getApplicationContext(),MainActivity.class).
-//                        putExtra(SessionsFragment.POSITION_KEY,exercisesFragment.position));
+                if(sessions.size() <= 1){
+                    startActivity(new Intent(this,MainActivity.class));
+                }
+                else {
+                    setResult(SessionsFragment.RECENT_POSITION, new Intent().putExtra(RECENT_POSITION_KEY, exercisesFragment.position));
+                    finish();
+                }
                 return true;
             case R.id.action_settings:
                 startActivity(new Intent(this,SettingsActivity.class));
@@ -178,7 +181,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
 
     @Override
     public void updateWorkoutInfo(Workout workout, String name, int weight, int maxSet, int maxRep) {
-        Workout updatedWorkout =new Workout(workout.getSessionID(),workout.getWorkoutID(),
+        Workout updatedWorkout = new Workout(workout.getSessionID(),workout.getWorkoutID(),
                 name,weight,maxSet,maxRep,new ArrayList<Set>());
 
         if(!workout.equals(updatedWorkout)){

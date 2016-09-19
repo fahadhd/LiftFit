@@ -163,8 +163,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     public void setupTemplates(View rootView) {
 
-        Log.v(TAG,"Template is "+sessions.get(position).getTemplateName());
-
         template_A = (TextView) rootView.findViewById(R.id.template_a);
         template_B = (TextView) rootView.findViewById(R.id.template_b);
 
@@ -367,6 +365,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     public void setTemplateActive() {
+        if(template_A == null || template_B == null) return;
         if (sessions.get(position).getTemplateName().equals(getString(R.string.template_A))){
             template_A.setBackgroundResource(R.drawable.template_active_selector);
             template_B.setBackgroundResource(R.drawable.template_inactive_selector);
@@ -378,6 +377,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     public void deactivateTemplates(){
+        if(template_A == null || template_B == null) return;
         sessions.get(position).updateTemplateName("None");
         template_A.setBackgroundResource(R.drawable.template_inactive_selector);
         template_B.setBackgroundResource(R.drawable.template_inactive_selector);
