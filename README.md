@@ -1,14 +1,14 @@
-# PowerLift-Tracker
+# LiftFit
 
 ## Synopsis
 
-PowerLift Tracker is a fully customizable and dynamic android app that allows users to store their workout sessions, save templates,
+LiftFit is a fully customizable and dynamic android app that allows users to store their workout sessions, save templates,
 set timer lengths, save notes, choose perfereed unit type (LB or Kg), and much more.
 
-Supports 1x1 - 8x20 weightlifting workouts
+Supports 1x1 - 8x15 weightlifting workouts currently
 
 ## Installation
-To be published to the Google play store ~September 18, 2016
+To be published to the Google play store ~September 27, 2016
 
 ## Contributors
 This was a solo project created by Fahad Hassan (fahadhd)
