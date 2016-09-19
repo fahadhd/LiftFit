@@ -30,15 +30,18 @@ public class UserNotes extends AppCompatActivity {
 
         dao = application.getDatabase();
 
-        noteView= (EditText) findViewById(R.id.user_notes);
+        noteView = (EditText) findViewById(R.id.user_notes);
 
         Intent exerciseIntent = getIntent();
 
-        if(exerciseIntent != null && exerciseIntent.hasExtra(ExerciseActivity.SESSION_ID)){
+        if(exerciseIntent != null){
+            if(exerciseIntent.hasExtra(ExerciseActivity.SESSION_ID))
             sessionID = exerciseIntent.getLongExtra(ExerciseActivity.SESSION_ID,-1);
-        }
 
-        noteView.setText(dao.getNotes(sessionID));
+            if(exerciseIntent.hasExtra(ExerciseActivity.SESSION_NOTES)){
+                noteView.setText(exerciseIntent.getStringExtra(ExerciseActivity.SESSION_NOTES));
+            }
+        }
 
     }
 
@@ -47,11 +50,20 @@ public class UserNotes extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                dao.updateNotes(noteView.getText().toString(),sessionID);
+                new UpdateNotes().execute(noteView.getText().toString());
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class UpdateNotes extends AsyncTask<String,Void,Void>{
+
+        @Override
+        protected Void doInBackground(String... params) {
+            dao.updateNotes(params[0],sessionID);
+            return null;
+        }
     }
 
 

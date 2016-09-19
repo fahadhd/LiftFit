@@ -220,7 +220,7 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoaderReset(Loader<List<Workout>> loader) {
-        sessions.get(position).workouts.clear();
+
 
     }
 

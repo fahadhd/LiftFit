@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.Snackbar;
@@ -43,6 +44,9 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     ExercisesFragment exercisesFragment;
     public static final String TAG = MainActivity.class.getSimpleName();
     public static final String SESSION_ID = "session_id";
+    public static final String SESSION_NOTES = "session_notes";
+    public static final String RECENT_POSITION_KEY = "recent_position";
+    private String sessionNotes;
     TrackerDAO dao;
     public static long sessionID;
     ArrayList<Session> sessions;
@@ -67,8 +71,8 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         setContentView(R.layout.activity_exercises);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.exercise_toolbar);
-
         setSupportActionBar(toolbar);
+
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -101,6 +105,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
                 }
             });
         }
+        new GetNotes().execute();
     }
 
     @Override
@@ -116,6 +121,8 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             registerTimerReceiver();
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,21 +146,25 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(),MainActivity.class).
-                        putExtra(SessionsFragment.POSITION_KEY,exercisesFragment.position));
+                setResult(SessionsFragment.RECENT_POSITION,new Intent().putExtra(RECENT_POSITION_KEY,exercisesFragment.position));
+                finish();
+//                startActivity(new Intent(getApplicationContext(),MainActivity.class).
+//                        putExtra(SessionsFragment.POSITION_KEY,exercisesFragment.position));
                 return true;
             case R.id.action_settings:
                 startActivity(new Intent(this,SettingsActivity.class));
                 return true;
             case R.id.action_notes:
-                startActivity(new Intent(this,UserNotes.class).putExtra(SESSION_ID,sessionID));
+                startActivity(new Intent(this,UserNotes.class).
+                        putExtra(SESSION_ID,sessionID).
+                        putExtra(SESSION_NOTES,sessionNotes));
                 return true;
         }
         return (super.onOptionsItemSelected(menuItem));
     }
 
 
-    /************************ Workout Tasks Add, Update, and Delete ********************/
+    /************************ Workout Tasks Add, Update, Delete, add get notes ********************/
 
     //Receives workout info from dialog fragment and adds it into the database
     @Override
@@ -185,6 +196,15 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
     public void deactivateTemplates(){
         sessions.get(exercisesFragment.position).updateTemplateName("None");
         exercisesFragment.deactivateTemplates();
+    }
+
+    public class GetNotes extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            sessionNotes = dao.getNotes(sessionID);
+            return null;
+        }
     }
 
 

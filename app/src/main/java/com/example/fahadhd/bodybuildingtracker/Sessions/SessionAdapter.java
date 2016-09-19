@@ -28,20 +28,21 @@ public class SessionAdapter extends BaseSwipeAdapter {
     ArrayList<Session> sessions;
     TrackerDAO dao;
     Typeface tekton;
-    int recentPosition = -1;
 
     private static final String TAG = SessionAdapter.class.getSimpleName();
     private static final int VIEW_TYPE_COUNT = 2;
     private static final int TOP_SESSION_VIEW = 0;
     private static final int  PAST_SESSION_VIEW = 1;
+    int recentPosition = -1;
 
     public SessionAdapter(MainActivity mActivity, ArrayList<Session> sessions) {
         this.activity = mActivity;
-        this.sessions = sessions;
+
         tekton = Typeface.createFromAsset(mActivity.getAssets(),"TektonPro-Bold.otf");
 
         TrackerApplication application = (TrackerApplication) activity.getApplication();
         dao = application.getDatabase();
+        this.sessions = application.getSessions();
     }
 
     public void setRecentPosition(int recentPosition){
@@ -102,6 +103,7 @@ public class SessionAdapter extends BaseSwipeAdapter {
     }
 
 
+
     @Override
     public int getSwipeLayoutResourceId(int position) {
         if(position == 0){
@@ -131,6 +133,8 @@ public class SessionAdapter extends BaseSwipeAdapter {
         }
         return row;
     }
+
+
 
     @Override
     public void fillValues(int position, View convertView) {
@@ -178,9 +182,6 @@ public class SessionAdapter extends BaseSwipeAdapter {
         setPreviewText(session.getWorkouts(), viewHolder);
         //Colors the recently exited session with a gray background
 
-        if (recentPosition == position && position != 0) {
-            viewHolder.listBar.setBackgroundResource(R.drawable.list_bar_recent);
-        }
         viewHolder.deleteSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,7 +191,12 @@ public class SessionAdapter extends BaseSwipeAdapter {
                 new DeleteTask().execute(session.getSessionId());
             }
         });
+
+        if (recentPosition == position && position != 0) {
+            viewHolder.listBar.setBackgroundResource(R.drawable.list_bar_recent);
+        }
     }
+
 
     //Text for the polygons for each session
     public void setInfoText(String title, String description, ViewHolder viewHolder){
@@ -206,18 +212,18 @@ public class SessionAdapter extends BaseSwipeAdapter {
         }
 
     }
-    //Sets the previews of 0-3 workouts for each session in the list view.
+    //Sets the previews of 0-3 workouts for each session below the top session view.
     public void setPreviewText(ArrayList<Workout> workouts, ViewHolder viewHolder){
         if(workouts == null) return;
         Workout workout_one = (workouts.size() > 0) ? workouts.get(0) : null;
         Workout workout_two = (workouts.size() > 1) ? workouts.get(1) : null;
         Workout workout_three = (workouts.size() > 2) ? workouts.get(2) : null;
 
+
         if(workout_one != null){
             CharSequence rows = Utility.previewTextHelper(workout_one, activity);
             viewHolder.previewOne.setText(rows);
             viewHolder.previewOne.setTypeface(tekton);
-
         }
         else{
             viewHolder.previewOne.setText("");

@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
     //Database action object to query sqlite database tracker.db
     TrackerDAO dao;
 
-    public static final String ADD_TASK = "Add_Session";
+    public static final String ADD_TASK = "add_session";
+
 
 
 
@@ -67,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        sessionsFragment.restartAdapter();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
