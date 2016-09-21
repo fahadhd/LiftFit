@@ -37,6 +37,7 @@ import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.sessions.SessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.utilities.Constants;
+import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 
 import java.util.ArrayList;
 
@@ -114,7 +115,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         timerIntent = new Intent(this, TimerService.class);
         currentTime = 0L;
         //Binds to an existing running service
-        if (isMyServiceRunning(TimerService.class)) {
+        if (Utility.isMyServiceRunning(TimerService.class,this)) {
             isServiceOn = true;
             Log.v(TAG,"Bound to service");
             bindService(timerIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
@@ -228,12 +229,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         @Override
         public void onReceive(Context context, Intent intent) {
             if(mTimerService != null) {
-                //Unbinds from service if its a service for another workout
-                if (mTimerService.getSessionID() != sessionID) {
-                    unBindTimerService();
-                    unregisterReceiver(broadcastReceiver);
-                    return;
-                }
+
                 if (intent.getAction().equals(Constants.TIMER.TIMER_OFF) ||
                         (snackBarOn && mySnackBar!= null && !mySnackBar.isShown())) {
                     stopTimerService();
@@ -381,15 +377,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         }
     }
 
-    public  boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     /*********************** Helper methods for snackbar timer end ***************************/
 }

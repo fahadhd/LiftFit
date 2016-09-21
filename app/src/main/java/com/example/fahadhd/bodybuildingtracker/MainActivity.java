@@ -14,10 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.fahadhd.bodybuildingtracker.exercises.ExerciseActivity;
+import com.example.fahadhd.bodybuildingtracker.exercises.TimerService;
 import com.example.fahadhd.bodybuildingtracker.exercises.Workout;
 import com.example.fahadhd.bodybuildingtracker.sessions.Session;
 import com.example.fahadhd.bodybuildingtracker.sessions.SessionsFragment;
 import com.example.fahadhd.bodybuildingtracker.data.TrackerDAO;
+import com.example.fahadhd.bodybuildingtracker.utilities.Constants;
+import com.example.fahadhd.bodybuildingtracker.utilities.Utility;
 
 
 import java.text.SimpleDateFormat;
@@ -126,4 +129,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        if(Utility.isMyServiceRunning(TimerService.class,this)) {
+            Intent timerIntent = new Intent(this, TimerService.class);
+            timerIntent.setAction(Constants.ACTION.STOP_FOREGROUND_ACTION);
+            startService(timerIntent);
+        }
+        super.onDestroy();
+    }
 }
