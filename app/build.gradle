@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.0"
 
     defaultConfig {
-        applicationId "com.example.fahadhd.bodybuildingtracker"
+        applicationId "com.fahadhd.liftfit"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1

@@ -1,9 +1,9 @@
 package com.example.fahadhd.bodybuildingtracker.data;
 
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
-import android.util.Log;
+
+import com.fahadhd.liftfit.data.TrackerDAO;
+import com.fahadhd.liftfit.sessions.Session;
 
 
 public class TestDb extends AndroidTestCase{
@@ -21,7 +21,7 @@ public class TestDb extends AndroidTestCase{
     public void testCreateDb() throws Throwable{
         TrackerDAO dao = new TrackerDAO(mContext);
         assertTrue(dao.db.isOpen());
-        long sesKey = dao.addSession("June 5", 185);
+        Session sesKey = dao.addSession("June 5", 185);
 
     }
 

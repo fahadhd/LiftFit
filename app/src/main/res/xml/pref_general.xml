@@ -31,7 +31,7 @@
 
 
 
-    <com.example.fahadhd.bodybuildingtracker.TimerPickerPreference
+    <com.fahadhd.liftfit.TimerPickerPreference
         android:title="@string/time_pref_title"
     />
 
