@@ -8,7 +8,7 @@ set timer lengths, save notes, choose perfereed unit type (LB or Kg), and much m
 Supports 1x1 - 8x15 weightlifting workouts currently
 
 ## Installation
-To be published to the Google play store ~September 27, 2016
+To be published to the Google play store soon.
 
 ## Contributors
 This was a solo project created by Fahad Hassan (fahadhd)
