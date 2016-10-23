@@ -1,5 +1,7 @@
 # LiftFit
 
+![alt tag](http://i.imgur.com/hMqqQuT.jpg)
+![alt tag](http://i.imgur.com/jNEd2kk.jpg)
 ## Synopsis
 
 LiftFit is a fully customizable and dynamic android app that allows users to store their workout sessions, save templates,
