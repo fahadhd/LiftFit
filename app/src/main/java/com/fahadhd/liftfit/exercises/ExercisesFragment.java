@@ -57,8 +57,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     SharedPreferences sharedPref;
 
 
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,9 +195,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
 
-    /****************************
-     * ASYNC LOADER FOR ADAPTER *
-     ****************************/
     //Loads all workouts for current session in workouts list.
     @Override
     public Loader<List<Workout>> onCreateLoader(int id, Bundle args) {
@@ -218,7 +213,6 @@ public class ExercisesFragment extends Fragment implements LoaderManager.LoaderC
 
 
     }
-
     /************************************************************/
 
     //TODO: Instead of looping most of the time the workoutid is the same as its index in the array

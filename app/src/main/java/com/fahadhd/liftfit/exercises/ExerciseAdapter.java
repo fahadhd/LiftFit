@@ -144,6 +144,7 @@ public class ExerciseAdapter extends BaseAdapter{
 
 
     //TODO: Put in utility class and use it for session list item as well.
+    //Creates a customizable string for workout info
     public SpannableStringBuilder spanWorkoutInfo(Workout workout){
         int start = 0, end;
         String buffer = WordUtils.capitalizeFully(workout.getName().replaceAll("\\s+","\n"));

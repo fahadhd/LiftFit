@@ -83,7 +83,6 @@ public class SessionAdapter extends BaseSwipeAdapter {
         /********* Workout Previews ************/
         TextView previewOne, previewTwo,previewThree;
 
-        /***************************************/
 
         public ViewHolder(View view) {
             this.date = (TextView) view.findViewById(R.id.date);

@@ -28,10 +28,10 @@ import java.util.ArrayList;
 
 import java.util.GregorianCalendar;
 
-/*Front view of app with a floating action button to add a exercise at the top*/
+
 public class MainActivity extends AppCompatActivity {
 
-   SessionsFragment sessionsFragment;
+    SessionsFragment sessionsFragment;
     ArrayList<Session> sessions;
     //Database action object to query sqlite database tracker.db
     TrackerDAO dao;
@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Title is already in place
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle("");
         }
@@ -86,12 +88,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this,SettingsActivity.class));
             return true;
@@ -100,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Adds a session to database in a background thread.
+    //Goes into exercise activity when finished.
     public class AddSession extends AsyncTask<String,Void,Session>{
 
         @Override

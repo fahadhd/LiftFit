@@ -122,16 +122,12 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         }
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present
         getMenuInflater().inflate(R.menu.menu_exercises, menu);
         return true;
     }
-
-
 
     @Override
     protected void onStop() {
@@ -194,7 +190,6 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             exercisesFragment.startWorkoutTask(workout, updatedWorkout);
         }
     }
-
 
 
     @Override

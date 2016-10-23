@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 /**
  * First view a user see's when starting the app. Displays all of the user's
- * past workout and allows the ability to add a new workout which will then start another
+ * past workout sessions and allows the ability to add a new session which will then start another
  * activity.
  */
 public class SessionsFragment extends Fragment{

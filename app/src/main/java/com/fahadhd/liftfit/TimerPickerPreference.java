@@ -13,9 +13,7 @@ import com.fahadhd.liftfit.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Fahad on 9/1/2016.
- */
+//Display a time picker view for selecting how long rest time should be between sets in settings.
 public class TimerPickerPreference extends DialogPreference {
     WheelPicker minutes;
     WheelPicker seconds;
