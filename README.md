@@ -10,7 +10,8 @@ set timer lengths, save notes, choose perfereed unit type (LB or Kg), and much m
 Supports 1x1 - 8x15 weightlifting workouts currently
 
 ## Installation
-To be published to the Google play store soon.
+Currently in open alpha testing
+https://play.google.com/store/apps/details?id=com.fahadhd.liftfit&hl=en
 
 ## Contributors
 This was a solo project created by Fahad Hassan (fahadhd)
