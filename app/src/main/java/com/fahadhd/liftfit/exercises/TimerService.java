@@ -11,9 +11,13 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -83,14 +87,25 @@ public class TimerService extends Service {
         public void run() {
             if(!durationReached && currentTimer >= duration){
                 durationReached = true;
-                message = "Time to lift it!";
+                message = "Time to lift!";
                 displayTimerUpNotification();
+                alertUser();
             }
             currentTimer += 1000;
             broadCastTimer();
             handler.postDelayed(this,1000);
         }
     };
+
+    public void alertUser(){
+        try {
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+            r.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void broadCastTimer(){
         Log.v(TAG,"Timer is running. Current tick is: "+currentTimer);
         sendBroadcast(timerIntent);

@@ -8,9 +8,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -312,6 +316,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
             layout.setBackgroundColor(ContextCompat.getColor(this,R.color.orange_a400));
             snackbarText.setText(mTimerService.getMessage());
             durationUpdated = true;
+
         }
         //Updating the timer in the snackbar
         this.currentTime = mTimerService.getTimer();
@@ -320,6 +325,7 @@ public class ExerciseActivity extends AppCompatActivity implements WorkoutDialog
         timerView.setText(Integer.toString(minutes) + ":" + String.format("%02d", secs%60));
         return true;
     }
+
     public void startTimerService(String message){
         if(isServiceOn && mTimerService != null){
             mTimerService.resetTimer(message);
