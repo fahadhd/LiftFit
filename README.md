@@ -11,7 +11,7 @@ Supports 1x1 - 8x15 weightlifting workouts currently
 
 ## Installation
 Currently in open alpha testing
-https://play.google.com/store/apps/details?id=com.fahadhd.liftfit&hl=en
+https://play.google.com/store/apps/details?id=com.fahadhd.liftfit_android
 
 ## Contributors
 This was a solo project created by Fahad Hassan (fahadhd)
