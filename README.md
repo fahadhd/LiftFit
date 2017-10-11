@@ -1,6 +1,6 @@
 # LiftFit
 
-![alt tag](https://lh3.googleusercontent.com/sPyTmk2vhr-s7RIyjQlY4X24FRq9l1-NHeisQr9t6B4aKLhwKHcfMG7WT4vnNPfhJyoX=h900-rw)
+![alt tag](https://lh3.googleusercontent.com/-0X-lhsPt4BEMK5gOjpo-dZC4Gr0KZtRTptLjOE0tvgbHGKWWJGfa_uM7V2UeQ7oRPk=h900-rw)
 ![alt tag](https://lh3.googleusercontent.com/LRUHG0kBTmvJSQYN35aWB_cfVzjjtCHFSXwmmYVltve-1Dk8tqbMZJe7pN-IPWeKJ02V=h900-rw)
 ## Synopsis
 
